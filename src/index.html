@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pompom</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Numans" />
+    <style>
+        body {
+            font-family: Numans;
+            font-size: 10px;
+        }
+
+        .f1 {
+            font-size: 3rem;
+            display: grid;
+            justify-items: center;
+        }
+
+        .f2 {
+            font-size: 1.5rem;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+                "timer timer"
+                "todo complete";
+        }
+
+        .timer {
+            grid-area: timer;
+            display: grid;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .clock {
+            display: grid;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .current-task,
+        .pompoms {
+            display: grid;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .todo {
+            grid-area: todo;
+            font-size: 1.2rem;
+            padding: 1rem;
+        }
+
+        .complete {
+            grid-area: complete;
+            font-size: 1.2rem;
+            padding: 1rem;
+        }
+
+        .tn {
+            font-size: 1.1rem;
+        }
+
+        .ts {            
+            font-size: 0.8rem;
+        }
+
+        .myButton {
+            box-shadow: inset 0px 1px 0px 0px #caefab;
+            background: linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
+            background-color: #77d42a;
+            border-radius: 6px;
+            border: 1px solid #268a16;
+            display: inline-block;
+            cursor: pointer;
+            color: #306108;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #aade7c;
+        }
+
+        .myButton:hover {
+            background: linear-gradient(to bottom, #5cb811 5%, #77d42a 100%);
+            background-color: #5cb811;
+        }
+
+        .myButton:active {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="f1">Pompom</h1>
+    </header>
+    <main>
+        <section class="timer">
+            <div id="timer" class="clock"></div>
+            <div id="current-task" class="current-task">Select task below</div>
+            <div class="pompoms"></div>
+            <div>
+                <button class="myButton" data-start>Start</button>
+                <button class="myButton" data-pause>Pause</button>
+                <button class="myButton" data-reset>Reset</button>
+            </div>
+        </section>
+        <section class="todo">
+            <h2 class="f2">Todo List</h2>
+            <input type="text" name="newTask" id="newTask" class="tn"> <button class="myButton" data-task>Add</button>
+            <div class="ts">Add tasks to todo above and then click on the item below to use as current item</div>            
+            <div data-task-list></div>
+        </section>
+        <section class="complete">
+            <h2 class="f2">Completed Tasks</h2>
+            <div data-complete-tasks></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
