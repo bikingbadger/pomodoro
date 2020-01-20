@@ -1,6 +1,6 @@
 const playSound = () => {
   const alarmClock = document.querySelector(".alarm");
-  const audio = document.querySelector(`audio[data-audio]`);
+  const audio = new  Audio('./assets/sounds/alarmclock.mp3');//document.querySelector(`audio[data-audio]`);
   let alarmActive = true;
 
   const playAlarm = () => {
