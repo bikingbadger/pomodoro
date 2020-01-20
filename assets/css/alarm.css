@@ -1,0 +1,15 @@
+
+.alarm {
+    display: none;
+}
+
+.alarm-active {
+    display: block;
+}
+
+.alarm img {
+    height: 5rem;
+    border: 2px solid #77d42a;
+    padding: 1rem;
+    border-radius: 5px;
+}

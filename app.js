@@ -161,7 +161,7 @@ const startTimer = () => {
       }
     }
     renderTimer();
-  }, 1000);
+  }, 10);
 };
 
 /**
