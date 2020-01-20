@@ -1,5 +1,5 @@
-import { playSound } from "./modules/alarm.mjs";
-
+import * as Alarm from "./modules/alarm/alarm.mjs";
+console.log(Alarm);
 ("use strict");
 
 // Data object
@@ -143,7 +143,7 @@ const startTimer = () => {
     if (!timerData.paused) {
       if (timerData.timer === 0) {
         clearInterval();
-        playSound();
+        Alarm.playSound();
         timerData.pompoms++;
         // Check the pompoms to determine next time
         if (timerData.pompoms === 7) {
@@ -290,3 +290,4 @@ document.addEventListener("click", clickDelegator, false);
 
 renderTimer();
 renderTasks();
+Alarm.loadAlarm();
