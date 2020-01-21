@@ -1,4 +1,4 @@
-const alarmClock = document.getElementById("#alarmClock");
+const alarmClock = document.getElementById("alarmClock");
 
 const loadAlarm = () => {
   // Add custom CSS
