@@ -117,6 +117,9 @@ const render = (selector, template) => {
 const renderTimer = () => {
   render("#timer", templateTimer);
   render(".pompoms", templatePompoms);
+
+  // Set time in title
+  document.title = "Pompom " + templateTimer();
 };
 
 /**
