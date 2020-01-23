@@ -13,7 +13,26 @@
 <body>
     <header>
         <h1 class="f1">Pompom</h1>
+        <button id="btn-login" disabled="true">Log in</button>
+    <button id="btn-logout" disabled="true"">Log out</button>
+
     </header>
+
+    <div class="hidden" id="gated-content">
+        <p>
+          You're seeing this content because you're currently
+          <strong>logged in</strong>.
+        </p>
+        <label>
+          Access token:
+          <pre id="ipt-access-token"></pre>
+        </label>
+        <label>
+          User profile:
+          <pre id="ipt-user-profile"></pre>
+        </label>
+      </div>
+
     <main>
         <section class="timer">
             <div id="timer" class="clock"></div>
@@ -39,6 +58,7 @@
 
     <div class="alarm" id="alarmClock"></div>
 
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
     <script src="app.js" type="module"></script>
 </body>
 
