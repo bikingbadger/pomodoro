@@ -1,5 +1,6 @@
+import * as Auth from "./modules/auth/auth.mjs";
 import * as Alarm from "./modules/alarm/alarm.mjs";
-console.log(Alarm);
+
 ("use strict");
 
 // Data object
@@ -12,6 +13,7 @@ const timerData = {
 };
 const storageID = "tasks";
 let countDown;
+const timeout = 1000;
 
 /**
  * Template for the Timer
@@ -164,7 +166,7 @@ const startTimer = () => {
       }
     }
     renderTimer();
-  }, 1000);
+  }, timeout);
 };
 
 /**
@@ -291,6 +293,17 @@ const clickDelegator = event => {
 // When the restart button is clicked, restart the timer
 document.addEventListener("click", clickDelegator, false);
 
+const buttonHandler = e => {
+  if (e.target.id === "btn-login") {
+    Auth.login();
+  }
+
+  if (e.target.id === "btn-logout") {
+    Auth.logout();
+  }
+};
+
+document.addEventListener("click", buttonHandler), false;
 renderTimer();
 renderTasks();
 Alarm.loadAlarm();
