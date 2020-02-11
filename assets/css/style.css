@@ -1,18 +1,4 @@
-body {
-  font-family: Numans;
-  font-size: 10px;
-  width: 60%;
-}
 
-.f1 {
-  font-size: 3rem;
-  display: grid;
-  justify-items: center;
-}
-
-.f2 {
-  font-size: 1.5rem;
-}
 
 main {
   display: grid;
