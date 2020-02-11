@@ -14,52 +14,52 @@
     <header>
         <h1 class="f1">Pompom</h1>
         <button id="btn-login" disabled="true">Log in</button>
-    <button id="btn-logout" disabled="true"">Log out</button>
+        <button id="btn-logout" disabled="true"">Log out</button>
 
     </header>
 
-    <div class="hidden" id="gated-content">
-        <p>
-          You're seeing this content because you're currently
-          <strong>logged in</strong>.
-        </p>
-        <label>
-          Access token:
-          <pre id="ipt-access-token"></pre>
-        </label>
-        <label>
-          User profile:
-          <pre id="ipt-user-profile"></pre>
-        </label>
-      </div>
-
-    <main>
-        <section class="timer">
-            <div id="timer" class="clock"></div>
-            <div id="current-task" class="current-task">Select task below</div>
-            <div class="pompoms"></div>
-            <div>
-                <button class="myButton" data-start>Start</button>
-                <button class="myButton" data-pause>Pause</button>
-                <button class="myButton" data-reset>Reset</button>
+    <div class=" hidden" id="gated-content">
+            <p>
+                You're seeing this content because you're currently
+                <strong>logged in</strong>.
+            </p>
+            <label>
+                Access token:
+                <pre id="ipt-access-token"></pre>
+            </label>
+            <label>
+                User profile:
+                <pre id="ipt-user-profile"></pre>
+            </label>
             </div>
-        </section>
-        <section class="todo">
-            <h2 class="f2">Todo List</h2>
-            <input type="text" name="newTask" id="newTask" class="tn"> <button class="myButton" data-task>Add</button>
-            <div class="ts">Add tasks to todo above and then click on the item below to use as current item</div>
-            <div data-task-list></div>
-        </section>
-        <section class="complete">
-            <h2 class="f2">Completed Tasks</h2>
-            <div data-complete-tasks></div>
-        </section>
-    </main>
 
-    <div class="alarm" id="alarmClock"></div>
+            <main>
+                <section class="timer">
+                    <div id="timer" class="clock"></div>
+                    <div id="current-task" class="current-task">Select task below</div>
+                    <div class="pompoms"></div>
+                    <div>
+                        <button class="myButton" data-start>Start</button>
+                        <button class="myButton" data-pause>Pause</button>
+                        <button class="myButton" data-reset>Reset</button>
+                    </div>
+                </section>
+                <section class="todo">
+                    <h2 class="f2">Todo List</h2>
+                    <input type="text" name="newTask" id="newTask" class="tn"> <button class="myButton" data-task>Add</button>
+                    <div class="ts">Add tasks to todo above and then click on the item below to use as current item</div>
+                    <div data-task-list></div>
+                </section>
+                <section class="complete">
+                    <h2 class="f2">Completed Tasks</h2>
+                    <div data-complete-tasks></div>
+                </section>
+            </main>
 
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
-    <script src="app.js" type="module"></script>
+            <div class="alarm" id="alarmClock"></div>
+
+            <script src="https://cdn.auth0.com/js/auth0-spa-js/1.2/auth0-spa-js.production.js"></script>
+            <script src="app.js" type="module"></script>
 </body>
 
 </html>
