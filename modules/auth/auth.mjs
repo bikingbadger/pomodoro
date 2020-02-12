@@ -13,7 +13,7 @@ const configureClient = async () => {
   auth0 = await createAuth0Client({
     domain: config.domain,
     client_id: config.clientId,
-    audience: config.audience
+    audience: config.audience,
   });
 };
 
@@ -27,7 +27,7 @@ const updateUI = async () => {
     document.getElementById("btn-logout").disabled = !isAuthenticated;
     document.getElementById("btn-login").disabled = isAuthenticated;
 
-    console.log(`Authenticated: ${isAuthenticated}`);
+    // console.log(`Authenticated: ${isAuthenticated}`);
     if (isAuthenticated) {
       document.getElementById("gated-content").classList.remove("hidden");
 
@@ -70,19 +70,19 @@ window.onload = async () => {
   const isAuthenticated = await auth0.isAuthenticated();
 
   if (isAuthenticated) {
-    console.log("> User is authenticated");
+    // console.log("> User is authenticated");
     window.history.replaceState({}, document.title, window.location.pathname);
     updateUI();
     return;
   }
 
-  console.log("> User not authenticated");
+  // console.log("> User not authenticated");
 
   const query = window.location.search;
   const shouldParseResult = query.includes("code=") && query.includes("state=");
 
   if (shouldParseResult) {
-    console.log("> Parsing redirect");
+    // console.log("> Parsing redirect");
     try {
       const result = await auth0.handleRedirectCallback();
 
@@ -90,7 +90,7 @@ window.onload = async () => {
         showContentFromUrl(result.appState.targetUrl);
       }
 
-      console.log("Logged in!");
+      // console.log("Logged in!");
     } catch (err) {
       console.log("Error parsing redirect:", err);
     }
