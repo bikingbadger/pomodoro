@@ -1,7 +1,5 @@
-console.log("Auth");
-
 let auth0 = null;
-const fetchAuthConfig = () => fetch("/auth_config.json");
+const fetchAuthConfig = () => fetch("assets/auth_config.json");
 
 /**
  * Configure the client
@@ -13,7 +11,7 @@ const configureClient = async () => {
   auth0 = await createAuth0Client({
     domain: config.domain,
     client_id: config.clientId,
-    audience: config.audience
+    audience: config.audience,
   });
 };
 
@@ -24,22 +22,20 @@ const updateUI = async () => {
   try {
     const isAuthenticated = await auth0.isAuthenticated();
 
-    document.getElementById("btn-logout").disabled = !isAuthenticated;
-    document.getElementById("btn-login").disabled = isAuthenticated;
-
-    console.log(`Authenticated: ${isAuthenticated}`);
+    // console.log(`Authenticated: ${isAuthenticated}`);
     if (isAuthenticated) {
-      document.getElementById("gated-content").classList.remove("hidden");
+      document.getElementById("btn-logout").classList.add("block");
+      document.getElementById("btn-logout").classList.remove("hidden");
+      document.getElementById("btn-login").classList.remove("block");
+      document.getElementById("btn-login").classList.add("hidden");
 
-      document.getElementById(
-        "ipt-access-token",
-      ).innerHTML = await auth0.getTokenSilently();
-
-      document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
-        await auth0.getUser(),
-      );
+      const accessToken = await auth0.getTokenSilently();
+      localStorage.setItem("accessToken", accessToken);
     } else {
-      document.getElementById("gated-content").classList.add("hidden");
+      document.getElementById("btn-logout").classList.remove("block");
+      document.getElementById("btn-logout").classList.add("hidden");
+      document.getElementById("btn-login").classList.add("block");
+      document.getElementById("btn-login").classList.remove("hidden");
     }
   } catch (e) {
     console.error(e);
@@ -70,19 +66,19 @@ window.onload = async () => {
   const isAuthenticated = await auth0.isAuthenticated();
 
   if (isAuthenticated) {
-    console.log("> User is authenticated");
+    // console.log("> User is authenticated");
     window.history.replaceState({}, document.title, window.location.pathname);
     updateUI();
     return;
   }
 
-  console.log("> User not authenticated");
+  // console.log("> User not authenticated");
 
   const query = window.location.search;
   const shouldParseResult = query.includes("code=") && query.includes("state=");
 
   if (shouldParseResult) {
-    console.log("> Parsing redirect");
+    // console.log("> Parsing redirect");
     try {
       const result = await auth0.handleRedirectCallback();
 
@@ -90,7 +86,7 @@ window.onload = async () => {
         showContentFromUrl(result.appState.targetUrl);
       }
 
-      console.log("Logged in!");
+      // console.log("Logged in!");
     } catch (err) {
       console.log("Error parsing redirect:", err);
     }
