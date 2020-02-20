@@ -27,20 +27,9 @@ const updateUI = async () => {
 
     // console.log(`Authenticated: ${isAuthenticated}`);
     if (isAuthenticated) {
-      // document.getElementById("gated-content").classList.remove("hidden");
-
       const accessToken = await auth0.getTokenSilently();
-      // console.log(accessToken);
-      localStorage.setItem('accessToken',accessToken);
-      // document.getElementById("ipt-access-token").innerHTML = accessToken;
-
-      // document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
-      //   await auth0.getUser(),
-      // );
-    } 
-    // else {
-    //   document.getElementById("gated-content").classList.add("hidden");
-    // }
+      localStorage.setItem("accessToken", accessToken);
+    }
   } catch (e) {
     console.error(e);
   }
