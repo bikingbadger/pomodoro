@@ -1,5 +1,3 @@
-console.log("Auth");
-
 let auth0 = null;
 const fetchAuthConfig = () => fetch("/auth_config.json");
 
@@ -29,18 +27,20 @@ const updateUI = async () => {
 
     // console.log(`Authenticated: ${isAuthenticated}`);
     if (isAuthenticated) {
-      document.getElementById("gated-content").classList.remove("hidden");
+      // document.getElementById("gated-content").classList.remove("hidden");
 
-      document.getElementById(
-        "ipt-access-token",
-      ).innerHTML = await auth0.getTokenSilently();
+      const accessToken = await auth0.getTokenSilently();
+      // console.log(accessToken);
+      localStorage.setItem('accessToken',accessToken);
+      // document.getElementById("ipt-access-token").innerHTML = accessToken;
 
-      document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
-        await auth0.getUser(),
-      );
-    } else {
-      document.getElementById("gated-content").classList.add("hidden");
-    }
+      // document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
+      //   await auth0.getUser(),
+      // );
+    } 
+    // else {
+    //   document.getElementById("gated-content").classList.add("hidden");
+    // }
   } catch (e) {
     console.error(e);
   }
