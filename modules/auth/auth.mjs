@@ -1,5 +1,5 @@
 let auth0 = null;
-const fetchAuthConfig = () => fetch("/auth_config.json");
+const fetchAuthConfig = () => fetch("assets/auth_config.json");
 
 /**
  * Configure the client
@@ -24,18 +24,18 @@ const updateUI = async () => {
 
     // console.log(`Authenticated: ${isAuthenticated}`);
     if (isAuthenticated) {
-      document.getElementById("btn-logout").classList.add('block');
-      document.getElementById("btn-logout").classList.remove('hidden');
-      document.getElementById("btn-login").classList.remove('block');
-      document.getElementById("btn-login").classList.add('hidden');
-      
+      document.getElementById("btn-logout").classList.add("block");
+      document.getElementById("btn-logout").classList.remove("hidden");
+      document.getElementById("btn-login").classList.remove("block");
+      document.getElementById("btn-login").classList.add("hidden");
+
       const accessToken = await auth0.getTokenSilently();
       localStorage.setItem("accessToken", accessToken);
     } else {
-      document.getElementById("btn-logout").classList.remove('block');
-      document.getElementById("btn-logout").classList.add('hidden');
-      document.getElementById("btn-login").classList.add('block');
-      document.getElementById("btn-login").classList.remove('hidden');
+      document.getElementById("btn-logout").classList.remove("block");
+      document.getElementById("btn-logout").classList.add("hidden");
+      document.getElementById("btn-login").classList.add("block");
+      document.getElementById("btn-login").classList.remove("hidden");
     }
   } catch (e) {
     console.error(e);
