@@ -13,7 +13,11 @@ const timerData = {
 };
 const storageID = "tasks";
 let countDown;
-const timeout = 1000;
+const timeout =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? 5
+    : 1000;
 
 /**
  * Template for the Timer
