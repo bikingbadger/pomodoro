@@ -65,7 +65,7 @@ const templateTodoTasks = () => {
   // Map each task to a list item
   const taskList = todoTasks
     .map((task, index) => {
-      return `<li data-item id="task-item-${index}">${task}</li>`;
+      return `<li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>`;
     })
     .join("");
 
@@ -86,7 +86,7 @@ const templateCompleteTasks = () => {
   // Map each task to a list item
   const taskList = completeTasks
     .map((task, index) => {
-      return `<li data-item id="task-item-${index}">${task}</li>`;
+      return `<li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>`;
     })
     .join("");
 
