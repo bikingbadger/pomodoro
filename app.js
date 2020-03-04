@@ -13,7 +13,11 @@ const timerData = {
 };
 const storageID = "tasks";
 let countDown;
-const timeout = 5;
+const timeout =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? 5
+    : 1000;
 
 /**
  * Template for the Timer
@@ -65,12 +69,13 @@ const templateTodoTasks = () => {
   // Map each task to a list item
   const taskList = todoTasks
     .map((task, index) => {
-      return `<li data-item id="task-item-${index}">${task}</li>`;
+      return `<input id="task-item-${index}" data-item type="radio" class="form-radio" name="task-item" value="${task}"><label for="task-item-${index}"> ${task}</label><br>`;
+      // <li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>
     })
     .join("");
 
   // Return an ordered list with all the tasks
-  return `<ol>${taskList}</ol>`;
+  return taskList;
 };
 
 /**
@@ -86,7 +91,7 @@ const templateCompleteTasks = () => {
   // Map each task to a list item
   const taskList = completeTasks
     .map((task, index) => {
-      return `<li data-item id="task-item-${index}">${task}</li>`;
+      return `<li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>`;
     })
     .join("");
 
@@ -258,6 +263,7 @@ const markTaskComplete = currentTask => {
  * @param {Event} event
  */
 const clickDelegator = event => {
+  
   if (event.target.hasAttribute("data-reset")) {
     clearInterval();
     timerData.timer = 1500;
@@ -277,12 +283,11 @@ const clickDelegator = event => {
   }
 
   if (event.target.hasAttribute("data-task")) {
-    console.log("Adding Task");
     addTask();
   }
 
   if (event.target.hasAttribute("data-item")) {
-    setCurrentTask(event.target.innerText);
+    setCurrentTask(event.target.value);
   }
 
   if (event.target.hasAttribute("data-current-task")) {
