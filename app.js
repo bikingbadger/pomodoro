@@ -13,7 +13,7 @@ const timerData = {
 };
 const storageID = "tasks";
 let countDown;
-const timeout = 5;
+const timeout = 1000;
 
 /**
  * Template for the Timer
