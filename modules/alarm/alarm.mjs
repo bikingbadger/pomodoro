@@ -26,7 +26,13 @@ const loadAlarm = () => {
 };
 
 const playSound = () => {
-  const audio = new Audio("modules/alarm/assets/sounds/alarmclock.mp3"); //document.querySelector(`audio[data-audio]`);
+  const audio = new Howl({
+    src: ["modules/alarm/assets/sounds/alarmclock.mp3"],
+    preload: true,
+    loop: true,
+    volume: 0.5,
+  });
+
   let alarmActive = true;
 
   const playAlarm = () => {
@@ -34,32 +40,27 @@ const playSound = () => {
       // show the alarm clock
       alarmClock.classList.add("alarm-active");
 
-      // reset the time and play the alarm
-      audio.currentTime = 0;
+      // Play the alarm the options for looping is true so it will loop
+      //   indefinitely until the alarm clock image is pressed.
       audio.play();
     }
   };
 
   // Turn off the alarm sound
   const killAlarm = e => {
-    console.log(e.target);
     alarmActive = false;
-    audio.pause();
-    audio.currentTime = 0;
+
+    // Stop the alarm
+    audio.stop();
+
+    // Remove the class to show the alarm clock image
     alarmClock.classList.remove("alarm-active");
   };
 
-  // Add event listener for looping audio
-  audio.addEventListener(
-    "ended",
-    function() {
-      playAlarm;
-    },
-    false,
-  );
-
+  // Add a click event to kill the alarm sound
   alarmClock.addEventListener("click", killAlarm);
 
+  // Play the alarm
   playAlarm();
 };
 
