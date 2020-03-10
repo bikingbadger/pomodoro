@@ -256,6 +256,8 @@ const markTaskComplete = currentTask => {
 
   // Render the dom
   renderTasks();
+
+  return true;
 };
 
 /**
@@ -263,7 +265,6 @@ const markTaskComplete = currentTask => {
  * @param {Event} event
  */
 const clickDelegator = event => {
-  
   if (event.target.hasAttribute("data-reset")) {
     clearInterval();
     timerData.timer = 1500;
@@ -291,7 +292,9 @@ const clickDelegator = event => {
   }
 
   if (event.target.hasAttribute("data-current-task")) {
-    markTaskComplete(event.target.innerText);
+    if (markTaskComplete(event.target.innerText)) {
+      event.target.innerText = "";
+    }
   }
 };
 
