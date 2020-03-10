@@ -317,7 +317,7 @@ const clickDelegator = event => {
     clearInterval();
     timerData.timer = 1500;
     timerData.pompoms = 0;
-    startTimer();
+    renderTimer();
   }
 
   if (event.target.hasAttribute("data-start")) {
