@@ -16,7 +16,7 @@ let countDown;
 const timeout =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1"
-    ? 5
+    ? 3
     : 1000;
 
 /**
@@ -156,8 +156,9 @@ const startTimer = () => {
   countDown = window.setInterval(() => {
     if (!timerData.paused) {
       if (timerData.timer === 0) {
+        console.log(timerData);
         clearInterval();
-        Alarm.playSound();
+        Alarm.play();
         timerData.pompoms++;
         // Check the pompoms to determine next time
         if (timerData.pompoms === 7) {
@@ -324,6 +325,7 @@ const clickDelegator = event => {
     if (!timerData.running) {
       startTimer();
     }
+    Alarm.kill();
   }
 
   if (event.target.hasAttribute("data-pause")) {
@@ -376,4 +378,4 @@ const buttonHandler = e => {
 document.addEventListener("click", buttonHandler), false;
 renderTimer();
 renderTasks();
-Alarm.loadAlarm();
+Alarm.load();

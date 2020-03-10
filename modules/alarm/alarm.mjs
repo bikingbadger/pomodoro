@@ -1,6 +1,12 @@
 const alarmClock = document.getElementById("alarmClock");
+const audio = new Howl({
+  src: ["modules/alarm/assets/sounds/alarmclock.mp3"],
+  preload: true,
+  loop: true,
+  volume: 0.5,
+});
 
-const loadAlarm = () => {
+const load = () => {
   // Add custom CSS
   const cssId = "alarm"; // you could encode the css path itself to generate id..
   if (!document.getElementById(cssId)) {
@@ -25,43 +31,25 @@ const loadAlarm = () => {
   }
 };
 
-const playSound = () => {
-  const audio = new Howl({
-    src: ["modules/alarm/assets/sounds/alarmclock.mp3"],
-    preload: true,
-    loop: true,
-    volume: 0.5,
-  });
+const play = () => {
+  // show the alarm clock
+  alarmClock.classList.add("alarm-active");
 
-  let alarmActive = true;
-
-  const playAlarm = () => {
-    if (alarmActive) {
-      // show the alarm clock
-      alarmClock.classList.add("alarm-active");
-
-      // Play the alarm the options for looping is true so it will loop
-      //   indefinitely until the alarm clock image is pressed.
-      audio.play();
-    }
-  };
-
-  // Turn off the alarm sound
-  const killAlarm = e => {
-    alarmActive = false;
-
-    // Stop the alarm
-    audio.stop();
-
-    // Remove the class to show the alarm clock image
-    alarmClock.classList.remove("alarm-active");
-  };
-
-  // Add a click event to kill the alarm sound
-  alarmClock.addEventListener("click", killAlarm);
-
-  // Play the alarm
-  playAlarm();
+  // Play the alarm the options for looping is true so it will loop
+  //   indefinitely until the alarm clock image is pressed.
+  audio.play();
 };
 
-export { loadAlarm, playSound };
+// Turn off the alarm sound
+const kill = e => {
+  // Stop the alarm
+  audio.stop();
+
+  // Remove the class to show the alarm clock image
+  alarmClock.classList.remove("alarm-active");
+};
+
+// Add a click event to kill the alarm sound
+alarmClock.addEventListener("click", kill);
+
+export { load, play, kill };
