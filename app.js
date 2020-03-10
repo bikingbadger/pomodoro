@@ -70,7 +70,7 @@ const templateTodoTasks = () => {
   const taskList = todoTasks
     .map((task, id) => {
       // https://google.github.io/material-design-icons/
-      return `<li class="list-inside list-disc">
+      return `<li class="list-inside list-disc py-1">
                 <span data-item="${task}" id="task-item-${id}">${task}</span>
                 <i data-item-edit="${id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
                 <i data-item-save="${id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i>
