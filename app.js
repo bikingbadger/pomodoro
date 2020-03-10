@@ -68,9 +68,13 @@ const templateTodoTasks = () => {
 
   // Map each task to a list item
   const taskList = todoTasks
-    .map((task, index) => {
-      return `<input id="task-item-${index}" data-item type="radio" class="form-radio" name="task-item" value="${task}"><label for="task-item-${index}"> ${task}</label><br>`;
-      // <li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>
+    .map((task, id) => {
+      // https://google.github.io/material-design-icons/
+      return `<li class="list-inside list-disc">
+                <span data-item="${task}" id="task-item-${id}">${task}</span>
+                <i data-item-edit="${id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
+                <i data-item-save="${id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i>
+              </li>`;
     })
     .join("");
 
@@ -218,6 +222,49 @@ const addTask = () => {
   newTask.value = null;
 };
 
+const editTask = id => {
+  const task = document.querySelector(`#task-item-${id}`);
+  console.log(task);
+  if (task) {
+    // Enable editing of the task text
+    task.contentEditable = "true";
+    // Hide the edit icon
+    const editIcon = document.querySelector(`[data-item-edit="${id}"]`);
+    console.log(editIcon);
+    editIcon.classList.add("hidden");
+    // Show the save icon
+    const saveIcon = document.querySelector(`[data-item-save="${id}"]`);
+    console.log(saveIcon);
+    saveIcon.classList.remove("hidden");
+  }
+};
+
+const saveTask = id => {
+  let tasks = getTasks();
+  const task = document.querySelector(`#task-item-${id}`);
+  if (task) {
+    // Save the task to the array for todo tasks
+    console.log(tasks.todo[id], task.innerText);
+    tasks.todo[id] = task.innerText;
+    // Save the object back to localStorage
+    localStorage.setItem(storageID, JSON.stringify(tasks));
+    // Disable editing
+    task.contentEditable = "false";
+
+    // Show the edit icon
+    const editIcon = document.querySelector(`[data-item-edit="${id}"]`);
+    console.log(editIcon);
+    editIcon.classList.remove("hidden");
+    // Hide the save icon
+    const saveIcon = document.querySelector(`[data-item-save="${id}"]`);
+    console.log(saveIcon);
+    saveIcon.classList.add("hidden");
+
+    // Render the list
+    renderTasks();
+  }
+};
+
 /**
  * Set the current task from the todo list
  *
@@ -288,7 +335,22 @@ const clickDelegator = event => {
   }
 
   if (event.target.hasAttribute("data-item")) {
-    setCurrentTask(event.target.value);
+    console.log(`data-item ${event.target.getAttribute("data-item")}`);
+    setCurrentTask(event.target.getAttribute("data-item"));
+  }
+
+  if (event.target.hasAttribute("data-item-edit")) {
+    console.log(
+      `data-item-edit ${event.target.getAttribute("data-item-edit")}`,
+    );
+    editTask(event.target.getAttribute("data-item-edit"));
+  }
+
+  if (event.target.hasAttribute("data-item-save")) {
+    console.log(
+      `data-item-edit ${event.target.getAttribute("data-item-save")}`,
+    );
+    saveTask(event.target.getAttribute("data-item-save"));
   }
 
   if (event.target.hasAttribute("data-current-task")) {
