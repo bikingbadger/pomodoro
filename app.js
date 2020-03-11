@@ -19,6 +19,8 @@ const timeout =
     ? 3
     : 1000;
 
+const taskAddForm = document.querySelector("#task-add-form");
+
 /**
  * Template for the Timer
  *
@@ -70,7 +72,7 @@ const templateTodoTasks = () => {
   const taskList = todoTasks
     .map((task, id) => {
       // https://google.github.io/material-design-icons/
-      return `<li class="list-inside list-disc">
+      return `<li class="list-inside list-disc py-1">
                 <span data-item="${task}" id="task-item-${id}">${task}</span>
                 <i data-item-edit="${id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
                 <i data-item-save="${id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i>
@@ -332,26 +334,20 @@ const clickDelegator = event => {
     timerData.paused = true;
   }
 
-  if (event.target.hasAttribute("data-task")) {
+  if (event.target.hasAttribute("data-add-task")) {
+    taskAddForm.classList.add("invisible");
     addTask();
   }
 
   if (event.target.hasAttribute("data-item")) {
-    console.log(`data-item ${event.target.getAttribute("data-item")}`);
     setCurrentTask(event.target.getAttribute("data-item"));
   }
 
   if (event.target.hasAttribute("data-item-edit")) {
-    console.log(
-      `data-item-edit ${event.target.getAttribute("data-item-edit")}`,
-    );
     editTask(event.target.getAttribute("data-item-edit"));
   }
 
   if (event.target.hasAttribute("data-item-save")) {
-    console.log(
-      `data-item-edit ${event.target.getAttribute("data-item-save")}`,
-    );
     saveTask(event.target.getAttribute("data-item-save"));
   }
 
@@ -359,6 +355,17 @@ const clickDelegator = event => {
     if (markTaskComplete(event.target.innerText)) {
       event.target.innerText = "";
     }
+  }
+
+  if (event.target === taskAddForm) {
+    console.log(event.target);
+    taskAddForm.classList.add("invisible");
+  }
+
+  // Add task button should show modal for adding task
+  if ((event.target.id === "task-add-button")) {
+    console.log(`Show modal ${event.target}`);
+    taskAddForm.classList.remove("invisible");
   }
 };
 
