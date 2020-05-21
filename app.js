@@ -1,5 +1,4 @@
 import * as Auth from './modules/auth/auth.mjs';
-import * as Alarm from './modules/alarm/alarm.mjs';
 import * as Timer from './modules/timer/timer.mjs';
 
 ('use strict');
@@ -76,8 +75,6 @@ const render = (selector, template) => {
   // update changes to the document
   app.innerHTML = output;
 };
-
-
 
 /**
  * Render the task list
@@ -224,9 +221,6 @@ const clickDelegator = (event) => {
   if (event.target.hasAttribute('data-reset')) {
     // Reset timer
     Timer.reset();
-
-    // Kill the alarm if the button is pressed
-    Alarm.kill();
   }
 
   if (event.target.hasAttribute('data-action')) {
@@ -241,9 +235,6 @@ const clickDelegator = (event) => {
     if (action === 'PAUSE') {
       Timer.pause();
     }
-
-    // Kill the alarm if the button is pressed
-    Alarm.kill();
   }
 
   if (event.target.hasAttribute('data-add-task')) {
@@ -296,5 +287,4 @@ const buttonHandler = (e) => {
 
 document.addEventListener('click', buttonHandler), false;
 renderTasks();
-Alarm.load();
-Timer.load(Alarm);
+Timer.load();
