@@ -8,7 +8,6 @@ import * as Alarm from "./modules/alarm/alarm.mjs";
 const timerData = {
   timer: 1500,
   running: false,
-  paused: false,
   pompoms: 0,
 };
 const storageID = "tasks";
@@ -156,7 +155,6 @@ const clearInterval = () => {
 const startTimer = () => {
   timerData.running = true;
   countDown = window.setInterval(() => {
-    if (!timerData.paused) {
       if (timerData.timer === 0) {
         console.log(timerData);
         clearInterval();
@@ -176,7 +174,6 @@ const startTimer = () => {
       } else {
         timerData.timer--;
       }
-    }
     renderTimer();
   }, timeout);
 };
@@ -322,17 +319,20 @@ const clickDelegator = event => {
     renderTimer();
   }
 
-  if (event.target.hasAttribute("data-start")) {
-    timerData.paused = false;
-    if (!timerData.running) {
+  if (event.target.hasAttribute("data-action")) {
+    console.log(event.target.innerText);
+    const action = event.target.innerText;
+    // timerData.paused = false;
+    if (action==='START') {
       startTimer();
+      event.target.innerText='PAUSE';
     }
     Alarm.kill();
   }
 
-  if (event.target.hasAttribute("data-pause")) {
-    timerData.paused = true;
-  }
+  // if (event.target.hasAttribute("data-pause")) {
+  //   timerData.paused = true;
+  // }
 
   if (event.target.hasAttribute("data-add-task")) {
     taskAddForm.classList.add("invisible");
