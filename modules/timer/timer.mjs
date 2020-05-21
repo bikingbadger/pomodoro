@@ -1,6 +1,6 @@
-'use strict';
+import * as Alarm from '../alarm/alarm.mjs';
 
-import * as Alarm from '../modules/alarm/alarm.mjs';
+'use strict';
 
 const timerData = {
   timer: 1500,
@@ -14,7 +14,6 @@ const timeout =
   window.location.hostname === '127.0.0.1'
     ? 1
     : 1000;
-let Alarm;
 
 /**
  * Render the timer
