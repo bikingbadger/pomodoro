@@ -1,25 +1,25 @@
-import * as Auth from "./modules/auth/auth.mjs";
-import * as Alarm from "./modules/alarm/alarm.mjs";
+import * as Auth from './modules/auth/auth.mjs';
+import * as Alarm from './modules/alarm/alarm.mjs';
 
-("use strict");
+('use strict');
 
 // Data object
 //let defaultDuration = 15;
 const timerData = {
   timer: 1500,
   running: false,
-  paused: false,
   pompoms: 0,
 };
-const storageID = "tasks";
+const storageID = 'tasks';
 let countDown;
 const timeout =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1"
-    ? 3
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1'
+    ? 10
     : 1000;
 
-const taskAddForm = document.querySelector("#task-add-form");
+const taskAddForm = document.querySelector('#task-add-form');
+const buttonAction = document.querySelector('[data-action]');
 
 /**
  * Template for the Timer
@@ -30,11 +30,11 @@ const templateTimer = () => {
   // extract the minutes from the timer, convert to string and pad with zero's
   const minutes = parseInt(timerData.timer / 60, 10)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
   // extract the seconds from the timer, convert to string and pad with zero's
   const seconds = parseInt(timerData.timer % 60, 10)
     .toString()
-    .padStart(2, "0");
+    .padStart(2, '0');
   // console.log(`${minutes}:${seconds}`);
   return `${minutes}:${seconds}`;
 };
@@ -47,12 +47,12 @@ const templateTimer = () => {
 const templatePompoms = () => {
   // check if time is up and return message
   if (timerData.pompoms === 0) {
-    return "";
+    return '';
   }
 
-  let pompoms = "";
+  let pompoms = '';
   for (let index = 0; index < timerData.pompoms; index++) {
-    if (index % 2 === 0) pompoms += "🍅";
+    if (index % 2 === 0) pompoms += '🍅';
   }
 
   return `${pompoms}`;
@@ -78,7 +78,7 @@ const templateTodoTasks = () => {
                 <i data-item-save="${id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i>
               </li>`;
     })
-    .join("");
+    .join('');
 
   // Return an ordered list with all the tasks
   return taskList;
@@ -99,7 +99,7 @@ const templateCompleteTasks = () => {
     .map((task, index) => {
       return `<li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>`;
     })
-    .join("");
+    .join('');
 
   // Return an ordered list with all the tasks
   return `<ul>${taskList}</ul>`;
@@ -128,25 +128,25 @@ const render = (selector, template) => {
  * Render the timer
  */
 const renderTimer = () => {
-  render("#timer", templateTimer);
-  render(".pompoms", templatePompoms);
+  render('#timer', templateTimer);
+  render('.pompoms', templatePompoms);
 
   // Set time in title
-  document.title = "Pompom " + templateTimer();
+  document.title = 'Pompom ' + templateTimer();
 };
 
 /**
  * Render the task list
  */
 const renderTasks = () => {
-  render("[data-task-list]", templateTodoTasks);
-  render("[data-complete-tasks]", templateCompleteTasks);
+  render('[data-task-list]', templateTodoTasks);
+  render('[data-complete-tasks]', templateCompleteTasks);
 };
 
 const clearInterval = () => {
-  // Set paused and running to false
-  timerData.paused = false;
+  // Set running to false and set button text
   timerData.running = false;
+  buttonAction.innerText = 'START';
 
   // Clear the window interval for the timer
   window.clearInterval(countDown);
@@ -154,10 +154,10 @@ const clearInterval = () => {
 
 // Start Timer
 const startTimer = () => {
-  timerData.running = true;
+  if (!countDown === undefined) return;
   countDown = window.setInterval(() => {
-    if (!timerData.paused) {
-      if (timerData.timer === 0) {
+    if (timerData.running) {
+      if (timerData.timer <= 0) {
         console.log(timerData);
         clearInterval();
         Alarm.play();
@@ -196,7 +196,7 @@ const getTasks = () => {
  * Save another value to the todo list in local storage
  * @param {String} newTask Task to save to todo list
  */
-const setTodoTasks = newTask => {
+const setTodoTasks = (newTask) => {
   // Get the current task list
   let tasks = getTasks();
   const todoTasks = tasks.todo;
@@ -213,7 +213,7 @@ const setTodoTasks = newTask => {
  * Add a task to from the input
  */
 const addTask = () => {
-  const newTask = document.querySelector("#newTask");
+  const newTask = document.querySelector('#newTask');
 
   // Save the task
   setTodoTasks(newTask);
@@ -225,24 +225,24 @@ const addTask = () => {
   newTask.value = null;
 };
 
-const editTask = id => {
+const editTask = (id) => {
   const task = document.querySelector(`#task-item-${id}`);
   console.log(task);
   if (task) {
     // Enable editing of the task text
-    task.contentEditable = "true";
+    task.contentEditable = 'true';
     // Hide the edit icon
     const editIcon = document.querySelector(`[data-item-edit="${id}"]`);
     console.log(editIcon);
-    editIcon.classList.add("hidden");
+    editIcon.classList.add('hidden');
     // Show the save icon
     const saveIcon = document.querySelector(`[data-item-save="${id}"]`);
     console.log(saveIcon);
-    saveIcon.classList.remove("hidden");
+    saveIcon.classList.remove('hidden');
   }
 };
 
-const saveTask = id => {
+const saveTask = (id) => {
   let tasks = getTasks();
   const task = document.querySelector(`#task-item-${id}`);
   if (task) {
@@ -252,16 +252,16 @@ const saveTask = id => {
     // Save the object back to localStorage
     localStorage.setItem(storageID, JSON.stringify(tasks));
     // Disable editing
-    task.contentEditable = "false";
+    task.contentEditable = 'false';
 
     // Show the edit icon
     const editIcon = document.querySelector(`[data-item-edit="${id}"]`);
     console.log(editIcon);
-    editIcon.classList.remove("hidden");
+    editIcon.classList.remove('hidden');
     // Hide the save icon
     const saveIcon = document.querySelector(`[data-item-save="${id}"]`);
     console.log(saveIcon);
-    saveIcon.classList.add("hidden");
+    saveIcon.classList.add('hidden');
 
     // Render the list
     renderTasks();
@@ -273,24 +273,24 @@ const saveTask = id => {
  *
  * @param {String} currentTask Task string value to set as current task
  */
-const setCurrentTask = currentTask => {
-  const currentTaskElement = document.querySelector("#current-task");
+const setCurrentTask = (currentTask) => {
+  const currentTaskElement = document.querySelector('#current-task');
   currentTaskElement.innerHTML = currentTask;
-  currentTaskElement.setAttribute("data-current-task", "");
+  currentTaskElement.setAttribute('data-current-task', '');
 };
 
 /**
  *
  * @param {String} task
  */
-const markTaskComplete = currentTask => {
+const markTaskComplete = (currentTask) => {
   // Get the current task list
   let tasks = getTasks();
   let todoTasks = tasks.todo;
   let completeTasks = tasks.complete;
 
   //Remove task from todo
-  todoTasks = todoTasks.filter(task => {
+  todoTasks = todoTasks.filter((task) => {
     return task !== currentTask;
   });
 
@@ -314,75 +314,84 @@ const markTaskComplete = currentTask => {
  * Event delegator for click events
  * @param {Event} event
  */
-const clickDelegator = event => {
-  if (event.target.hasAttribute("data-reset")) {
+const clickDelegator = (event) => {
+  if (event.target.hasAttribute('data-reset')) {
     clearInterval();
     timerData.timer = 1500;
     timerData.pompoms = 0;
     renderTimer();
   }
 
-  if (event.target.hasAttribute("data-start")) {
-    timerData.paused = false;
-    if (!timerData.running) {
+  if (event.target.hasAttribute('data-action')) {
+    console.log(event.target.innerText);
+    const action = event.target.innerText;
+    // timerData.paused = false;
+    if (action === 'START') {
+      timerData.running = true;
       startTimer();
+      event.target.innerText = 'PAUSE';
+    }
+
+    if (action === 'PAUSE') {
+      timerData.running = false;
+      event.target.innerText = 'START';
     }
     Alarm.kill();
   }
 
-  if (event.target.hasAttribute("data-pause")) {
-    timerData.paused = true;
-  }
+  // if (event.target.hasAttribute("data-pause")) {
+  //   timerData.paused = true;
+  // }
 
-  if (event.target.hasAttribute("data-add-task")) {
-    taskAddForm.classList.add("invisible");
+  if (event.target.hasAttribute('data-add-task')) {
+    taskAddForm.classList.add('invisible');
     addTask();
   }
 
-  if (event.target.hasAttribute("data-item")) {
-    setCurrentTask(event.target.getAttribute("data-item"));
+  if (event.target.hasAttribute('data-item')) {
+    setCurrentTask(event.target.getAttribute('data-item'));
   }
 
-  if (event.target.hasAttribute("data-item-edit")) {
-    editTask(event.target.getAttribute("data-item-edit"));
+  if (event.target.hasAttribute('data-item-edit')) {
+    editTask(event.target.getAttribute('data-item-edit'));
   }
 
-  if (event.target.hasAttribute("data-item-save")) {
-    saveTask(event.target.getAttribute("data-item-save"));
+  if (event.target.hasAttribute('data-item-save')) {
+    saveTask(event.target.getAttribute('data-item-save'));
   }
 
-  if (event.target.hasAttribute("data-current-task")) {
+  if (event.target.hasAttribute('data-current-task')) {
     if (markTaskComplete(event.target.innerText)) {
-      event.target.innerText = "";
+      event.target.innerText = '';
     }
   }
 
   if (event.target === taskAddForm) {
     console.log(event.target);
-    taskAddForm.classList.add("invisible");
+    taskAddForm.classList.add('invisible');
   }
 
   // Add task button should show modal for adding task
-  if ((event.target.id === "task-add-button")) {
+  if (event.target.id === 'task-add-button') {
     console.log(`Show modal ${event.target}`);
-    taskAddForm.classList.remove("invisible");
+    taskAddForm.classList.remove('invisible');
   }
 };
 
 // When the restart button is clicked, restart the timer
-document.addEventListener("click", clickDelegator, false);
+document.addEventListener('click', clickDelegator, false);
 
-const buttonHandler = e => {
-  if (e.target.id === "btn-login") {
+const buttonHandler = (e) => {
+  if (e.target.id === 'btn-login') {
     Auth.login();
   }
 
-  if (e.target.id === "btn-logout") {
+  if (e.target.id === 'btn-logout') {
     Auth.logout();
   }
 };
 
-document.addEventListener("click", buttonHandler), false;
+document.addEventListener('click', buttonHandler), false;
 renderTimer();
 renderTasks();
 Alarm.load();
