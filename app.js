@@ -1,62 +1,15 @@
 import * as Auth from './modules/auth/auth.mjs';
 import * as Alarm from './modules/alarm/alarm.mjs';
+import * as Timer from './modules/timer/timer.mjs';
 
 ('use strict');
 
 // Data object
 //let defaultDuration = 15;
-const timerData = {
-  timer: 1500,
-  running: false,
-  pompoms: 0,
-};
+
 const storageID = 'tasks';
-let countDown;
-const timeout =
-  window.location.hostname === 'localhost' ||
-  window.location.hostname === '127.0.0.1'
-    ? 10
-    : 1000;
 
 const taskAddForm = document.querySelector('#task-add-form');
-const buttonAction = document.querySelector('[data-action]');
-
-/**
- * Template for the Timer
- *
- * Creates the html output for the timer using the state timerData
- */
-const templateTimer = () => {
-  // extract the minutes from the timer, convert to string and pad with zero's
-  const minutes = parseInt(timerData.timer / 60, 10)
-    .toString()
-    .padStart(2, '0');
-  // extract the seconds from the timer, convert to string and pad with zero's
-  const seconds = parseInt(timerData.timer % 60, 10)
-    .toString()
-    .padStart(2, '0');
-  // console.log(`${minutes}:${seconds}`);
-  return `${minutes}:${seconds}`;
-};
-
-/**
- * Template for Pompoms
- *
- * Creates a ordered list of the tasks stored in local storage
- */
-const templatePompoms = () => {
-  // check if time is up and return message
-  if (timerData.pompoms === 0) {
-    return '';
-  }
-
-  let pompoms = '';
-  for (let index = 0; index < timerData.pompoms; index++) {
-    if (index % 2 === 0) pompoms += '🍅';
-  }
-
-  return `${pompoms}`;
-};
 
 /**
  * Template for Tasks
@@ -114,7 +67,7 @@ const render = (selector, template) => {
   const app = document.querySelector(selector);
   if (!app) return;
 
-  // retrieve the output for the current state of timer
+  // Retrieve the output from the template
   const output = template();
 
   // check for changes, if there are none no reason to update the document
@@ -124,16 +77,7 @@ const render = (selector, template) => {
   app.innerHTML = output;
 };
 
-/**
- * Render the timer
- */
-const renderTimer = () => {
-  render('#timer', templateTimer);
-  render('.pompoms', templatePompoms);
 
-  // Set time in title
-  document.title = 'Pompom ' + templateTimer();
-};
 
 /**
  * Render the task list
@@ -141,44 +85,6 @@ const renderTimer = () => {
 const renderTasks = () => {
   render('[data-task-list]', templateTodoTasks);
   render('[data-complete-tasks]', templateCompleteTasks);
-};
-
-const clearInterval = () => {
-  // Set running to false and set button text
-  timerData.running = false;
-  buttonAction.innerText = 'START';
-
-  // Clear the window interval for the timer
-  window.clearInterval(countDown);
-};
-
-// Start Timer
-const startTimer = () => {
-  if (!countDown === undefined) return;
-  countDown = window.setInterval(() => {
-    if (timerData.running) {
-      if (timerData.timer <= 0) {
-        console.log(timerData);
-        clearInterval();
-        Alarm.play();
-        timerData.pompoms++;
-        // Check the pompoms to determine next time
-        if (timerData.pompoms === 7) {
-          timerData.timer = 750;
-          timerData.pompoms = 0;
-        } else if (timerData.pompoms % 2 === 1) {
-          // Short Break
-          timerData.timer = 300;
-        } else {
-          // Pomodoro period
-          timerData.timer = 1500;
-        }
-      } else {
-        timerData.timer--;
-      }
-    }
-    renderTimer();
-  }, timeout);
 };
 
 /**
@@ -316,32 +222,29 @@ const markTaskComplete = (currentTask) => {
  */
 const clickDelegator = (event) => {
   if (event.target.hasAttribute('data-reset')) {
-    clearInterval();
-    timerData.timer = 1500;
-    timerData.pompoms = 0;
-    renderTimer();
+    // Reset timer
+    Timer.reset();
+
+    // Kill the alarm if the button is pressed
+    Alarm.kill();
   }
 
   if (event.target.hasAttribute('data-action')) {
     console.log(event.target.innerText);
     const action = event.target.innerText;
-    // timerData.paused = false;
+    // Start timer
     if (action === 'START') {
-      timerData.running = true;
-      startTimer();
-      event.target.innerText = 'PAUSE';
+      Timer.start();
     }
 
+    // Pause timer
     if (action === 'PAUSE') {
-      timerData.running = false;
-      event.target.innerText = 'START';
+      Timer.pause();
     }
+
+    // Kill the alarm if the button is pressed
     Alarm.kill();
   }
-
-  // if (event.target.hasAttribute("data-pause")) {
-  //   timerData.paused = true;
-  // }
 
   if (event.target.hasAttribute('data-add-task')) {
     taskAddForm.classList.add('invisible');
@@ -378,7 +281,7 @@ const clickDelegator = (event) => {
   }
 };
 
-// When the restart button is clicked, restart the timer
+// Click delegator
 document.addEventListener('click', clickDelegator, false);
 
 const buttonHandler = (e) => {
@@ -392,6 +295,6 @@ const buttonHandler = (e) => {
 };
 
 document.addEventListener('click', buttonHandler), false;
-renderTimer();
 renderTasks();
 Alarm.load();
+Timer.load(Alarm);
