@@ -10,9 +10,11 @@ const PubSub = {
    * @param model The model where actions will be published
    */
   publish: function (model) {
-    for (let i in this.subscribers) {
-      this.subscribers[i].notify(model);
-    }
+    this.subscribers.forEach((subscriber) => {
+      if (model.subject === subscriber.subject) {
+        subscriber.view.notify(model);
+      }
+    });
   },
   /**
    * Subscribe to changes
@@ -21,8 +23,8 @@ const PubSub = {
    *
    * @param view The view to update changes to
    */
-  subscribe: function (view) {
-    this.subscribers.push(view);
+  subscribe: function (subject, view) {
+    this.subscribers.push({ subject: subject, view: view });
   },
 };
 
