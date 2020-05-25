@@ -9,8 +9,7 @@ const Timer = {
      * This will then receive the publications of the model each time a change is made
      */
     TimerView.load();
-    PubSub.subscribe(TimerView);
-
+    PubSub.subscribe(TimerModel.subject,TimerView);
     /**
      * Setup the model to use the PubSub for publishing all changes
      * That way any subscribers will get the updates and make changes to the view

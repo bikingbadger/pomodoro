@@ -1,4 +1,4 @@
-import pubSub from '../pubSub/pubSub.mjs';
+'use strict';
 
 const TimerModel = {
   // Current time in seconds
@@ -6,34 +6,35 @@ const TimerModel = {
   running: false,
   pompoms: 0,
   pubSub: null,
+  subject: 'timer',
   /**
    * Load the object with all its default settings
    */
   load: function (PubSub) {
     // console.log(PubSub);
     this.pubSub = PubSub;
-    pubSub.publish(this);
+    this.publish();
   },
   /**
    * Increment the current time by one second
    */
   increment: function () {
     this.currentTime++;
-    pubSub.publish(this);
+    this.publish();
   },
   /**
    * Decrease the current time by one second
    */
   decrease: function () {
     this.currentTime--;
-    pubSub.publish(this);
+    this.publish();
   },
   /**
    * Start the timer
    */
   start: function () {
     this.running = true;
-    pubSub.publish(this);
+    this.publish();
   },
   /**
    * Stop the timer
@@ -41,7 +42,7 @@ const TimerModel = {
   stop: function () {
     console.log('Stopping timer');
     this.running = false;
-    pubSub.publish(this);
+    this.publish();
   },
   next: function () {
     console.log('Next timer');
@@ -84,12 +85,15 @@ const TimerModel = {
     // Check that timer is not running
     if (this.running) return;
     this.currentTime = seconds;
-    pubSub.publish(this);
+    this.publish();
   },
   reset: function () {
     this.running = false;
     this.currentTime = 1500;
-    pubSub.publish(this);
+    this.publish();
+  },
+  publish: function () {
+    this.pubSub.publish(this);
   },
 };
 export default TimerModel;
