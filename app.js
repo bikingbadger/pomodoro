@@ -5,8 +5,8 @@ import PubSub from './modules/pubSub/pubSub.mjs';
 import TimerView from './modules/timer/view.mjs';
 import TimerModel from './modules/timer/model.mjs';
 // import Tasks from './modules/tasks/tasks.mjs';
-import TasksView from './modules/timer/view.mjs';
-import TasksModel from './modules/timer/model.mjs';
+import TasksView from './modules/tasks/view.mjs';
+import TasksModel from './modules/tasks/model.mjs';
 
 const taskAddForm = document.querySelector('#task-add-form');
 
