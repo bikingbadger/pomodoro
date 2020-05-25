@@ -75,7 +75,7 @@ const TimerView = {
      * Render the pompoms
      */
     let pompoms = '';
-    for (let index = 0; index < model.pompoms; index++) {
+    for (let index = 0; index < timer.pompoms; index++) {
       if (index % 2 === 0) pompoms += '🍅';
     }
 

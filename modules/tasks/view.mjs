@@ -49,12 +49,10 @@ const TasksView = {
     todoList.addEventListener(
       'click',
       function (event) {
-        console.log(event.target.dataset);
         // Check if there is an task ID as this indicates you have clicked on the
         // text of the task and want to add it to current task
         if (event.target.dataset.taskId) {
           // Check that the content is not being edited
-          console.log(event.target.contentEditable);
           if (event.target.contentEditable === 'true') return;
 
           // Get the task id and set it as current
@@ -139,7 +137,6 @@ const TasksView = {
         return task.complete === false;
       })
       .map((task) => {
-        console.log(task);
         // https://google.github.io/material-design-icons/
         return `<li class="list-inside list-disc py-1">
                     <span id="task-${task.id}" 
