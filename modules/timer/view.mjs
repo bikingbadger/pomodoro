@@ -2,6 +2,7 @@ import TimerController from './controller.mjs';
 const buttonStartPause = document.querySelector('#timer-go');
 const buttonReset = document.querySelector('#timer-reset');
 const timerElement = document.querySelector('#timer');
+const pompomElement = document.querySelector('#pompoms');
 
 const TimerView = {
   load: function () {
@@ -50,8 +51,10 @@ const TimerView = {
    * @param {Function} template Callback function to create the layout
    */
   render: function (model) {
+    /**
+     * Render the timer
+     */
     const currentTime = model.currentTime;
-
     // extract the minutes from the timer, convert to string and pad with zero's
     const minutes = parseInt(currentTime / 60, 10)
       .toString()
@@ -68,8 +71,23 @@ const TimerView = {
       timerElement.innerHTML = output;
     }
 
+    /**
+     * Render the pompoms
+     */
+    let pompoms = '';
+    for (let index = 0; index < model.pompoms; index++) {
+      if (index % 2 === 0) pompoms += '🍅';
+    }
+
+    // check for changes, if there are changes update the document
+    if (pompomElement.innerHTML !== pompoms) {
+      pompomElement.innerHTML = pompoms;
+    }
+
+    /**
+     * Render the Buttons
+     */
     // update the button text
-    // console.log(model.running);
     buttonStartPause.innerText = model.running ? 'Pause' : 'Start';
   },
   notify: function (model) {
