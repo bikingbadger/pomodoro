@@ -1,8 +1,13 @@
-import * as Auth from './modules/auth/auth.mjs';
-import * as Timer from './modules/timer/timer.mjs';
-import * as Todo from './modules/todo/todo.mjs';
-
 ('use strict');
+import * as Auth from './modules/auth/auth.mjs';
+import PubSub from './modules/pubSub/pubSub.mjs';
+// import Timer from './modules/timer/timer.mjs';
+import TimerView from './modules/timer/view.mjs';
+import TimerModel from './modules/timer/model.mjs';
+// import Tasks from './modules/tasks/tasks.mjs';
+import TasksView from './modules/tasks/view.mjs';
+import TasksModel from './modules/tasks/model.mjs';
+
 
 const taskAddForm = document.querySelector('#task-add-form');
 
@@ -11,48 +16,6 @@ const taskAddForm = document.querySelector('#task-add-form');
  * @param {Event} event
  */
 const clickDelegator = (event) => {
-  if (event.target.hasAttribute('data-reset')) {
-    // Reset timer
-    Timer.reset();
-  }
-
-  if (event.target.hasAttribute('data-action')) {
-    console.log(event.target.innerText);
-    const action = event.target.innerText;
-    // Start timer
-    if (action === 'START') {
-      Timer.start();
-    }
-
-    // Pause timer
-    if (action === 'PAUSE') {
-      Timer.pause();
-    }
-  }
-
-  if (event.target.hasAttribute('data-add-task')) {
-    taskAddForm.classList.add('invisible');
-    Todo.addTask();
-  }
-
-  if (event.target.hasAttribute('data-item')) {
-    Todo.setCurrentTask(event.target.getAttribute('data-item'));
-  }
-
-  if (event.target.hasAttribute('data-item-edit')) {
-    Todo.editTask(event.target.getAttribute('data-item-edit'));
-  }
-
-  if (event.target.hasAttribute('data-item-save')) {
-    Todo.saveTask(event.target.getAttribute('data-item-save'));
-  }
-
-  if (event.target.hasAttribute('data-current-task')) {
-    if (Todo.markTaskComplete(event.target.innerText)) {
-      event.target.innerText = '';
-    }
-  }
-
   if (event.target === taskAddForm) {
     console.log(event.target);
     taskAddForm.classList.add('invisible');
@@ -79,5 +42,27 @@ const buttonHandler = (e) => {
 };
 
 document.addEventListener('click', buttonHandler), false;
-Todo.renderTasks();
-Timer.load();
+/**
+ * Add the tasks view to the subscription of the pubSub
+ * This will then receive the publications of the model each time a change is made
+ */
+TasksView.load();
+PubSub.subscribe(TasksModel.subject, TasksView);
+/**
+ * Setup the model to use the PubSub for publishing all changes
+ * That way any subscribers will get the updates and make changes to the view
+ */
+
+TasksModel.load(PubSub);
+/**
+ * Add the timer view to the subscription of the pubSub
+ * This will then receive the publications of the model each time a change is made
+ */
+TimerView.load();
+PubSub.subscribe(TimerModel.subject, TimerView);
+PubSub.subscribe(TimerModel.subject, TasksView);
+/**
+ * Setup the model to use the PubSub for publishing all changes
+ * That way any subscribers will get the updates and make changes to the view
+ */
+TimerModel.load(PubSub);

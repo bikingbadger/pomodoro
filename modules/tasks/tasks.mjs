@@ -1,21 +1,22 @@
 ('use strict');
-import TimerView from './view.mjs';
-import TimerModel from './model.mjs';
+import TasksView from './view.mjs';
+import TasksModel from './model.mjs';
 
-const Timer = {
+const Tasks = {
   load: function (PubSub) {
     /**
-     * Add the timer view to the subscription of the pubSub
+     * Add the tasks view to the subscription of the pubSub
      * This will then receive the publications of the model each time a change is made
      */
-    TimerView.load();
-    PubSub.subscribe(TimerModel.subject,TimerView);
+    TasksView.load();
+    PubSub.subscribe(TasksModel.subject, TasksView);
     /**
      * Setup the model to use the PubSub for publishing all changes
      * That way any subscribers will get the updates and make changes to the view
      */
-    TimerModel.load(PubSub);
+
+    TasksModel.load(PubSub);
   },
 };
 
-export default Timer;
+export default Tasks;
