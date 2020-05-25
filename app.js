@@ -1,8 +1,8 @@
-import * as Auth from './modules/auth/auth.mjs';
-import * as Timer from './modules/timer/timer.mjs';
-import * as Todo from './modules/todo/todo.mjs';
-
 ('use strict');
+import * as Auth from './modules/auth/auth.mjs';
+import PubSub from './modules/pubSub/pubSub.mjs';
+import Timer from './modules/timer/timer.mjs';
+import * as Todo from './modules/todo/todo.mjs';
 
 const taskAddForm = document.querySelector('#task-add-form');
 
@@ -11,38 +11,33 @@ const taskAddForm = document.querySelector('#task-add-form');
  * @param {Event} event
  */
 const clickDelegator = (event) => {
-  if (event.target.hasAttribute('data-reset')) {
-    // Reset timer
-    Timer.reset();
-  }
-
-  if (event.target.hasAttribute('data-action')) {
-    console.log(event.target.innerText);
-    const action = event.target.innerText;
-    // Start timer
-    if (action === 'START') {
-      Timer.start();
-    }
-
-    // Pause timer
-    if (action === 'PAUSE') {
-      Timer.pause();
-    }
-  }
-
+  
+  /**
+   * Add New Task from form
+   */
   if (event.target.hasAttribute('data-add-task')) {
     taskAddForm.classList.add('invisible');
     Todo.addTask();
   }
 
+  /**
+   * Set the current task
+   */
   if (event.target.hasAttribute('data-item')) {
-    Todo.setCurrentTask(event.target.getAttribute('data-item'));
+    console.log(event.target);
+    Todo.setCurrentTask(event.target);
   }
 
+  /**
+   * Edit a task in the list
+   */
   if (event.target.hasAttribute('data-item-edit')) {
     Todo.editTask(event.target.getAttribute('data-item-edit'));
   }
 
+  /**
+   * Save edits of the task
+   */
   if (event.target.hasAttribute('data-item-save')) {
     Todo.saveTask(event.target.getAttribute('data-item-save'));
   }
@@ -79,5 +74,5 @@ const buttonHandler = (e) => {
 };
 
 document.addEventListener('click', buttonHandler), false;
-Todo.renderTasks();
-Timer.load();
+Todo.load();
+Timer.load(PubSub);
