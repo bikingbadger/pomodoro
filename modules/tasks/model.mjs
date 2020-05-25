@@ -101,9 +101,11 @@ const TasksModel = {
     const currentId = this.taskList.find((task) => {
       return task.isCurrent === true;
     });
+    // If there is no current task then you can't add time
+    if (!currentId) return;
     // console.log(this.taskList[currentId.id]);
     this.taskList[currentId.id].time++;
-    
+
     // Publish change
     this.publish();
   },
