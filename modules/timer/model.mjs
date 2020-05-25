@@ -15,6 +15,9 @@ const TimerModel = {
     this.pubSub = PubSub;
     this.publish();
   },
+  publish: function () {
+    this.pubSub.publish(this);
+  },
   /**
    * Increment the current time by one second
    */
@@ -91,9 +94,6 @@ const TimerModel = {
     this.running = false;
     this.currentTime = 1500;
     this.publish();
-  },
-  publish: function () {
-    this.pubSub.publish(this);
   },
 };
 export default TimerModel;
