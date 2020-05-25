@@ -13,9 +13,7 @@ const TasksModel = {
   load: function (PubSub) {
     //Get the tasks stored in local storage
     this.taskList = localStorage.getItem(this.storageID);
-    this.taskList = this.taskList
-      ? JSON.parse(this.taskList)
-      : [];
+    this.taskList = this.taskList ? JSON.parse(this.taskList) : [];
 
     // Add PubSub reference
     this.pubSub = PubSub;
@@ -38,7 +36,7 @@ const TasksModel = {
       priority: 2,
       time: 0,
       isCurrent: false,
-      complete: false
+      complete: false,
     });
 
     this.publish();
@@ -49,7 +47,7 @@ const TasksModel = {
    * @param task The task that you want to update
    */
   update: function (task) {
-      console.log(task);
+    console.log(task);
     if (!task.description) throw Error('Task must have a description');
     // Update the description for given id
     this.taskList[task.id].description = task.description;
@@ -89,13 +87,23 @@ const TasksModel = {
    */
   setCurrent: function (taskId) {
     // Set all the task to not current
-    this.taskList.forEach(task => {
-        task.isCurrent = false;
-    })
-    
+    this.taskList.forEach((task) => {
+      task.isCurrent = false;
+    });
+
     // Set the current task to the id given
     this.taskList[taskId].isCurrent = true;
 
+    // Publish change
+    this.publish();
+  },
+  addSecond: function () {
+    const currentId = this.taskList.find((task) => {
+      return task.isCurrent === true;
+    });
+    // console.log(this.taskList[currentId.id]);
+    this.taskList[currentId.id].time++;
+    
     // Publish change
     this.publish();
   },

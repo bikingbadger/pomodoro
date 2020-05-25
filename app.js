@@ -8,6 +8,7 @@ import TimerModel from './modules/timer/model.mjs';
 import TasksView from './modules/tasks/view.mjs';
 import TasksModel from './modules/tasks/model.mjs';
 
+
 const taskAddForm = document.querySelector('#task-add-form');
 
 /**
@@ -59,6 +60,7 @@ TasksModel.load(PubSub);
  */
 TimerView.load();
 PubSub.subscribe(TimerModel.subject, TimerView);
+PubSub.subscribe(TimerModel.subject, TasksView);
 /**
  * Setup the model to use the PubSub for publishing all changes
  * That way any subscribers will get the updates and make changes to the view

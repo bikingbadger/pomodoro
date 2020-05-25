@@ -16,9 +16,12 @@ const TasksController = {
   setCurrentTask: function (taskId) {
     this.model.setCurrent(taskId);
   },
-  updateTask: function(task) {
+  updateTask: function (task) {
     this.model.update(task);
-  }
+  },
+  addSecond: function () {
+    this.model.addSecond();
+  },
 };
 
 export default TasksController;

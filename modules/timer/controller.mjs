@@ -38,16 +38,6 @@ const TimerController = {
            * Decrease the timer
            */
           this.model.decrease();
-          //   let currentTask = document.querySelector('#current-task');
-          //   const taskID = currentTask.getAttribute('data-current-task');
-          //   console.log(taskID);
-          //   if (taskID) {
-          //     const task = document.querySelector(`#${taskID}`);
-          //     console.log(task);
-          //     let taskTime = task.getAttribute('data-task-time') | 0;
-          //     taskTime++;
-          //     task.setAttribute('data-task-time', taskTime);
-          //   }
         }
       }
       //   renderTimer();

@@ -4,6 +4,7 @@ const TimerModel = {
   // Current time in seconds
   currentTime: 1500,
   running: false,
+  workTime: true,
   pompoms: 0,
   pubSub: null,
   subject: 'timer',
@@ -17,13 +18,6 @@ const TimerModel = {
   },
   publish: function () {
     this.pubSub.publish(this);
-  },
-  /**
-   * Increment the current time by one second
-   */
-  increment: function () {
-    this.currentTime++;
-    this.publish();
   },
   /**
    * Decrease the current time by one second
@@ -43,12 +37,12 @@ const TimerModel = {
    * Stop the timer
    */
   stop: function () {
-    console.log('Stopping timer');
+    // console.log('Stopping timer');
     this.running = false;
     this.publish();
   },
   next: function () {
-    console.log('Next timer');
+    // console.log('Next timer');
     //   Alarm && Alarm.play();
 
     /**
@@ -60,22 +54,26 @@ const TimerModel = {
      * 2,4,6: Pomodoro, this is the default not caught by any of the if statements
      */
     this.pompoms++;
-    console.log(`Pompoms: ${this.pompoms}`);
+    // console.log(`Pompoms: ${this.pompoms}`);
     // End: The 8th pompom will happen after the long break so requires it to be reset
     if (this.pompoms === 8) {
       this.pompoms = 0;
+      this.workTime = true;
       this.setTime(1500);
     }
     // Long Break: The 7th pompom occurs after 4 rounds so this means you get a long break
     else if (this.pompoms === 7) {
       this.setTime(750);
+      this.workTime = false;
     }
     // Short Break: Every 2nd pompom should be a break
     else if (this.pompoms % 2 === 1) {
       this.setTime(300);
+      this.workTime = false;
     } else {
       // Pomodoro period
       this.setTime(1500);
+      this.workTime = true;
     }
   },
   /**

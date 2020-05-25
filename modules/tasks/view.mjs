@@ -164,11 +164,17 @@ const TasksView = {
       currentTaskElement.innerHTML = `${task.description} (${task.time})`;
       currentTaskElement.setAttribute('data-task-id', task.id);
     } else {
-        currentTaskElement.innerHTML = 'Select item from todo list'
+      currentTaskElement.innerHTML = 'Select item from todo list';
     }
   },
   notify: function (model) {
-    this.render(model);
+    if (model.subject === 'tasks') {
+      this.render(model);
+    }
+    if (model.subject === 'timer') {
+      if(model.running && model.workTime){
+      TasksController.addSecond();}
+    }
   },
 };
 
