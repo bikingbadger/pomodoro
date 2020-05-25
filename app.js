@@ -2,7 +2,7 @@
 import * as Auth from './modules/auth/auth.mjs';
 import PubSub from './modules/pubSub/pubSub.mjs';
 import Timer from './modules/timer/timer.mjs';
-import * as Todo from './modules/todo/todo.mjs';
+import Tasks from './modules/tasks/tasks.mjs';
 
 const taskAddForm = document.querySelector('#task-add-form');
 
@@ -12,28 +12,7 @@ const taskAddForm = document.querySelector('#task-add-form');
  */
 const clickDelegator = (event) => {
   
-  /**
-   * Add New Task from form
-   */
-  if (event.target.hasAttribute('data-add-task')) {
-    taskAddForm.classList.add('invisible');
-    Todo.addTask();
-  }
-
-  /**
-   * Set the current task
-   */
-  if (event.target.hasAttribute('data-item')) {
-    console.log(event.target);
-    Todo.setCurrentTask(event.target);
-  }
-
-  /**
-   * Edit a task in the list
-   */
-  if (event.target.hasAttribute('data-item-edit')) {
-    Todo.editTask(event.target.getAttribute('data-item-edit'));
-  }
+  
 
   /**
    * Save edits of the task
@@ -74,5 +53,5 @@ const buttonHandler = (e) => {
 };
 
 document.addEventListener('click', buttonHandler), false;
-Todo.load();
+Tasks.load(PubSub);
 Timer.load(PubSub);

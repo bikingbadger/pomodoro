@@ -19,7 +19,7 @@ const TimerView = {
     }
 
     /**
-     *
+     * Add event listener for click to start or pause the timer
      */
     buttonStartPause.addEventListener(
       'click',
@@ -35,7 +35,7 @@ const TimerView = {
     );
 
     /**
-     *
+     * Add event listener to reset the timer
      */
     buttonReset.addEventListener(
       'click',
