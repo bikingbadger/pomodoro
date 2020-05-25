@@ -10,6 +10,7 @@ const PubSub = {
    * @param model The model where actions will be published
    */
   publish: function (model) {
+    console.log(model);
     this.subscribers.forEach((subscriber) => {
       if (model.subject === subscriber.subject) {
         subscriber.view.notify(model);
