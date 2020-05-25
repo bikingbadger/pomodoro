@@ -11,22 +11,6 @@ const taskAddForm = document.querySelector('#task-add-form');
  * @param {Event} event
  */
 const clickDelegator = (event) => {
-  
-  
-
-  /**
-   * Save edits of the task
-   */
-  if (event.target.hasAttribute('data-item-save')) {
-    Todo.saveTask(event.target.getAttribute('data-item-save'));
-  }
-
-  if (event.target.hasAttribute('data-current-task')) {
-    if (Todo.markTaskComplete(event.target.innerText)) {
-      event.target.innerText = '';
-    }
-  }
-
   if (event.target === taskAddForm) {
     console.log(event.target);
     taskAddForm.classList.add('invisible');
