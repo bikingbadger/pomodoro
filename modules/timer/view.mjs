@@ -50,11 +50,11 @@ const TimerView = {
    * @param {String} selector The selector for the element on the page to render
    * @param {Function} template Callback function to create the layout
    */
-  render: function (model) {
+  render: function (timer) {
     /**
      * Render the timer
      */
-    const currentTime = model.currentTime;
+    const currentTime = timer.currentTime;
     // extract the minutes from the timer, convert to string and pad with zero's
     const minutes = parseInt(currentTime / 60, 10)
       .toString()
@@ -88,7 +88,7 @@ const TimerView = {
      * Render the Buttons
      */
     // update the button text
-    buttonStartPause.innerText = model.running ? 'Pause' : 'Start';
+    buttonStartPause.innerText = timer.running ? 'Pause' : 'Start';
   },
   notify: function (model) {
     this.render(model);

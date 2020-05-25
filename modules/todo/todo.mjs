@@ -1,81 +1,5 @@
 'use strict';
 
-const storageID = 'tasks';
-
-/**
- * Template for Tasks
- *
- * Creates a ordered list of the tasks stored in local storage
- */
-const templateTodoTasks = () => {
-  // Get the current task list
-  const tasks = getTasks();
-  const todoTasks = tasks.todo;
-
-  // Map each task to a list item
-  const taskList = todoTasks
-    .map((task, id) => {
-      // https://google.github.io/material-design-icons/
-      return `<li class="list-inside list-disc py-1">
-                  <span data-item="${task}" id="task-item-${id}">${task}</span>
-                  <i data-item-edit="${id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
-                  <i data-item-save="${id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i>
-                </li>`;
-    })
-    .join('');
-
-  // Return an ordered list with all the tasks
-  return taskList;
-};
-
-/**
- * Template for Tasks
- *
- * Creates a ordered list of the tasks stored in local storage
- */
-const templateCompleteTasks = () => {
-  // Get the current task list
-  const tasks = getTasks();
-  const completeTasks = tasks.complete;
-
-  // Map each task to a list item
-  const taskList = completeTasks
-    .map((task, index) => {
-      return `<li data-item id="task-item-${index}" class="list-inside list-disc">${task}</li>`;
-    })
-    .join('');
-
-  // Return an ordered list with all the tasks
-  return `<ul>${taskList}</ul>`;
-};
-
-/**
- * Render the template for the given selector
- * @param {String} selector The selector for the element on the page to render
- * @param {Function} template Callback function to create the layout
- */
-const render = (selector, template) => {
-  const app = document.querySelector(selector);
-  if (!app) return;
-
-  // Retrieve the output from the template
-  const output = template();
-
-  // check for changes, if there are none no reason to update the document
-  if (app.innerHTML === output) return;
-
-  // update changes to the document
-  app.innerHTML = output;
-};
-
-/**
- * Render the task list
- */
-const renderTasks = () => {
-  render('[data-task-list]', templateTodoTasks);
-  render('[data-complete-tasks]', templateCompleteTasks);
-};
-
 /**
  * Get the tasks stored in local storage
  */
@@ -93,7 +17,7 @@ const getTasks = () => {
  */
 const setTodoTasks = (newTask) => {
   // Get the current task list
-  let tasks = getTasks();
+  tasks = getTasks();
   const todoTasks = tasks.todo;
 
   // Push the new task onto array
@@ -138,7 +62,7 @@ const editTask = (id) => {
 };
 
 const saveTask = (id) => {
-  let tasks = getTasks();
+  tasks = getTasks();
   const task = document.querySelector(`#task-item-${id}`);
   if (task) {
     // Save the task to the array for todo tasks
@@ -164,14 +88,23 @@ const saveTask = (id) => {
 };
 
 /**
+ * Get the current task
+ * 
+ * @return {Task} currentTask 
+ */
+const getCurrentTask =()=> {
+  return currentTaskElement;
+}
+
+/**
  * Set the current task from the todo list
  *
  * @param {String} currentTask Task string value to set as current task
  */
 const setCurrentTask = (currentTask) => {
-  const currentTaskElement = document.querySelector('#current-task');
-  currentTaskElement.innerHTML = currentTask;
-  currentTaskElement.setAttribute('data-current-task', '');
+  console.log('Current Task',currentTask.getAttribute('data-item'));  
+  currentTaskElement.innerHTML = currentTask.getAttribute('data-item');
+  currentTaskElement.setAttribute('data-current-task', currentTask.id);
 };
 
 /**
@@ -180,7 +113,7 @@ const setCurrentTask = (currentTask) => {
  */
 const markTaskComplete = (currentTask) => {
   // Get the current task list
-  let tasks = getTasks();
+  tasks = getTasks();
   let todoTasks = tasks.todo;
   let completeTasks = tasks.complete;
 
@@ -205,8 +138,17 @@ const markTaskComplete = (currentTask) => {
   return true;
 };
 
+/**
+ * Load and render tasks
+ */
+const load = () =>{
+  tasks = getTasks();
+  renderTasks();
+}
+
 export {
-  renderTasks,
+  load,
+  getCurrentTask,
   setCurrentTask,
   editTask,
   saveTask,
