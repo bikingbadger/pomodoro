@@ -1,4 +1,5 @@
 ('use strict');
+import 'regenerator-runtime/runtime'
 import * as Auth from './modules/auth/auth.mjs';
 import PubSub from './modules/pubSub/pubSub.mjs';
 // import Timer from './modules/timer/timer.mjs';
@@ -17,7 +18,7 @@ const taskAddForm = document.querySelector('#task-add-form');
  */
 const clickDelegator = (event) => {
   if (event.target === taskAddForm) {
-    console.log(event.target);
+    // console.log(event.target);
     taskAddForm.classList.add('invisible');
   }
 
