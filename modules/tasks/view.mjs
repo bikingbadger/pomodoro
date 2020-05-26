@@ -8,6 +8,22 @@ const completedList = document.querySelector('#tasks-complete');
 const newTask = document.querySelector('#task-new');
 const buttonAdd = document.querySelector('#task-add');
 
+const formatTime = function (currentTime) {
+  /**
+   * Render the timer
+   */
+  // extract the minutes from the timer, convert to string and pad with zero's
+  const minutes = parseInt(currentTime / 60, 10)
+    .toString()
+    .padStart(2, '0');
+  // extract the seconds from the timer, convert to string and pad with zero's
+  const seconds = parseInt(currentTime % 60, 10)
+    .toString()
+    .padStart(2, '0');
+  // concatenate the mintues and seconds into a pretty string
+  return `(${minutes}:${seconds})`;
+};
+
 const TasksView = {
   load: function () {
     //Check that an element has been added for current task
@@ -161,7 +177,12 @@ const TasksView = {
     });
     if (task) {
       // console.log('Current Task',currentTask.getAttribute('data-task'));
-      currentTaskElement.innerHTML = `${task.description} (${task.time})`;
+      currentTaskElement.innerHTML = `${task.description}`;
+      if (parseInt(task.time) > 0) {
+        const output = formatTime(task.time);
+        currentTaskElement.innerHTML =
+          currentTaskElement.innerHTML + ' ' + output;
+      }
       currentTaskElement.setAttribute('data-task-id', task.id);
     } else {
       currentTaskElement.innerHTML = 'Select item from todo list';
@@ -172,8 +193,9 @@ const TasksView = {
       this.render(model);
     }
     if (model.subject === 'timer') {
-      if(model.running && model.workTime){
-      TasksController.addSecond();}
+      if (model.running && model.workTime) {
+        TasksController.addSecond();
+      }
     }
   },
 };
