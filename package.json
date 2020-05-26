@@ -20,5 +20,8 @@
   "homepage": "https://github.com/bikingbadger/pompom#readme",
   "devDependencies": {
     "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "tailwindcss": "^1.4.6"
   }
 }
