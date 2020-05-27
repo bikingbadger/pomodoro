@@ -22,6 +22,9 @@ const TasksController = {
   addSecond: function () {
     this.model.addSecond();
   },
+  completeTask: function (taskId) {
+    this.model.complete(taskId);
+  },
 };
 
 export default TasksController;
