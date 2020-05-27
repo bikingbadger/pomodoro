@@ -24,6 +24,29 @@ const formatTime = function (currentTime) {
   return `(${minutes}:${seconds})`;
 };
 
+const renderTaskElement = function (task) {
+  // return `<li id="task-${task.id}"
+  // data-task-id="${task.id}"
+  // data-task-description="${task.description}"
+  // data-task-priority="${task.priority}"
+  // data-task-time="${task.time}">${task.description}</li>`;
+  let text = task.description;
+  if (parseInt(task.time) > 0) {
+    const output = formatTime(task.time);
+    text = text + ' ' + output;
+  }
+
+  return `<li class="list-inside list-disc py-1">
+                    <span id="task-${task.id}" 
+                    data-task-id="${task.id}" 
+                    data-task-description="${task.description}"
+                    data-task-priority="${task.priority}"
+                    data-task-time="${task.time}">${text}</span>
+                    <i data-task-edit="${task.id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
+                    <i data-task-save="${task.id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i> 
+                  </li>`;
+};
+
 const TasksView = {
   load: function () {
     //Check that an element has been added for current task
@@ -134,11 +157,7 @@ const TasksView = {
       })
       // add them to the completed list
       .map((task) => {
-        return `<li id="task-${task.id}" 
-        data-task-id="${task.id}" 
-        data-task-description="${task.description}"
-        data-task-priority="${task.priority}"
-        data-task-time="${task.time}">${task.description}</li>`;
+        return renderTaskElement(task);
       })
       .join('');
 
@@ -153,16 +172,8 @@ const TasksView = {
         return task.complete === false;
       })
       .map((task) => {
+        return renderTaskElement(task);
         // https://google.github.io/material-design-icons/
-        return `<li class="list-inside list-disc py-1">
-                    <span id="task-${task.id}" 
-                    data-task-id="${task.id}" 
-                    data-task-description="${task.description}"
-                    data-task-priority="${task.priority}"
-                    data-task-time="${task.time}">${task.description}</span>
-                    <i data-task-edit="${task.id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
-                    <i data-task-save="${task.id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i> 
-                  </li>`;
       })
       .join('');
 
@@ -177,13 +188,7 @@ const TasksView = {
     });
     if (task) {
       // console.log('Current Task',currentTask.getAttribute('data-task'));
-      currentTaskElement.innerHTML = `${task.description}`;
-      if (parseInt(task.time) > 0) {
-        const output = formatTime(task.time);
-        currentTaskElement.innerHTML =
-          currentTaskElement.innerHTML + ' ' + output;
-      }
-      currentTaskElement.setAttribute('data-task-id', task.id);
+      currentTaskElement.innerHTML = renderTaskElement(task);
     } else {
       currentTaskElement.innerHTML = 'Select item from todo list';
     }
