@@ -2,7 +2,7 @@
 
 import TasksController from './controller.mjs';
 
-const currentTaskElement = document.querySelector('#tasks-current');
+// const currentTaskElement = document.querySelector('#tasks-current');
 const todoList = document.querySelector('#tasks-todo');
 const completedList = document.querySelector('#tasks-complete');
 const newTask = document.querySelector('#task-new');
@@ -24,12 +24,45 @@ const formatTime = function (currentTime) {
   return `(${minutes}:${seconds})`;
 };
 
+const renderTaskElement = function (task) {
+  // return `<li id="task-${task.id}"
+  // data-task-id="${task.id}"
+  // data-task-description="${task.description}"
+  // data-task-priority="${task.priority}"
+  // data-task-time="${task.time}">${task.description}</li>`;
+  let text = task.description;
+
+  if (parseInt(task.time) > 0) {
+    const output = formatTime(task.time);
+    text = text + ' ' + output;
+  }
+
+  const cardHover = task.isCurrent
+    ? 'bg-green-200'
+    : 'border-b-2  hover:shadow-lg  transform hover:-translate-y-1 hover:scale-105';
+
+  /**
+   * The complete icon is done in css as I want to have an empty circle that
+   * changed to a tick when you hover over it
+   */
+  return `<div class="grid grid-flow-col grid-cols-12 pl-2 items-center h-16 rounded ${cardHover}" 
+            data-task-id="${task.id}" 
+            data-task-description="${task.description}" 
+            data-task-priority="${task.priority}" 
+            data-task-time="${task.time}">
+            <div><i data-task-complete="${task.id}" class="material-icons" title="Complete"></i></div>
+            <div class="col-span-9 -mt-2 pl-2 md:pl-0 text-sm md:text-base" id="task-${task.id}" data-task-id="${task.id}">${text}</div>
+            <div><i data-task-save="${task.id}" class="material-icons hidden" title="Save">save</i></div>
+            <div><i data-task-edit="${task.id}" class="material-icons" title="Edit">edit</i></div>
+          </div>`;
+};
+
 const TasksView = {
   load: function () {
     //Check that an element has been added for current task
-    if (!currentTaskElement) {
-      throw Error('Current task element Missing');
-    }
+    // if (!currentTaskElement) {
+    //   throw Error('Current task element Missing');
+    // }
     //Check that an element has been added for todo list
     if (!todoList) {
       throw Error('Todo list element missing');
@@ -79,7 +112,6 @@ const TasksView = {
         if (event.target.dataset.taskEdit) {
           const id = event.target.dataset.taskEdit;
           const task = document.querySelector(`#task-${id}`);
-          console.log(task);
           if (task) {
             // Enable editing of the task text
             task.contentEditable = 'true';
@@ -113,17 +145,24 @@ const TasksView = {
             saveIcon.classList.add('hidden');
           }
         }
+
+        // Check if marking task as complete
+        if (event.target.dataset.taskComplete) {
+          const id = event.target.dataset.taskComplete;
+          const task = document.querySelector(`#task-${id}`);
+          TasksController.completeTask(task.dataset.taskId);
+        }
       },
       false,
     );
 
-    currentTaskElement.addEventListener(
-      'click',
-      function (event) {
-        console.log(event.target);
-      },
-      false,
-    );
+    // currentTaskElement.addEventListener(
+    //   'click',
+    //   function (event) {
+    //     console.log(event.target);
+    //   },
+    //   false,
+    // );
   },
   render: function (tasks) {
     // Map each task to a list task
@@ -134,17 +173,13 @@ const TasksView = {
       })
       // add them to the completed list
       .map((task) => {
-        return `<li id="task-${task.id}" 
-        data-task-id="${task.id}" 
-        data-task-description="${task.description}"
-        data-task-priority="${task.priority}"
-        data-task-time="${task.time}">${task.description}</li>`;
+        return renderTaskElement(task);
       })
       .join('');
 
     // Update if there were any changes
-    if (completedList.innerHTML !== `<ul>${taskList}</ul>`) {
-      completedList.innerHTML = `<ul>${taskList}</ul>`;
+    if (completedList.innerHTML !== `${taskList}`) {
+      completedList.innerHTML = `${taskList}`;
     }
 
     // Map each task to a list task
@@ -153,40 +188,26 @@ const TasksView = {
         return task.complete === false;
       })
       .map((task) => {
+        return renderTaskElement(task);
         // https://google.github.io/material-design-icons/
-        return `<li class="list-inside list-disc py-1">
-                    <span id="task-${task.id}" 
-                    data-task-id="${task.id}" 
-                    data-task-description="${task.description}"
-                    data-task-priority="${task.priority}"
-                    data-task-time="${task.time}">${task.description}</span>
-                    <i data-task-edit="${task.id}" class="material-icons text-sm border-2 rounded-full p-1" title="Edit">edit</i>
-                    <i data-task-save="${task.id}" class="material-icons text-sm border-2 rounded-full p-1 hidden" title="Save">save</i> 
-                  </li>`;
       })
       .join('');
 
     // Update if there were any changes
-    if (todoList.innerHTML !== `<ul>${taskList}</ul>`) {
-      todoList.innerHTML = `<ul>${taskList}</ul>`;
+    if (todoList.innerHTML !== `${taskList}`) {
+      todoList.innerHTML = `${taskList}`;
     }
 
     // Check if current task is set. If it is then update the current task
-    const task = tasks.taskList.find((task) => {
-      return task.isCurrent === true;
-    });
-    if (task) {
-      // console.log('Current Task',currentTask.getAttribute('data-task'));
-      currentTaskElement.innerHTML = `${task.description}`;
-      if (parseInt(task.time) > 0) {
-        const output = formatTime(task.time);
-        currentTaskElement.innerHTML =
-          currentTaskElement.innerHTML + ' ' + output;
-      }
-      currentTaskElement.setAttribute('data-task-id', task.id);
-    } else {
-      currentTaskElement.innerHTML = 'Select item from todo list';
-    }
+    // const task = tasks.taskList.find((task) => {
+    //   return task.isCurrent === true;
+    // });
+    // if (task) {
+    //   // console.log('Current Task',currentTask.getAttribute('data-task'));
+    //   currentTaskElement.innerHTML = renderTaskElement(task);
+    // } else {
+    //   currentTaskElement.innerHTML = 'Select item from todo list';
+    // }
   },
   notify: function (model) {
     if (model.subject === 'tasks') {

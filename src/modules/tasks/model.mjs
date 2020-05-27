@@ -59,24 +59,13 @@ const TasksModel = {
    *
    * @param task This is the task you want to mark as complete
    */
-  complete: function (task) {
-    // Get the current task list
-    const currentTask = task;
-    let todoTasks = this.taskList;
-    let completeTasks = this.taskList.complete;
-
-    // Remove task from todo list
-    todoTasks = todoTasks.filter((task) => {
-      return task !== currentTask;
+  complete: function (taskId) {
+    // Unset all tasks as current
+    this.taskList.forEach((task) => {
+      task.isCurrent = false;
     });
 
-    // Push the complete task onto array
-    completeTasks.push(currentTask);
-
-    // Set the values of each array in object
-    tasks.todo = todoTasks;
-    tasks.complete = completeTasks;
-
+    this.taskList[taskId].complete = true;
     // Publish change
     this.publish();
   },
