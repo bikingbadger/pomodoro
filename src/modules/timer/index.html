@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer Component</title>
+</head>
+
+<body>
+    <div id="timer"></div>
+    <button id="timer-go">Start</button>
+    <button id="timer-reset">Reset</button>
+    <script type="module">
+        import PubSub from '../pubSub/pubSub.mjs';
+        import Timer from './timer.mjs';
+        Timer.load(PubSub);
+    </script>
+</body>
+
+</html>
