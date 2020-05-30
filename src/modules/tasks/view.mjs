@@ -38,7 +38,7 @@ const renderTaskElement = function (task) {
   }
 
   const cardHover = task.isCurrent
-    ? 'bg-green-200'
+    ? 'bg-blue-200'
     : 'border-b-2  hover:shadow-lg  transform hover:-translate-y-1 hover:scale-105';
 
   /**
