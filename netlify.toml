@@ -11,7 +11,7 @@
   to = "https://todoist.com/oauth/authorize"
   status = 301
   force = true
-  # COMMENT: query = {client_id="TODOISTCONFIG_CLIENT_ID",scope="TODOISTCONFIG_SCOPE",state="TODOISTCONFIG_STATE"}
+  query = {client_id="TODOISTCONFIG_CLIENT_ID",scope="TODOISTCONFIG_SCOPE",state="TODOISTCONFIG_STATE"}
 
 [[redirects]]
   from = "/search"
