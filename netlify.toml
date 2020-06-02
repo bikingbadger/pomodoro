@@ -9,4 +9,4 @@
 [[redirects]]
   from = "/login"
   to = "https://todoist.com/oauth/authorize"
-  query = {client_id=TODOISTCONFIG_CLIENT_ID&scope=TODOISTCONFIG_SCOPE&state=TODOISTCONFIG_STATE}
+  query = {client_id="TODOISTCONFIG_CLIENT_ID"&scope="TODOISTCONFIG_SCOPE"&state="TODOISTCONFIG_STATE"}
