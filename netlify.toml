@@ -11,3 +11,11 @@
   to = "https://todoist.com/oauth/authorize"
   force = true
   query = {client_id="TODOISTCONFIG_CLIENT_ID",scope="TODOISTCONFIG_SCOPE",state="TODOISTCONFIG_STATE"}
+
+[[redirects]]
+  from = "/search"
+  to = "https://api.mysearch.com"
+  status = 200
+  force = true # COMMENT: ensure that we always redirect
+  headers = {X-From = "Netlify"}
+  signed = "API_SIGNATURE_TOKEN"
