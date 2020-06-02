@@ -8,6 +8,7 @@ const TimerModel = {
   pompoms: 0,
   pubSub: null,
   subject: 'timer',
+  countDown: null,
   /**
    * Load the object with all its default settings
    */
@@ -15,6 +16,30 @@ const TimerModel = {
     // console.log(PubSub);
     this.pubSub = PubSub;
     this.publish();
+
+    // Use a faster timeout for local testing
+    const timeout =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+        ? 10
+        : 1000;
+
+    // create the timer once
+    this.countDown = window.setInterval(() => {
+      //Make sure the timer is running and not paused
+      if (this.running) {
+        //  Check if the timer has ended, if it has determine the next course of action
+        if (this.currentTime <= 0) {
+          this.stop();
+          this.next();
+        } else {
+          /**
+           * Decrease the timer
+           */
+          this.decrease();
+        }
+      }
+    }, timeout);
   },
   publish: function () {
     this.pubSub.publish(this);

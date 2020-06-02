@@ -12,3 +12,10 @@ By clicking on the task this will set it to the current task in the timer. This 
 ## Completing task
 
 By clicking on the task in the current task will move it to the completed tasks and remove from the Todo list
+
+## Development
+
+```
+npm install
+npm run dev
+```
