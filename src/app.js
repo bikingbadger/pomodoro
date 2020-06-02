@@ -1,6 +1,6 @@
 ('use strict');
 import 'regenerator-runtime/runtime'
-import * as Auth from './modules/auth/auth.mjs';
+import AuthView  from './modules/auth/view.js';
 import PubSub from './modules/pubSub/pubSub.mjs';
 // import Timer from './modules/timer/timer.mjs';
 import TimerView from './modules/timer/view.mjs';
@@ -32,17 +32,6 @@ const clickDelegator = (event) => {
 // Click delegator
 document.addEventListener('click', clickDelegator, false);
 
-const buttonHandler = (e) => {
-  if (e.target.id === 'btn-login') {
-    Auth.login();
-  }
-
-  if (e.target.id === 'btn-logout') {
-    Auth.logout();
-  }
-};
-
-document.addEventListener('click', buttonHandler), false;
 /**
  * Add the tasks view to the subscription of the pubSub
  * This will then receive the publications of the model each time a change is made
@@ -67,3 +56,8 @@ PubSub.subscribe(TimerModel.subject, TasksView);
  * That way any subscribers will get the updates and make changes to the view
  */
 TimerModel.load(PubSub);
+
+/**
+ * Add authorization
+ */
+AuthView.load();
