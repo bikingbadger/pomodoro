@@ -7,9 +7,9 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/login"
+  from = "/auth/login"
   to = "https://todoist.com/oauth/authorize"
-  status = 200
+  status = 301
   force = true
   # COMMENT: query = {client_id="TODOISTCONFIG_CLIENT_ID",scope="TODOISTCONFIG_SCOPE",state="TODOISTCONFIG_STATE"}
 
