@@ -5,3 +5,8 @@
   functions = "functions"
   # This is the directory that you are publishing from.
   publish = "dist"
+
+[[redirects]]
+  from = "/login"
+  to = "https://todoist.com/oauth/authorize"
+  query = {client_id=TODOISTCONFIG_CLIENT_ID&scope=TODOISTCONFIG_SCOPE&state=TODOISTCONFIG_STATE}
