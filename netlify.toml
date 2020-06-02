@@ -1,0 +1,13 @@
+[build]
+  # This will be your default build command.
+  command = "npm run build"
+  # This is where Netlify will look for your lambda functions.
+  functions = "functions"
+  # This is the directory that you are publishing from.
+  publish = "dist"
+
+[[redirects]]
+  from = "/login"
+  to = "https://todoist.com/oauth/authorize"
+  force = true
+  query = {client_id="TODOISTCONFIG_CLIENT_ID",scope="TODOISTCONFIG_SCOPE",state="TODOISTCONFIG_STATE"}
