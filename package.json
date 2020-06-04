@@ -25,10 +25,15 @@
     "cssnano": "^4.1.10",
     "netlify-lambda": "^1.6.3",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.4.1",
     "postcss-modules": "^2.0.0",
     "tailwindcss": "^1.4.6"
   },
   "dependencies": {
     "axios": "^0.19.2"
+  },
+  "staticFiles": {
+    "staticPath": "src/public",
+    "watcherGlob": "**"
   }
 }

@@ -2,12 +2,11 @@
 import 'regenerator-runtime/runtime'
 import AuthView  from './modules/auth/view.js';
 import PubSub from './modules/pubSub/pubSub.mjs';
-// import Timer from './modules/timer/timer.mjs';
 import TimerView from './modules/timer/view.mjs';
 import TimerModel from './modules/timer/model.mjs';
-// import Tasks from './modules/tasks/tasks.mjs';
 import TasksView from './modules/tasks/view.mjs';
 import TasksModel from './modules/tasks/model.mjs';
+import AlarmView from './modules/alarm/view.mjs'
 
 /**
  * Add the tasks view to the subscription of the pubSub
@@ -38,3 +37,9 @@ TimerModel.load(PubSub);
  * Add authorization
  */
 AuthView.load();
+
+/**
+ * Add alarm view
+ */
+AlarmView.load();
+PubSub.subscribe(TimerModel.subject, AlarmView);
