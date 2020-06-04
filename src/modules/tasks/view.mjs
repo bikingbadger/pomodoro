@@ -7,6 +7,9 @@ const todoList = document.querySelector('#tasks-todo');
 const completedList = document.querySelector('#tasks-complete');
 const newTask = document.querySelector('#task-new');
 const buttonAdd = document.querySelector('#task-add');
+const buttonAddClose = document.querySelector('#task-add-close');
+const taskAddForm = document.querySelector('#task-add-form');
+const showAddTask = document.querySelector('#show-add-task');
 
 const formatTime = function (currentTime) {
   /**
@@ -93,6 +96,39 @@ const TasksView = {
     );
 
     /**
+     * Show the modal for adding a task
+     */
+    showAddTask.addEventListener(
+      'click',
+      function () {
+        taskAddForm.classList.remove('invisible');
+      },
+      false,
+    );
+
+    /**
+     * Close the modal when clicking outside of it
+     */
+    taskAddForm.addEventListener(
+      'click',
+      function () {
+        taskAddForm.classList.add('invisible');
+      },
+      false,
+    );
+
+    /**
+     * Close the modal of the add task
+     */
+    buttonAddClose.addEventListener(
+      'click',
+      function () {
+        taskAddForm.classList.add('invisible');
+      },
+      false,
+    );
+
+    /**
      * Add event listener for click on the todo list to make current task
      */
     todoList.addEventListener(
@@ -155,14 +191,6 @@ const TasksView = {
       },
       false,
     );
-
-    // currentTaskElement.addEventListener(
-    //   'click',
-    //   function (event) {
-    //     console.log(event.target);
-    //   },
-    //   false,
-    // );
   },
   render: function (tasks) {
     // Map each task to a list task
