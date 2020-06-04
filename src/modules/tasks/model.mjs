@@ -75,14 +75,21 @@ const TasksModel = {
    * @param {String} currentTask Task string value to set as current task
    */
   setCurrent: function (taskId) {
+    // Check whether the task is the current task
+    const taskIsCurrent = this.taskList[taskId].isCurrent;
+
     // Set all the task to not current
     this.taskList.forEach((task) => {
       task.isCurrent = false;
     });
 
-    // Set the current task to the id given
-    this.taskList[taskId].isCurrent = true;
-
+    // Check whether task is current, only set if it is not current
+    // The above loop with disable all tasks therefore making giving the ability
+    // to deselect if you click on the task again.
+    if (!taskIsCurrent) {
+      // Set the current task to the id given
+      this.taskList[taskId].isCurrent = true;
+    }
     // Publish change
     this.publish();
   },
