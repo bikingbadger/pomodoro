@@ -9,29 +9,6 @@ import TimerModel from './modules/timer/model.mjs';
 import TasksView from './modules/tasks/view.mjs';
 import TasksModel from './modules/tasks/model.mjs';
 
-
-const taskAddForm = document.querySelector('#task-add-form');
-
-/**
- * Event delegator for click events
- * @param {Event} event
- */
-const clickDelegator = (event) => {
-  if (event.target === taskAddForm) {
-    // console.log(event.target);
-    taskAddForm.classList.add('invisible');
-  }
-
-  // Add task button should show modal for adding task
-  if (event.target.id === 'task-add-button') {
-    console.log(`Show modal ${event.target}`);
-    taskAddForm.classList.remove('invisible');
-  }
-};
-
-// Click delegator
-document.addEventListener('click', clickDelegator, false);
-
 /**
  * Add the tasks view to the subscription of the pubSub
  * This will then receive the publications of the model each time a change is made
