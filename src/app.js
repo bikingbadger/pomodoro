@@ -6,7 +6,22 @@ import TimerView from './modules/timer/view.mjs';
 import TimerModel from './modules/timer/model.mjs';
 import TasksView from './modules/tasks/view.mjs';
 import TasksModel from './modules/tasks/model.mjs';
-import AlarmView from './modules/alarm/view.mjs'
+import AlarmView from './modules/alarm/view.mjs';
+import ProfileModel from './modules/profile/model.mjs';
+
+/**
+ * Add authorization
+ */
+AuthView.load();
+
+/**
+ * Use profile model and set task
+ */
+ProfileModel.load(PubSub);
+// If there are settings from the profile for todoist then add to the model
+if(ProfileModel.settings.todoistKey){
+    TasksModel.setTodistKey(ProfileModel.settings.todoistKey)
+};
 
 /**
  * Add the tasks view to the subscription of the pubSub
@@ -14,12 +29,13 @@ import AlarmView from './modules/alarm/view.mjs'
  */
 TasksView.load();
 PubSub.subscribe(TasksModel.subject, TasksView);
+
 /**
  * Setup the model to use the PubSub for publishing all changes
  * That way any subscribers will get the updates and make changes to the view
  */
-
 TasksModel.load(PubSub);
+
 /**
  * Add the timer view to the subscription of the pubSub
  * This will then receive the publications of the model each time a change is made
@@ -32,11 +48,6 @@ PubSub.subscribe(TimerModel.subject, TasksView);
  * That way any subscribers will get the updates and make changes to the view
  */
 TimerModel.load(PubSub);
-
-/**
- * Add authorization
- */
-AuthView.load();
 
 /**
  * Add alarm view

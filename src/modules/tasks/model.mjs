@@ -1,28 +1,66 @@
 'use strict';
 
+// Use todoist API to fetch the current tasks,
+// those marked with today
+const importTodistTasks = async (todistKey) => {
+  const allTaskURL = 'https://api.todoist.com/rest/v1/tasks?filter=today';
+  console.log(todistKey);
+  const response = await fetch(allTaskURL, {
+    headers: { Authorization: `Bearer ${todistKey}` },
+  });
+  console.log(response);
+  return await response.json();
+};
+
 const TasksModel = {
   taskList: {},
   storageID: 'tasks',
   pubSub: null,
   subject: 'tasks',
+  todistKey: '',
   /**
    * Initialize the tasks and setup pubsub
    *
    * @param PubSub PubSub for publishing and subscribing to changes
    */
-  load: function (PubSub) {
+  load: async function (PubSub) {
     //Get the tasks stored in local storage
     this.taskList = localStorage.getItem(this.storageID);
     this.taskList = this.taskList ? JSON.parse(this.taskList) : [];
-
+    console.log(this.taskList);
+    // Check for todoist tasks
+    if (this.todistKey) {
+      const todoistTasks = await importTodistTasks(this.todistKey);
+      todoistTasks.forEach((task) => {
+        console.log(task);
+        this.taskList.push({
+          id: this.taskList.length,
+          description: task.content,
+          priority: task.priority,
+          time: 0,
+          isCurrent: false,
+          complete: false,
+          source: 'Todoist',
+          sourceId: task.id,
+        });
+      });
+    }
+    console.log(this.taskList);
     // Add PubSub reference
     this.pubSub = PubSub;
     this.publish();
   },
   publish: function () {
     this.pubSub.publish(this);
-    // Save the object back to localStorage
-    localStorage.setItem(this.storageID, JSON.stringify(this.taskList));
+    // Save the object back to localStorage but filter for local source tasks
+    // This prevents the other sources from creating duplicates
+    let taskList = this.taskList
+      // only show local tasks
+      .filter((task) => {
+        return task.source === 'Local';
+      });
+    console.log(taskList);
+    localStorage.setItem(this.storageID, JSON.stringify(taskList));
   },
   /**
    * Add a task to from the input
@@ -37,6 +75,8 @@ const TasksModel = {
       time: 0,
       isCurrent: false,
       complete: false,
+      source: 'Local',
+      sourceId: this.taskList.length,
     });
 
     this.publish();
@@ -104,6 +144,9 @@ const TasksModel = {
 
     // Publish change
     this.publish();
+  },
+  setTodistKey: function (token) {
+    this.todistKey = token;
   },
 };
 
