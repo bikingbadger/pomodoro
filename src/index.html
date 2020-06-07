@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="assets/css/tailwind.css" rel="stylesheet">
 </head>
+
 <body class="border-blue-500  border-solid border-t-8">
     <div class="container mx-auto font-sans md:p-4 max-w-screen-lg md:text-base text-blue-800">
 
@@ -16,11 +17,12 @@
             <h1 class="text-2xl md:text-5xl font-bold pl-4 text-blue-500 ">Pompom</h1>
             <div class="grid justify-end items-center pr-4  grid-flow-col">
                 <i id="show-add-task" class="material-icons" title="Add">add</i>
-               <a href="/profile.html"><i id="profile" class="material-icons" title="Profile">settings</i></a> 
+                <a href="/profile.html"><i id="profile" class="material-icons" title="Profile">settings</i></a>
                 <i id="btn-login" class="material-icons">lock_open</i>
                 <i id="btn-logout" class="material-icons hidden">lock</i>
             </div>
         </header>
+        <div class="invisible static alarm" id="alarmClock"></div>
 
         <main class="grid grid-cols-1 md:grid-cols-2 gap-2 md:pt-2  ">
             <section class="grid col-span-2 text-center bg-gray-100 rounded py-2 md:py-4 mx-20 md:mx-64 shadow-xl mt-2 md:-mt-4 md:z-10 border-2 border-blue-500">
@@ -42,8 +44,6 @@
                 <div id="tasks-complete"></div>
             </section>
         </main>
-
-        <div class="hidden fixed alarm" id="alarmClock"></div>
 
         <!-- Form for adding a new task, will open as modal -->
         <div id="task-add-form" class="fixed top-0 left-0 z-50 w-full h-full overflow-auto flex items-center invisible" style="background-color:rgba(0, 0, 0, 0.4)">
