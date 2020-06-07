@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pompom</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="assets/css/tailwind.css" rel="stylesheet">
+</head>
+
+<body class="border-blue-500  border-solid border-t-8">
+    <div class="container mx-auto font-sans md:p-4 max-w-screen-lg md:text-base text-blue-800">
+
+        <header class="grid grid-cols-2 md:rounded md:h-20 md:shadow-xl">
+            <h1 class="text-2xl md:text-5xl font-bold pl-4 text-blue-500 ">Pompom</h1>
+            <div class="grid justify-end items-center pr-4  grid-flow-col">
+                <i id="show-add-task" class="material-icons" title="Add">add</i>
+                <a href="/profile.html"><i id="profile" class="material-icons" title="Profile">settings</i></a>
+                <i id="btn-login" class="material-icons">lock_open</i>
+                <i id="btn-logout" class="material-icons hidden">lock</i>
+            </div>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-2 md:pt-2  ">
+                <div class="md:w-1/2 bg-white mx-auto">
+                    <div class="grid grid-cols-1 gap-4 p-4 border">
+                        <div class="grid grid-cols-2">
+                            <h3 class="text-lg font-bold uppercase">Settings</h3>
+                            <div id="task-add-close" class="grid justify-end"><a href="/"><i class="material-icons" title="Close">close</i></a></div>
+                        </div>
+                        <div class="grid grid-cols-12 p-4 border">
+                            <input id="task-new" type="text" name="newTask" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-11">
+                            <div class="items-center"><i id="task-add" class="material-icons text-blue-700 hover:text-white hover:bg-blue-500 md:text-4xl hover:border-2 rounded-full p-1" title="Add">playlist_add</i></div>
+                        </div>
+                    </div>
+            </div>
+        </main>
+
+
+
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
