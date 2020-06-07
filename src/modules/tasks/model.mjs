@@ -5,6 +5,7 @@ const TasksModel = {
   storageID: 'tasks',
   pubSub: null,
   subject: 'tasks',
+  todistToken: '',
   /**
    * Initialize the tasks and setup pubsub
    *
@@ -104,6 +105,9 @@ const TasksModel = {
 
     // Publish change
     this.publish();
+  },
+  setTodistToken: function (token) {
+    this.todistToken = token;
   },
 };
 
