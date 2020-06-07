@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pompom</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="assets/css/tailwind.css" rel="stylesheet">
+</head>
+
+<body class="border-blue-500  border-solid border-t-8">
+    <div class="container mx-auto font-sans md:p-4 max-w-screen-lg md:text-base text-blue-800">
+
+        <header class="grid grid-cols-2 md:rounded md:h-20 md:shadow-xl">
+            <h1 class="text-2xl md:text-5xl font-bold pl-4 text-blue-500 ">Pompom</h1>
+        </header>
+
+        <main class="grid grid-cols-1 gap-2 md:pt-2">
+            <div class="p-4 border">
+                <div class="grid grid-cols-2">
+                    <h3 class="text-lg font-bold uppercase">Settings</h3>
+                    <div id="settings-close" class="grid justify-end"><a href="/"><i class="material-icons" title="Close">close</i></a></div>
+                </div>
+                <div class="grid grid-cols-12 p-4 border">
+                    <label for="todoistToken" class="col-span-4">Todoist Token</label>
+                    <input id="settings-todoist-token" type="text" name="todoistToken" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-8">
+                </div>
+                <i id="settings-save" class="material-icons text-blue-500 md:text-4xl hover:border-2 rounded-full p-1" title="Save">save</i>
+            </div>
+        </main>
+    </div>
+    <script src="profile.js"></script>
+</body>
+
+</html>
