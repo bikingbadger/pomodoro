@@ -24,9 +24,22 @@
                     <div id="settings-close" class="grid justify-end"><a href="/"><i class="material-icons" title="Close">close</i></a></div>
                 </div>
                 <div class="grid grid-cols-12 p-4 border">
+                    <label for="pomodoroTime" class="col-span-4">Pomodoro Time</label>
+                    <input id="settings-pomodoro-time" type="number" name="pomodoroTime" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-8" value="25">
+                </div>
+                <div class="grid grid-cols-12 p-4 border">
+                    <label for="pomodoroRest" class="col-span-4">Rest Time</label>
+                    <input id="settings-pomodoro-rest" type="number" name="pomodoroRest" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-8" value="5">
+                </div>
+                <div class="grid grid-cols-12 p-4 border">
+                    <label for="pomodoroLong" class="col-span-4">Long Rest Time</label>
+                    <input id="settings-pomodoro-long" type="number" name="pomodoroLongRest" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-8" value="15">
+                </div>
+                <div class="grid grid-cols-12 p-4 border">
                     <label for="todoistToken" class="col-span-4">Todoist Token</label>
                     <input id="settings-todoist-token" type="text" name="todoistToken" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline col-span-8">
                 </div>
+
                 <i id="settings-save" class="material-icons text-blue-500 md:text-4xl hover:border-2 rounded-full p-1" title="Save">save</i>
             </div>
         </main>
