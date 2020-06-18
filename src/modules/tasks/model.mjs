@@ -154,8 +154,8 @@ const TasksModel = {
     // Publish change
     this.publish();
   },
-  setTodistKey: function (token) {
-    this.todistKey = token;
+  setTodistKey: function (profile) {
+    this.todistKey = profile.todoistKey;
   },
 };
 
