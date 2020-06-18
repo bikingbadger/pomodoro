@@ -111,8 +111,12 @@ const TasksView = {
      */
     taskAddForm.addEventListener(
       'click',
-      function () {
-        taskAddForm.classList.add('invisible');
+      function (event) {
+        console.log(event.target);
+        // Should only close when clicking on the whole form and not on any of the internal
+        if (event.target.id === 'task-add-form') {
+          taskAddForm.classList.add('invisible');
+        }
       },
       false,
     );

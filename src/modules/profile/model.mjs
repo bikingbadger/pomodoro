@@ -7,7 +7,7 @@ const ProfileModel = {
   subject: 'profile',
   load: function (PubSub) {
     this.settings = localStorage.getItem(this.storageID);
-    console.log(this.settings);
+    // console.log(this.settings);
     this.settings = this.settings
       ? JSON.parse(this.settings)
       : { todoistKey: '' };
@@ -17,7 +17,7 @@ const ProfileModel = {
     this.publish();
   },
   saveSetting: function (setting) {
-    console.log(setting);
+    // console.log(setting);
     localStorage.setItem(this.storageID, JSON.stringify(setting));
   },
   publish: function () {
