@@ -8,7 +8,7 @@ const importTodistTasks = async (todistKey) => {
   const response = await fetch(allTaskURL, {
     headers: { Authorization: `Bearer ${todistKey}` },
   });
-  console.log(response);
+  // console.log(response);
   return await response.json();
 };
 
@@ -27,7 +27,7 @@ const TasksModel = {
     //Get the tasks stored in local storage
     this.taskList = localStorage.getItem(this.storageID);
     this.taskList = this.taskList ? JSON.parse(this.taskList) : [];
-    console.log(this.taskList);
+    // console.log(this.taskList);
     // Check for todoist tasks
     if (this.todistKey) {
       const todoistTasks = await importTodistTasks(this.todistKey);
@@ -59,14 +59,14 @@ const TasksModel = {
       .filter((task) => {
         return task.source === 'Local';
       });
-    console.log(taskList);
+    // console.log(taskList);
     localStorage.setItem(this.storageID, JSON.stringify(taskList));
   },
   /**
    * Add a task to from the input
    */
   add: function (taskDescription) {
-    console.log(`Adding ${taskDescription}`);
+    // console.log(`Adding ${taskDescription}`);
     // Push the new task onto array
     this.taskList.push({
       id: this.taskList.length,
@@ -100,12 +100,21 @@ const TasksModel = {
    * @param task This is the task you want to mark as complete
    */
   complete: function (taskId) {
+    // console.log(taskId);
+    // console.log(this.taskList);
     // Unset all tasks as current
     this.taskList.forEach((task) => {
       task.isCurrent = false;
     });
 
-    this.taskList[taskId].complete = true;
+    // Find the task that you want to complete using the ID
+    const task = this.taskList.find((element) => {
+      // console.log(parseInt(element.id), parseInt(taskId));
+      return parseInt(element.id) === parseInt(taskId);
+    });
+    if (task) {
+      task.complete = true;
+    }
     // Publish change
     this.publish();
   },
