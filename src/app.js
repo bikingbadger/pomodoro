@@ -1,6 +1,6 @@
 ('use strict');
-import 'regenerator-runtime/runtime'
-import AuthView  from './modules/auth/view.js';
+import 'regenerator-runtime/runtime';
+import AuthView from './modules/auth/view.js';
 import PubSub from './modules/pubSub/pubSub.mjs';
 import TimerView from './modules/timer/view.mjs';
 import TimerModel from './modules/timer/model.mjs';
@@ -18,10 +18,13 @@ AuthView.load();
  * Use profile model and set task
  */
 ProfileModel.load(PubSub);
-// If there are settings from the profile for todoist then add to the model
-if(ProfileModel.settings.todoistKey){
-    TasksModel.setTodistKey(ProfileModel.settings.todoistKey)
-};
+
+if (ProfileModel.settings) {
+  // If there are settings from the profile for todoist then add to the model
+  TasksModel.setTodistKey(ProfileModel.settings);
+  // Set the timings according to defaults or the custom times of the user
+  TimerModel.setTiming(ProfileModel.settings);
+}
 
 /**
  * Add the tasks view to the subscription of the pubSub

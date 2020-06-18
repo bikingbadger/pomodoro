@@ -9,10 +9,16 @@ const TimerModel = {
   pubSub: null,
   subject: 'timer',
   countDown: null,
+  pomodoroTime: 1500,
+  pomodoroRest: 300,
+  pomodoroLong: 750,
   /**
    * Load the object with all its default settings
    */
   load: function (PubSub) {
+    // Set the current time to the pomodoro timer
+    this.currentTime = this.pomodoroTime;
+
     // console.log(PubSub);
     this.pubSub = PubSub;
     this.publish();
@@ -84,20 +90,20 @@ const TimerModel = {
     if (this.pompoms === 8) {
       this.pompoms = 0;
       this.workTime = true;
-      this.setTime(1500);
+      this.setTime(this.pomodoroTime);
     }
     // Long Break: The 7th pompom occurs after 4 rounds so this means you get a long break
     else if (this.pompoms === 7) {
-      this.setTime(750);
+      this.setTime(this.pomodoroLong);
       this.workTime = false;
     }
     // Short Break: Every 2nd pompom should be a break
     else if (this.pompoms % 2 === 1) {
-      this.setTime(300);
+      this.setTime(this.pomodoroRest);
       this.workTime = false;
     } else {
       // Pomodoro period
-      this.setTime(1500);
+      this.setTime(this.pomodoroTime);
       this.workTime = true;
     }
   },
@@ -113,9 +119,30 @@ const TimerModel = {
     this.currentTime = seconds;
     this.publish();
   },
+  /**
+   * Set timings of the pomodoro
+   * @param profile Profile containing the values of the timings
+   */
+  setTiming: function (profile) {
+    // console.log('set timing', profile);
+
+    /**
+     * The profile is set in minutes so you will need to calculate the values
+     * in seconds before saving them
+     */
+    if (profile.pomodoroTime) {
+      this.pomodoroTime = profile.pomodoroTime * 60;
+    }
+    if (profile.pomodoroRest) {
+      this.pomodoroRest = profile.pomodoroRest * 60;
+    }
+    if (profile.pomodoroLong) {
+      this.pomodoroLong = profile.pomodoroLong * 60;
+    }
+  },
   reset: function () {
     this.running = false;
-    this.currentTime = 1500;
+    this.currentTime = this.pomodoroTime;
     this.publish();
   },
 };
