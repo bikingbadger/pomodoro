@@ -4,7 +4,7 @@
 // those marked with today
 const importTodistTasks = async (todistKey) => {
   const allTaskURL = 'https://api.todoist.com/rest/v1/tasks?filter=today';
-  console.log(todistKey);
+  // console.log(todistKey);
   const response = await fetch(allTaskURL, {
     headers: { Authorization: `Bearer ${todistKey}` },
   });
@@ -32,7 +32,7 @@ const TasksModel = {
     if (this.todistKey) {
       const todoistTasks = await importTodistTasks(this.todistKey);
       todoistTasks.forEach((task) => {
-        console.log(task);
+        // console.log(task);
         this.taskList.push({
           id: this.taskList.length,
           description: task.content,
@@ -45,7 +45,7 @@ const TasksModel = {
         });
       });
     }
-    console.log(this.taskList);
+    // console.log(this.taskList);
     // Add PubSub reference
     this.pubSub = PubSub;
     this.publish();
@@ -87,7 +87,7 @@ const TasksModel = {
    * @param task The task that you want to update
    */
   update: function (task) {
-    console.log(task);
+    // console.log(task);
     if (!task.description) throw Error('Task must have a description');
     // Update the description for given id
     this.taskList[task.id].description = task.description;
