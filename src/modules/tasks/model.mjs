@@ -32,18 +32,26 @@ const TasksModel = {
     if (this.todistKey) {
       const todoistTasks = await importTodistTasks(this.todistKey);
       todoistTasks.forEach((task) => {
-        // console.log(task);
-        this.taskList.push({
-          id: this.taskList.length,
-          description: task.content,
-          priority: task.priority,
-          time: 0,
-          isCurrent: false,
-          complete: false,
-          source: 'Todoist',
-          sourceId: task.id,
-        });
+        // console.log(task.id);
+        const taskFound = this.taskList.find(
+          (element) => parseInt(element.sourceId) === parseInt(task.id),
+        );
+        // console.log(taskFound);
+        if (taskFound === undefined) {
+          this.taskList.push({
+            id: this.taskList.length,
+            description: task.content,
+            priority: task.priority,
+            time: 0,
+            isCurrent: false,
+            complete: false,
+            source: 'Todoist',
+            sourceId: task.id,
+          });
+        }
       });
+
+      // console.log(this.taskList);
     }
     // console.log(this.taskList);
     // Add PubSub reference
@@ -52,15 +60,8 @@ const TasksModel = {
   },
   publish: function () {
     this.pubSub.publish(this);
-    // Save the object back to localStorage but filter for local source tasks
-    // This prevents the other sources from creating duplicates
-    let taskList = this.taskList
-      // only show local tasks
-      .filter((task) => {
-        return task.source === 'Local';
-      });
-    // console.log(taskList);
-    localStorage.setItem(this.storageID, JSON.stringify(taskList));
+    // Save the object back to localStorage
+    localStorage.setItem(this.storageID, JSON.stringify(this.taskList));
   },
   /**
    * Add a task to from the input
