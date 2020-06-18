@@ -42,7 +42,7 @@ const AlarmView = {
   // notify called by PubSub
   notify: function (model) {
     if (model.subject === 'timer') {
-      console.log(model);
+      // console.log(model);
       if (model.running && model.currentTime === 0) {
         this.play();
       }
