@@ -40,13 +40,19 @@ button:active {
 
 .alarm {
   transform: translate(-50%, -50%);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  z-index: 99;
 }
 
 .alarm img {
   height: 6rem;
-  border: 2px solid #77d42a;
+  border: 2px solid #002fa7;
+  background-color: #bfcbe9;
+  color: white;
   padding: 1rem;
-  margin: 1rem;
   border-radius: 5px;
 }
 
