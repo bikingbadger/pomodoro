@@ -39,7 +39,7 @@ const ProfileView = {
           pomodoroRest: parseInt(pomodoroRestInput.value),
           pomodoroLong: parseInt(pomodoroLongInput.value),
         };
-        console.log('Saving', profile);
+        // console.log('Saving', profile);
 
         ProfileController.saveProfileSettings(profile);
       },
