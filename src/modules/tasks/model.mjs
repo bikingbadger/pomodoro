@@ -4,11 +4,11 @@
 // those marked with today
 const importTodistTasks = async (todistKey) => {
   const allTaskURL = 'https://api.todoist.com/rest/v1/tasks?filter=today';
-  console.log(todistKey);
+  // console.log(todistKey);
   const response = await fetch(allTaskURL, {
     headers: { Authorization: `Bearer ${todistKey}` },
   });
-  console.log(response);
+  // console.log(response);
   return await response.json();
 };
 
@@ -27,46 +27,47 @@ const TasksModel = {
     //Get the tasks stored in local storage
     this.taskList = localStorage.getItem(this.storageID);
     this.taskList = this.taskList ? JSON.parse(this.taskList) : [];
-    console.log(this.taskList);
+    // console.log(this.taskList);
     // Check for todoist tasks
     if (this.todistKey) {
       const todoistTasks = await importTodistTasks(this.todistKey);
       todoistTasks.forEach((task) => {
-        console.log(task);
-        this.taskList.push({
-          id: this.taskList.length,
-          description: task.content,
-          priority: task.priority,
-          time: 0,
-          isCurrent: false,
-          complete: false,
-          source: 'Todoist',
-          sourceId: task.id,
-        });
+        // console.log(task.id);
+        const taskFound = this.taskList.find(
+          (element) => parseInt(element.sourceId) === parseInt(task.id),
+        );
+        // console.log(taskFound);
+        if (taskFound === undefined) {
+          this.taskList.push({
+            id: this.taskList.length,
+            description: task.content,
+            priority: task.priority,
+            time: 0,
+            isCurrent: false,
+            complete: false,
+            source: 'Todoist',
+            sourceId: task.id,
+          });
+        }
       });
+
+      // console.log(this.taskList);
     }
-    console.log(this.taskList);
+    // console.log(this.taskList);
     // Add PubSub reference
     this.pubSub = PubSub;
     this.publish();
   },
   publish: function () {
     this.pubSub.publish(this);
-    // Save the object back to localStorage but filter for local source tasks
-    // This prevents the other sources from creating duplicates
-    let taskList = this.taskList
-      // only show local tasks
-      .filter((task) => {
-        return task.source === 'Local';
-      });
-    console.log(taskList);
-    localStorage.setItem(this.storageID, JSON.stringify(taskList));
+    // Save the object back to localStorage
+    localStorage.setItem(this.storageID, JSON.stringify(this.taskList));
   },
   /**
    * Add a task to from the input
    */
   add: function (taskDescription) {
-    console.log(`Adding ${taskDescription}`);
+    // console.log(`Adding ${taskDescription}`);
     // Push the new task onto array
     this.taskList.push({
       id: this.taskList.length,
@@ -87,7 +88,7 @@ const TasksModel = {
    * @param task The task that you want to update
    */
   update: function (task) {
-    console.log(task);
+    // console.log(task);
     if (!task.description) throw Error('Task must have a description');
     // Update the description for given id
     this.taskList[task.id].description = task.description;
@@ -100,12 +101,21 @@ const TasksModel = {
    * @param task This is the task you want to mark as complete
    */
   complete: function (taskId) {
+    // console.log(taskId);
+    // console.log(this.taskList);
     // Unset all tasks as current
     this.taskList.forEach((task) => {
       task.isCurrent = false;
     });
 
-    this.taskList[taskId].complete = true;
+    // Find the task that you want to complete using the ID
+    const task = this.taskList.find((element) => {
+      // console.log(parseInt(element.id), parseInt(taskId));
+      return parseInt(element.id) === parseInt(taskId);
+    });
+    if (task) {
+      task.complete = true;
+    }
     // Publish change
     this.publish();
   },
@@ -145,8 +155,8 @@ const TasksModel = {
     // Publish change
     this.publish();
   },
-  setTodistKey: function (token) {
-    this.todistKey = token;
+  setTodistKey: function (profile) {
+    this.todistKey = profile.todoistKey;
   },
 };
 

@@ -3,7 +3,7 @@
 
 const AuthView = {
   load: function () {
-    console.log('Loading Auth');
+    // console.log('Loading Auth');
     // if (!buttonLogin) {
     //   throw Error('Login button missing');
     // }
