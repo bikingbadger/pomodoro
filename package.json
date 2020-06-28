@@ -5,8 +5,6 @@
   "main": "index.html",
   "scripts": {
     "dev": "parcel src/index.html",
-    "functions": "netlify-lambda serve src/functions",
-    "prebuild": "netlify-lambda build src/functions",
     "build": "parcel build src/index.html"
   },
   "repository": {
