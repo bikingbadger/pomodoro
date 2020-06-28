@@ -18,6 +18,9 @@ const AlarmView = {
       alarmClock.appendChild(image);
     }
 
+    // Remove the class to show the alarm clock image
+    alarmClock.classList.add('invisible');
+
     // Add a click event to kill the alarm sound
     alarmClock.addEventListener('click', this.kill);
   },

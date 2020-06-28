@@ -12,6 +12,17 @@ const importTodistTasks = async (todistKey) => {
   return await response.json();
 };
 
+const completeTask = async (todistKey, taskId) => {
+  const completeTaskURL = `https://api.todoist.com/rest/v1/tasks/${taskId}/close`;
+
+  const response = await fetch(completeTaskURL, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${todistKey}` },
+  });
+
+  console.log(response);
+};
+
 const TasksModel = {
   taskList: {},
   storageID: 'tasks',
@@ -113,9 +124,18 @@ const TasksModel = {
       // console.log(parseInt(element.id), parseInt(taskId));
       return parseInt(element.id) === parseInt(taskId);
     });
+
+    // Mark task as complete
     if (task) {
       task.complete = true;
     }
+
+    // Complete Todoist Task
+    if (task.source === 'Todoist') {
+      console.log(task.sourceId);
+      completeTask(this.todistKey, task.sourceId);
+    }
+
     // Publish change
     this.publish();
   },
