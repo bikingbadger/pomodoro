@@ -2,25 +2,37 @@
 
 // Use todoist API to fetch the current tasks,
 // those marked with today
-const importTodistTasks = async (todistKey) => {
+const importTodoistTasks = async (todoistKey) => {
   const allTaskURL = 'https://api.todoist.com/rest/v1/tasks?filter=today';
-  // console.log(todistKey);
+  // console.log(todoistKey);
   const response = await fetch(allTaskURL, {
-    headers: { Authorization: `Bearer ${todistKey}` },
+    headers: { Authorization: `Bearer ${todoistKey}` },
   });
   // console.log(response);
   return await response.json();
 };
 
-const completeTask = async (todistKey, taskId) => {
+const completeTask = async (todoistKey, taskId) => {
   const completeTaskURL = `https://api.todoist.com/rest/v1/tasks/${taskId}/close`;
 
   const response = await fetch(completeTaskURL, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${todistKey}` },
+    headers: { Authorization: `Bearer ${todoistKey}` },
   });
 
   console.log(response);
+};
+
+const getTask = async (todoistKey, taskId) => {
+  const getTaskURL = `https://api.todoist.com/rest/v1/tasks/${taskId}`;
+  const response = await fetch(getTaskURL, {
+    headers: { Authorization: `Bearer ${todoistKey}` },
+  });
+  if (await response.ok) {
+    return response.json();
+  } else {
+    return { id: -1, description: 'Not found' };
+  }
 };
 
 const TasksModel = {
@@ -28,7 +40,8 @@ const TasksModel = {
   storageID: 'tasks',
   pubSub: null,
   subject: 'tasks',
-  todistKey: '',
+  todoistKey: '',
+  todoistTasks: [],
   /**
    * Initialize the tasks and setup pubsub
    *
@@ -38,33 +51,48 @@ const TasksModel = {
     //Get the tasks stored in local storage
     this.taskList = localStorage.getItem(this.storageID);
     this.taskList = this.taskList ? JSON.parse(this.taskList) : [];
-    // console.log(this.taskList);
+
+    // Add scheduled for older records from v1 for backwards compatibility
+    this.taskList.forEach((task) => {
+      if (typeof task.scheduled === 'undefined') {
+        this.taskList[task.id].scheduled = false;
+      }
+    });
+
     // Check for todoist tasks
-    if (this.todistKey) {
-      const todoistTasks = await importTodistTasks(this.todistKey);
-      todoistTasks.forEach((task) => {
-        // console.log(task.id);
-        const taskFound = this.taskList.find(
-          (element) => parseInt(element.sourceId) === parseInt(task.id),
+    if (this.todoistKey) {
+      this.todoistTasks = await importTodoistTasks(this.todoistKey);
+      this.todoistTasks.forEach((todoistTask) => {
+        const taskInList = this.taskList.find(
+          (element) => parseInt(element.sourceId) === parseInt(todoistTask.id),
         );
-        // console.log(taskFound);
-        if (taskFound === undefined) {
+
+        if (taskInList === undefined) {
           this.taskList.push({
             id: this.taskList.length,
-            description: task.content,
-            priority: task.priority,
+            description: todoistTask.content,
+            priority: todoistTask.priority,
             time: 0,
             isCurrent: false,
-            complete: false,
+            completed: false,
             source: 'Todoist',
-            sourceId: task.id,
+            sourceId: todoistTask.id,
+            scheduled: false,
           });
+        } else {
+          // console.log(taskInList);
+          // console.log(todoistTask);
+          if (todoistTask.completed !== taskInList.completed) {
+            // console.log(`Task is either recurring or moved to incomplete`);
+            taskInList.completed = todoistTask.completed;
+            taskInList.scheduled = false;
+          }
+          // console.log(`Task already on list: ${taskInList.description}`);
         }
       });
 
-      // console.log(this.taskList);
+      await this.checkCompleted();
     }
-    // console.log(this.taskList);
     // Add PubSub reference
     this.pubSub = PubSub;
     this.publish();
@@ -86,9 +114,10 @@ const TasksModel = {
       priority: 2,
       time: 0,
       isCurrent: false,
-      complete: false,
+      completed: false,
       source: 'Local',
       sourceId: this.taskList.length,
+      scheduled: true,
     });
 
     this.publish();
@@ -127,17 +156,61 @@ const TasksModel = {
 
     // Mark task as complete
     if (task) {
-      task.complete = true;
+      task.completed = true;
     }
 
     // Complete Todoist Task
     if (task.source === 'Todoist') {
       console.log(task.sourceId);
-      completeTask(this.todistKey, task.sourceId);
+      completeTask(this.todoistKey, task.sourceId);
     }
 
     // Publish change
     this.publish();
+  },
+  /**
+   * Check whether the task has been completed in the source
+   */
+  checkCompleted: async function () {
+    // Make sure that current tasks from todoist are in array
+    // if not them remove them for now
+    await this.taskList.forEach(async (task) => {
+      // console.log('======================================================');
+      if (!task.completed && task.source === 'Todoist') {
+        // console.log(task);
+        // console.log(task.sourceId);
+        const todoistTask = this.todoistTasks.find((element) => {
+          // console.log(element);
+          return parseInt(element.id) === parseInt(task.sourceId);
+        });
+
+        // If the task was not found on the today list then it's probably completed in Todoist or
+        // the task has been scheduled for a later date in Todoist
+        if (!todoistTask) {
+          const isActive = await getTask(this.todoistKey, task.sourceId);
+          // console.log(`Active: ${isActive.id}`);
+          // If there is no id the task has been completed as you can only
+          // get active tasks through the API, so set the task as complete
+          if (parseInt(isActive.id) === -1) {
+            task.completed = true;
+          }
+          // The task exists in Todist but has been scheduled for a later date
+          // so it should be set to scheduled
+          else {
+            console.log(`Task is scheduled: ${task.description}`);
+            task.scheduled = true;
+            this.publish();
+          }
+        } else {
+          console.log(`Task still current: ${todoistTask.content}`);
+          task.scheduled = false;
+        }
+      }
+      // else {
+      //   console.log(`Task complete or not Todoist task: ${task.description}`);
+      // }
+      // console.log('======================================================');
+    });
   },
   /**
    * Set the current task from the todo list
@@ -176,7 +249,7 @@ const TasksModel = {
     this.publish();
   },
   setTodistKey: function (profile) {
-    this.todistKey = profile.todoistKey;
+    this.todoistKey = profile.todoistKey;
   },
 };
 

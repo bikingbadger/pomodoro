@@ -201,7 +201,7 @@ const TasksView = {
     let taskList = tasks.taskList
       // only show completed tasks
       .filter((task) => {
-        return task.complete === true;
+        return task.completed === true;
       })
       // add them to the completed list
       .map((task) => {
@@ -217,7 +217,10 @@ const TasksView = {
     // Map each task to a list task
     taskList = tasks.taskList
       .filter((task) => {
-        return task.complete === false;
+        return (
+          !task.completed &&
+          (typeof task.scheduled === 'undefined' || task.scheduled === false)
+        );
       })
       .map((task) => {
         return renderTaskElement(task);
