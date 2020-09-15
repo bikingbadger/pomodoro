@@ -13,12 +13,25 @@ const TimerModel = {
   pomodoroRest: 300,
   pomodoroLong: 750,
   buttonPressed: false,
+  storageID: 'timer',
   /**
    * Load the object with all its default settings
    */
   load: function (PubSub) {
+    const currentSettings = JSON.parse(localStorage.getItem(this.storageID));
+    if (currentSettings) {
+      this.currentTime = currentSettings.currentTime;
+      this.running = currentSettings.running;
+      this.workTime = currentSettings.workTime;
+      this.pompoms = currentSettings.pompoms;
+      this.countDown = currentSettings.countDown;
+      this.buttonPressed = currentSettings.buttonPressed;
+    } else {
+      this.currentTime = this.pomodoroTime;
+    }
+
     // Set the current time to the pomodoro timer
-    this.currentTime = this.pomodoroTime;
+    // this.currentTime = this.pomodoroTime;
 
     // console.log(PubSub);
     this.pubSub = PubSub;
@@ -50,6 +63,15 @@ const TimerModel = {
     }, timeout);
   },
   publish: function () {
+    const currentSettings = {
+      currentTime: this.currentTime,
+      running: this.running,
+      workTime: this.workTime,
+      pompoms: this.pompoms,
+      countDown: this.countDown,
+      buttonPressed: this.buttonPressed,
+    };
+    localStorage.setItem(this.storageID, JSON.stringify(currentSettings));
     this.pubSub.publish(this);
   },
   /**
