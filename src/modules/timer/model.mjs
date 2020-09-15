@@ -12,6 +12,7 @@ const TimerModel = {
   pomodoroTime: 1500,
   pomodoroRest: 300,
   pomodoroLong: 750,
+  buttonPressed: false,
   /**
    * Load the object with all its default settings
    */
@@ -32,6 +33,7 @@ const TimerModel = {
 
     // create the timer once
     this.countDown = window.setInterval(() => {
+      this.buttonPressed = false;
       //Make sure the timer is running and not paused
       if (this.running) {
         //  Check if the timer has ended, if it has determine the next course of action
@@ -62,13 +64,13 @@ const TimerModel = {
    */
   start: function () {
     this.running = true;
+    this.buttonPressed = true;
     this.publish();
   },
   /**
    * Stop the timer
    */
   stop: function () {
-    // console.log('Stopping timer');
     this.running = false;
     this.publish();
   },
@@ -142,6 +144,7 @@ const TimerModel = {
   },
   reset: function () {
     this.running = false;
+    this.buttonPressed = true;
     this.currentTime = this.pomodoroTime;
     this.publish();
   },
