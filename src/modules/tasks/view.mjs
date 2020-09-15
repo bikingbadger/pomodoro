@@ -11,6 +11,8 @@ const buttonAddClose = document.querySelector('#task-add-close');
 const taskAddForm = document.querySelector('#task-add-form');
 const showAddTask = document.querySelector('#show-add-task');
 
+const converter = new showdown.Converter();
+
 const formatTime = function (currentTime) {
   /**
    * Render the timer
@@ -33,7 +35,7 @@ const renderTaskElement = function (task) {
   // data-task-description="${task.description}"
   // data-task-priority="${task.priority}"
   // data-task-time="${task.time}">${task.description}</li>`;
-  let text = task.description;
+  let text = converter.makeHtml(task.description);  
 
   if (parseInt(task.time) > 0) {
     const output = formatTime(task.time);
