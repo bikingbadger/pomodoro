@@ -169,6 +169,7 @@ const TimerModel = {
     this.buttonPressed = true;
     this.currentTime = this.pomodoroTime;
     this.pompoms = 0;
+    this.workTime = true;
     this.publish();
   },
 };
