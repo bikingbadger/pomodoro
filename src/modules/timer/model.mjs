@@ -168,6 +168,7 @@ const TimerModel = {
     this.running = false;
     this.buttonPressed = true;
     this.currentTime = this.pomodoroTime;
+    this.pompoms = 0;
     this.publish();
   },
 };
