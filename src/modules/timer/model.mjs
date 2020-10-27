@@ -2,6 +2,7 @@
 
 const TimerModel = {
   // Current time in seconds
+  startTime: new Date().getTime(),
   currentTime: 1500,
   running: false,
   workTime: true,
@@ -9,6 +10,7 @@ const TimerModel = {
   pubSub: null,
   subject: 'timer',
   countDown: null,
+  currentPomodoro: 0,
   pomodoroTime: 1500,
   pomodoroRest: 300,
   pomodoroLong: 750,
@@ -29,6 +31,7 @@ const TimerModel = {
     } else {
       this.currentTime = this.pomodoroTime;
     }
+    this.currentPomodoro = this.currentTime;
 
     // Set the current time to the pomodoro timer
     // this.currentTime = this.pomodoroTime;
@@ -38,11 +41,7 @@ const TimerModel = {
     this.publish();
 
     // Use a faster timeout for local testing
-    const timeout =
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1'
-        ? 10
-        : 1000;
+    const timeout = 1000;
 
     // create the timer once
     this.countDown = window.setInterval(() => {
@@ -50,6 +49,7 @@ const TimerModel = {
       //Make sure the timer is running and not paused
       if (this.running) {
         //  Check if the timer has ended, if it has determine the next course of action
+        console.log('load', this.currentTime);
         if (this.currentTime <= 0) {
           this.stop();
           this.next();
@@ -78,7 +78,8 @@ const TimerModel = {
    * Decrease the current time by one second
    */
   decrease: function () {
-    this.currentTime--;
+    var currentMillisecondsPassed = new Date().getTime() - this.startTime;
+    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / 50;
     this.publish();
   },
   /**
@@ -87,6 +88,8 @@ const TimerModel = {
   start: function () {
     this.running = true;
     this.buttonPressed = true;
+    this.startTime = new Date().getTime();
+    console.log(this.startTime);
     this.publish();
   },
   /**
@@ -140,6 +143,7 @@ const TimerModel = {
   setTime: function (seconds) {
     // Check that timer is not running
     if (this.running) return;
+    this.currentPomodoro = seconds;
     this.currentTime = seconds;
     this.publish();
   },
@@ -168,6 +172,7 @@ const TimerModel = {
     this.running = false;
     this.buttonPressed = true;
     this.currentTime = this.pomodoroTime;
+    this.currentPomodoro = this.currentTime;
     this.pompoms = 0;
     this.workTime = true;
     this.publish();
