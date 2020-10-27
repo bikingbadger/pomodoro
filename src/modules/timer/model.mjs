@@ -79,7 +79,7 @@ const TimerModel = {
    */
   decrease: function () {
     var currentMillisecondsPassed = new Date().getTime() - this.startTime;
-    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / 50;
+    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / 1000;
     this.publish();
   },
   /**
