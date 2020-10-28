@@ -49,7 +49,7 @@ const TimerModel = {
       //Make sure the timer is running and not paused
       if (this.running) {
         //  Check if the timer has ended, if it has determine the next course of action
-        console.log('load', this.currentTime);
+        // console.log('load', this.currentTime);
         if (this.currentTime <= 0) {
           this.stop();
           this.next();
@@ -78,8 +78,13 @@ const TimerModel = {
    * Decrease the current time by one second
    */
   decrease: function () {
+    const secondsConversion =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1'
+        ? 10
+        : 1000;
     var currentMillisecondsPassed = new Date().getTime() - this.startTime;
-    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / 1000;
+    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / secondsConversion;
     this.publish();
   },
   /**
@@ -89,7 +94,7 @@ const TimerModel = {
     this.running = true;
     this.buttonPressed = true;
     this.startTime = new Date().getTime();
-    console.log(this.startTime);
+    // console.log(this.startTime);
     this.publish();
   },
   /**
