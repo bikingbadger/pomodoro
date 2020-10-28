@@ -44,9 +44,10 @@ const AlarmView = {
   },
   // notify called by PubSub
   notify: function (model) {
+    console.log(model.subject);
     if (model.subject === 'timer') {
       // Play alarm if the timer has stopped and the time has run out
-      if (model.running && model.currentTime === 0) {
+      if (model.running && model.currentTime <= 0) {
         this.play();
       }
       // If start or reset button pressed then the alarm should also be stopped
