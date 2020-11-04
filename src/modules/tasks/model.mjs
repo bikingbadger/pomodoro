@@ -78,6 +78,7 @@ const TasksModel = {
             source: 'Todoist',
             sourceId: todoistTask.id,
             scheduled: false,
+            currentTime: todoistTask.currentTime ? todoistTask.currentTime : 0,
           });
         } else {
           // console.log(taskInList);
@@ -118,6 +119,7 @@ const TasksModel = {
       source: 'Local',
       sourceId: this.taskList.length,
       scheduled: true,
+      currentTime: 0,
     });
 
     this.publish();
@@ -236,14 +238,29 @@ const TasksModel = {
     // Publish change
     this.publish();
   },
-  addSecond: function () {
+  addSecond: function (currentTime) {
     const currentId = this.taskList.find((task) => {
       return task.isCurrent === true;
     });
     // If there is no current task then you can't add time
     if (!currentId) return;
     // console.log(this.taskList[currentId.id]);
-    this.taskList[currentId.id].time++;
+
+    // Check for newly added field if it exists, if not create it
+    // Also check whether it is the start of a pomodoro to reset the time
+    if (
+      !this.taskList[currentId.id].currentTime ||
+      parseInt(this.taskList[currentId.id].currentTime) === 0
+    ) {
+      this.taskList[currentId.id].currentTime = currentTime;
+    }
+    //console.log(this.taskList[currentId.id].currentTime, currentTime);
+    // Add the time difference to the current task time
+    this.taskList[currentId.id].time +=
+      this.taskList[currentId.id].currentTime - currentTime;
+    // Save the current timer or set to zero once done, this is then used to reset the
+    // current time of the task to the pomodoro time on the next pompom
+    this.taskList[currentId.id].currentTime = currentTime > 0 ? currentTime : 0;
 
     // Publish change
     this.publish();

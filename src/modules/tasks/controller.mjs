@@ -19,8 +19,8 @@ const TasksController = {
   updateTask: function (task) {
     this.model.update(task);
   },
-  addSecond: function () {
-    this.model.addSecond();
+  addSecond: function (currentSecond) {
+    this.model.addSecond(currentSecond);
   },
   completeTask: function (taskId) {
     this.model.complete(taskId);
