@@ -252,7 +252,7 @@ const TasksView = {
     }
     if (model.subject === 'timer') {
       if (model.running && model.workTime) {
-        TasksController.addSecond();
+        TasksController.addSecond(model.currentTime);
       }
     }
   },
