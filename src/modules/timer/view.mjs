@@ -55,17 +55,19 @@ const TimerView = {
      * Render the timer
      */
     const currentTime = timer.currentTime;
-    // extract the minutes from the timer, convert to string and pad with zero's
-    const minutes = parseInt(currentTime / 60, 10)
-      .toString()
-      .padStart(2, '0');
-    // extract the seconds from the timer, convert to string and pad with zero's
-    const seconds = parseInt(currentTime % 60, 10)
-      .toString()
-      .padStart(2, '0');
-    // concatenate the mintues and seconds into a pretty string
-    const output = `${minutes}:${seconds}`;
-
+    let output = `00:00`;
+    if (currentTime >= 0) {
+      // extract the minutes from the timer, convert to string and pad with zero's
+      const minutes = parseInt(currentTime / 60, 10)
+        .toString()
+        .padStart(2, '0');
+      // extract the seconds from the timer, convert to string and pad with zero's
+      const seconds = parseInt(currentTime % 60, 10)
+        .toString()
+        .padStart(2, '0');
+      // concatenate the mintues and seconds into a pretty string
+      output = `${minutes}:${seconds}`;
+    }
     // check for changes, if there are changes update the document
     if (timerElement.innerHTML !== output) {
       timerElement.innerHTML = output;
