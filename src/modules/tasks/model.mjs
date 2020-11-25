@@ -199,12 +199,12 @@ const TasksModel = {
           // The task exists in Todist but has been scheduled for a later date
           // so it should be set to scheduled
           else {
-            console.log(`Task is scheduled: ${task.description}`);
+            // console.log(`Task is scheduled: ${task.description}`);
             task.scheduled = true;
             this.publish();
           }
         } else {
-          console.log(`Task still current: ${todoistTask.content}`);
+          // console.log(`Task still current: ${todoistTask.content}`);
           task.scheduled = false;
         }
       }
@@ -244,17 +244,30 @@ const TasksModel = {
     });
     // If there is no current task then you can't add time
     if (!currentId) return;
-    // console.log(this.taskList[currentId.id]);
+    // console.log(
+    //   `param: ${currentTime} current: ${
+    //     this.taskList[currentId.id].currentTime
+    //   } time:${this.taskList[currentId.id].time}`,
+    // );
 
     // Check for newly added field if it exists, if not create it
     // Also check whether it is the start of a pomodoro to reset the time
-    if (
-      !this.taskList[currentId.id].currentTime ||
-      parseInt(this.taskList[currentId.id].currentTime) === 0
+    if (!this.taskList[currentId.id].currentTime) {
+      this.taskList[currentId.id].currentTime = currentTime;
+    } else if (parseInt(this.taskList[currentId.id].currentTime) === 0) {
+      this.taskList[currentId.id].currentTime = currentTime;
+    } else if (
+      currentTime > parseInt(this.taskList[currentId.id].currentTime)
     ) {
       this.taskList[currentId.id].currentTime = currentTime;
     }
-    //console.log(this.taskList[currentId.id].currentTime, currentTime);
+
+    // console.log(
+    //   `param: ${currentTime} current: ${
+    //     this.taskList[currentId.id].currentTime
+    //   } time:${this.taskList[currentId.id].time}`,
+    // );
+
     // Add the time difference to the current task time
     this.taskList[currentId.id].time +=
       this.taskList[currentId.id].currentTime - currentTime;
