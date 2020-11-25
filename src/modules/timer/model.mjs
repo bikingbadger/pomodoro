@@ -33,9 +33,6 @@ const TimerModel = {
     }
     this.currentPomodoro = this.currentTime;
 
-    // Set the current time to the pomodoro timer
-    // this.currentTime = this.pomodoroTime;
-
     // console.log(PubSub);
     this.pubSub = PubSub;
     this.publish();
@@ -81,10 +78,11 @@ const TimerModel = {
     const secondsConversion =
       window.location.hostname === 'localhost' ||
       window.location.hostname === '127.0.0.1'
-        ? 10
+        ? 750
         : 1000;
-    var currentMillisecondsPassed = new Date().getTime() - this.startTime;
-    this.currentTime = this.currentPomodoro - currentMillisecondsPassed / secondsConversion;
+        var currentMillisecondsPassed = (new Date().getTime() - this.startTime)/ secondsConversion;
+        this.currentTime = this.currentPomodoro - currentMillisecondsPassed;
+        // console.log(`currentMillisecondsPassed: ${currentMillisecondsPassed} currentTime: ${this.currentTime}`);
     this.publish();
   },
   /**
