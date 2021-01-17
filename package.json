@@ -1,17 +1,58 @@
 {
   "name": "pompom",
   "version": "0.3.0",
+  "private": true,
   "description": "Timer for getting tasks done by breaking them into smaller chunks. The timer uses the pomodoro method by setting 4 sessions of 25 minutes of work that have 5 minute rests. After the fourth working session there is a longer 15 minute rest session.",
-  "main": "index.html",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bikingbadger/pompom.git"
+  "author": {
+    "name": "Hilton Meyer"
   },
-  "keywords": [],
-  "author": "Hilton Meyer",
-  "license": "MIT",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
+  },
+  "main": "index.html",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.0-0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "@vue/test-utils": "^2.0.0-0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "lint-staged": "^9.5.0",
+    "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-0"
+  },
   "bugs": {
     "url": "https://github.com/bikingbadger/pompom/issues"
   },
-  "homepage": "https://pompom.hiltonmeyer.com"
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "homepage": "https://pompom.hiltonmeyer.com",
+  "keywords": [],
+  "license": "MIT",
+  "lint-staged": {
+    "*.{js,jsx,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bikingbadger/pompom.git"
+  }
 }
