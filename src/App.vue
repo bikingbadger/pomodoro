@@ -3,11 +3,10 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </div>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
-
 * {
   margin: 0;
   padding: 0;
@@ -19,14 +18,13 @@
 }
 
 body {
-  font-family: "PT Sans", sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-size: 1.25rem;
   font-weight: 400;
 }
 
 /* Utility classes */
 .flow-content > * + * {
-  margin-top: .75rem;
+  margin-top: 0.75rem;
 }
-
 </style>
