@@ -1,12 +1,21 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import rootMutations from './mutations';
+import rootActions from './actions';
+import rootGetters from './getters';
 
-export default createStore({
+// Import modules
+import taskModule from './tasks/index';
+
+const store = createStore({
   state: {
+    isLoggedIn: false,
   },
-  mutations: {
-  },
-  actions: {
-  },
+  mutations: rootMutations,
+  actions: rootActions,
+  getters: rootGetters,
   modules: {
-  }
-})
+    tasks: taskModule,
+  },
+});
+
+export default store;
