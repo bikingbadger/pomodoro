@@ -6,6 +6,21 @@
   <router-view />
 </template>
 
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  methods: {
+    ...mapActions('tasks', ['getTodoistTasks']),
+  },
+  mounted() {
+    // https://blog.logrocket.com/how-to-consume-apis-with-vuex-and-axios/
+    console.log('Get tasks from todoist');
+    this.getTodoistTasks();
+  },
+};
+</script>
+
 <style>
 * {
   margin: 0;

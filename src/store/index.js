@@ -7,8 +7,10 @@ import rootGetters from './getters';
 import taskModule from './tasks/index';
 
 const store = createStore({
-  state: {
-    isLoggedIn: false,
+  state() {
+    return {
+      isLoggedIn: false,
+    };
   },
   mutations: rootMutations,
   actions: rootActions,
