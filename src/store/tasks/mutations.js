@@ -27,4 +27,9 @@ export default {
       }
     });
   },
+  completeTask(state, taskToRemove) {
+    console.log(state.tasks, taskToRemove);
+    const taskId = state.tasks.findIndex((task) => task.id === taskToRemove.id);
+    state.tasks.splice(taskId, 1);
+  },
 };

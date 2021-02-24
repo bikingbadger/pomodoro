@@ -20,26 +20,46 @@
   <div>
     <ul>
       <li v-for="task in allTasks" :key="task.id">
-        {{ task.description }}
+        <span class="task-complete" @click="completeTask(task)"></span>
+        <div>{{ task.description }}</div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters('tasks', ['allTasks']),
+  },
+  methods: {
+    ...mapActions('tasks', ['completeTask']),
   },
 };
 </script>
 
 <style scoped>
 li {
-  padding: 1rem;
+  margin-top: 1rem;
+  padding: 0.5em 0.5em 0.5em 2em;
   border: 1px solid var(--clr-accent-500);
   border-radius: 5px;
+  position: relative;
+}
+
+.task-complete {
+  content: '';
+  position: absolute;
+  border-color: #009933;
+  border-style: solid;
+  border-width: 0 0.3em 0.25em 0;
+  height: 1em;
+  top: 1.3em;
+  left: 0.6em;
+  margin-top: -1em;
+  transform: rotate(45deg);
+  width: 0.5em;
 }
 </style>
