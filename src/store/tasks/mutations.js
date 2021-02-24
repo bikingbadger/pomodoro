@@ -7,13 +7,14 @@ export default {
       );
 
       if (taskInList === undefined) {
+        console.log(task);
         state.tasks.push({
           id: state.tasks.length,
           description: task.content,
           priority: task.priority,
           time: 0,
           isCurrent: false,
-          completed: false,
+          completed: state.completed,
           source: 'Todoist',
           sourceId: task.id,
           scheduled: false,

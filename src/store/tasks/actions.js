@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const allTaskURL = 'https://api.todoist.com/rest/v1/tasks?filter=today';
-const todoistKey = '1';
+const todoistKey = process.env.VUE_APP_TODOISTKEY;
 export default {
   getTodoistTasks({ commit }) {
+    console.log(todoistKey);
     axios
       .get(allTaskURL, { data: {}, headers: { Authorization: `Bearer ${todoistKey}` } })
       .then((response) => {
@@ -12,12 +13,5 @@ export default {
       .catch((error) => {
         console.error(error);
       });
-
-    // console.log(todoistKey);
-    // const response = await fetch(allTaskURL, {
-    //   headers: { Authorization: `Bearer ${todoistKey}` },
-    // });
-    // // console.log(response);
-    // return await response.json();
   },
 };
