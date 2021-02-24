@@ -11,6 +11,7 @@ export default {
         state.tasks.push({
           id: state.tasks.length,
           description: task.content,
+          order: task.order,
           priority: task.priority,
           time: 0,
           isCurrent: false,

@@ -36,4 +36,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+li {
+  padding: 1rem;
+  border: 1px solid var(--clr-accent-500);
+  border-radius: 5px;
+}
+</style>
