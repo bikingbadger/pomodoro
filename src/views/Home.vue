@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <h1>Pompom</h1>
     <timer-bar></timer-bar>
     <task-list></task-list>
   </div>
@@ -15,3 +14,10 @@ export default {
   components: { TimerBar, TaskList },
 };
 </script>
+
+<style scoped>
+.home {
+  width: 66vw;
+  margin: 0 auto;
+}
+</style>

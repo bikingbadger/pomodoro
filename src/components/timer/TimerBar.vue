@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-content">
+  <div class="timer flow-content">
     <div class="timer-display">{{ getCurrentTime }}</div>
     <div class="pompoms">
       <ul>
@@ -40,6 +40,14 @@ export default {
 </script>
 
 <style scoped>
+.timer {
+  border: 1px solid blue;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 50%;
+  margin: 0 auto;
+}
+
 .timer-display {
   text-align: center;
   font-size: 2rem;

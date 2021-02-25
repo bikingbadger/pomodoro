@@ -13,9 +13,9 @@ export default {
       workTime: true,
       pompoms: 1,
       currentPomodoro: 0,
-      pomodoroTime: 150,
-      pomodoroRest: 30,
-      pomodoroLong: 75,
+      pomodoroTime: 1500,
+      pomodoroRest: 300,
+      pomodoroLong: 750,
       secondsConversion:
         window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
           ? 5

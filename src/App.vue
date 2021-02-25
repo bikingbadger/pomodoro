@@ -1,8 +1,11 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <header>
+    <h1>Pompom</h1>
+    <div class="nav">
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+    </div>
+  </header>
   <router-view />
 </template>
 
@@ -37,6 +40,20 @@ body {
   font-family: 'PT Sans', sans-serif;
   font-size: 1.25rem;
   font-weight: 400;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 /* Utility classes */
