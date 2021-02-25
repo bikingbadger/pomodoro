@@ -8,9 +8,18 @@ export default {
     return {
       timerId: null,
       startTime: null,
-      currentTime: 1500,
+      currentTime: 0,
       isRunning: false,
-      currentPomodoro: 1500,
+      workTime: true,
+      pompoms: 0,
+      currentPomodoro: 0,
+      pomodoroTime: 1500,
+      pomodoroRest: 300,
+      pomodoroLong: 750,
+      secondsConversion:
+        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 10
+          : 1000,
     };
   },
   mutations: timerMutations,

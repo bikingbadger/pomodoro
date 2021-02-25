@@ -1,16 +1,14 @@
 <template>
   <div class="flow-content">
-    <div class="timer-display">{{getCurrentTime}}</div>
+    <div class="timer-display">{{ getCurrentTime }}</div>
     <div class="pompoms">
       <ul>
-        <li>🍅</li>
-        <li>🍅</li>
-        <li>🍅</li>
+        <li v-for="pompom in numberOfPompoms" v-bind:key="pompom.id">🍅</li>
       </ul>
     </div>
     <ul>
-      <li class="btn btn-go" @click="startTimer">Start</li>
-      <li class="btn btn-reset">Reset</li>
+      <button class="btn btn-go" @click="toggleTimer">{{ buttonText }}</button>
+      <button class="btn btn-reset" @click="resetTimer">Reset</button>
     </ul>
   </div>
 </template>
@@ -20,10 +18,20 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters('timer', ['getCurrentTime']),
+    ...mapGetters('timer', ['getCurrentTime', 'isRunning', 'numberOfPompoms']),
+    buttonText() {
+      return this.isRunning ? 'Pause' : 'Start';
+    },
   },
   methods: {
-    ...mapActions('timer', ['createTimer', 'startTimer']),
+    ...mapActions('timer', ['createTimer', 'startTimer', 'stopTimer', 'resetTimer']),
+    toggleTimer() {
+      if (this.isRunning) {
+        this.stopTimer();
+      } else {
+        this.startTimer();
+      }
+    },
   },
   mounted() {
     this.createTimer();
@@ -55,6 +63,12 @@ ul > * + * {
   padding: 0.5rem 1rem;
   background: var(--clr-accent-500);
   color: white;
+  border-radius: 1rem;
+}
+
+.btn:focus {
+  outline: none;
+  border: 3px dashed red;
   border-radius: 1rem;
 }
 </style>
