@@ -1,23 +1,5 @@
 <template>
-  <!-- <div
-    class="grid grid-flow-col grid-cols-12 pl-2 items-center h-16 rounded ${cardHover}"
-    data-task-id="${task.id}"
-    data-task-description="${task.description}"
-    data-task-priority="${task.priority}"
-    data-task-time="${task.time}"
-  >
-    <div><i data-task-complete="${task.id}" class="material-icons" title="Complete"></i></div>
-    <div
-      class="col-span-9 -mt-2 pl-2 md:pl-0 text-sm md:text-base"
-      id="task-${task.id}"
-      data-task-id="${task.id}"
-    >
-      ${text}
-    </div>
-    <div><i data-task-save="${task.id}" class="material-icons hidden" title="Save">save</i></div>
-    <div><i data-task-edit="${task.id}" class="material-icons" title="Edit">edit</i></div>
-  </div> -->
-  <div>
+  <div class="task-list">
     <ul>
       <li v-for="task in allTasks" :key="task.id">
         <span class="task-complete" @click="completeTask(task)"></span>
@@ -41,12 +23,23 @@ export default {
 </script>
 
 <style scoped>
-li {
+.task-list {
+  border: 1px solid blue;
+  border-radius: 1rem;
+  padding: 1rem;
   margin-top: 1rem;
+}
+
+li {
   padding: 0.5em 0.5em 0.5em 2em;
+  margin-bottom: 1rem;
   border: 1px solid var(--clr-accent-500);
   border-radius: 5px;
   position: relative;
+}
+
+ul > * + * {
+  margin-bottom: 0;
 }
 
 .task-complete {
