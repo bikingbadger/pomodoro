@@ -1,6 +1,6 @@
 <template>
   <div class="flow-content">
-    <div class="timer-display">25:00</div>
+    <div class="timer-display">{{getCurrentTime}}</div>
     <div class="pompoms">
       <ul>
         <li>🍅</li>
@@ -9,14 +9,26 @@
       </ul>
     </div>
     <ul>
-      <li class="btn btn-go">Start</li>
+      <li class="btn btn-go" @click="startTimer">Start</li>
       <li class="btn btn-reset">Reset</li>
     </ul>
   </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters('timer', ['getCurrentTime']),
+  },
+  methods: {
+    ...mapActions('timer', ['createTimer', 'startTimer']),
+  },
+  mounted() {
+    this.createTimer();
+  },
+};
 </script>
 
 <style scoped>

@@ -1,13 +1,13 @@
 export default {
   addTasks(state, tasks) {
     tasks.forEach((task) => {
-      console.log(task.content);
+      // console.log(task.content);
       const taskInList = state.tasks.find(
         (element) => parseInt(element.sourceId, 10) === parseInt(task.id, 10),
       );
 
       if (taskInList === undefined) {
-        console.log(task);
+        // console.log(task);
         state.tasks.push({
           id: state.tasks.length,
           description: task.content,
@@ -28,7 +28,7 @@ export default {
     });
   },
   completeTask(state, taskToRemove) {
-    console.log(state.tasks, taskToRemove);
+    // console.log(state.tasks, taskToRemove);
     const taskId = state.tasks.findIndex((task) => task.id === taskToRemove.id);
     state.tasks.splice(taskId, 1);
   },

@@ -1,6 +1,6 @@
-import taskMutations from './mutations';
-import taskActions from './actions';
-import taskGetters from './getters';
+import taskMutations from './taskMutations';
+import taskActions from './taskActions';
+import taskGetters from './taskGetters';
 
 export default {
   namespaced: true,
