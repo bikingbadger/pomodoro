@@ -28,6 +28,7 @@ export default {
   border-radius: 1rem;
   padding: 1rem;
   margin-top: 1rem;
+  box-shadow: 9px 10px 22px 0px rgba(0,0,0,0.5);
 }
 
 li {

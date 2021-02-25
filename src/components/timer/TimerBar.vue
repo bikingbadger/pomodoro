@@ -1,15 +1,15 @@
 <template>
-  <div class="timer flow-content">
+  <div class="timer">
     <div class="timer-display">{{ getCurrentTime }}</div>
     <div class="pompoms">
       <ul>
         <li v-for="pompom in numberOfPompoms" v-bind:key="pompom.id">🍅</li>
       </ul>
     </div>
-    <ul>
+    <div class="button-area">
       <button class="btn btn-go" @click="toggleTimer">{{ buttonText }}</button>
       <button class="btn btn-reset" @click="resetTimer">Reset</button>
-    </ul>
+    </div>
   </div>
 </template>
 
@@ -57,13 +57,13 @@ export default {
   text-align: center;
 }
 
-ul {
+.button-area {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-ul > * + * {
+.button-area > * + * {
   margin-left: 0.5rem;
 }
 
