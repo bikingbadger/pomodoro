@@ -1,19 +1,29 @@
+import audio from '@/assets/sounds/alarmclock.mp3';
+import { Howl } from 'howler';
+
 export default {
   setTimer: (state, timerId) => {
     state.timerId = timerId;
     state.currentPomodoro = state.pomodoroTime;
     state.currentTime = state.pomodoroTime;
+    state.sound = new Howl({
+      src: [audio],
+      preload: true,
+      loop: true,
+      volume: 0.5,
+    });
   },
   startTimer: (state) => {
     state.isRunning = true;
-    console.log('start', state.currentPomodoro, state.currentTime);
+    state.sound.stop();
+    // console.log('start', state.currentPomodoro, state.currentTime);
     state.startTime = new Date().getTime();
     // state.currentTime = state.currentPomodoro - state.currentTime;
   },
   decreaseTime: (state) => {
     const currentMillisecondsPassed =
       (new Date().getTime() - state.startTime) / state.secondsConversion;
-    console.log('decrease', state.startTime, state.currentPomodoro, currentMillisecondsPassed);
+    // console.log('decrease', state.startTime, state.currentPomodoro, currentMillisecondsPassed);
     state.currentTime = state.currentPomodoro - currentMillisecondsPassed;
   },
   stopTimer: (state) => {
@@ -27,6 +37,7 @@ export default {
     state.currentPomodoro = state.currentTime;
     state.pompoms = 1;
     state.workTime = true;
+    state.sound.stop();
   },
   nextStep: (state) => {
     /**
@@ -57,5 +68,8 @@ export default {
       state.workTime = true;
     }
     console.log('next', state.currentPomodoro, state.currentTime);
+  },
+  playAlarm: (state) => {
+    state.sound.play();
   },
 };

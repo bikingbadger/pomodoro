@@ -28,20 +28,22 @@ export default {
   border-radius: 1rem;
   padding: 1rem;
   margin-top: 1rem;
-  box-shadow: 9px 10px 22px 0px rgba(0,0,0,0.5);
+  box-shadow: 9px 10px 22px 0px rgba(0, 0, 0, 0.5);
 }
 
 li {
-  padding: 0.5em 0.5em 0.5em 2em;
+  padding: 0.5em 0.5em 0.5em 2rem;
   margin-bottom: 1rem;
-  border: 1px solid var(--clr-accent-500);
-  border-radius: 5px;
+  border-bottom: 1px solid var(--clr-accent-500);
+  /* border-radius: 5px; */
   position: relative;
+  display: flex;
+  align-content: center;
 }
 
-ul > * + * {
+/* ul > * + * {
   margin-bottom: 0;
-}
+} */
 
 .task-complete {
   content: '';
