@@ -7,16 +7,20 @@
       </ul>
     </div>
     <div class="button-area">
-      <button class="btn btn-go" @click="toggleTimer">{{ buttonText }}</button>
-      <button class="btn btn-reset" @click="resetTimer">Reset</button>
+      <prime-button @click="toggleTimer">{{ buttonText }}</prime-button>
+      <prime-button @click="resetTimer">Reset</prime-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import Button from 'primevue/button';
 
 export default {
+  components: {
+    PrimeButton: Button,
+  },
   computed: {
     ...mapGetters('timer', ['getCurrentTime', 'isRunning', 'numberOfPompoms']),
     buttonText() {
