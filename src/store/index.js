@@ -6,6 +6,7 @@ import rootGetters from './getters';
 // Import modules
 import taskModule from './tasks/taskIndex';
 import timerModule from './timer/timerIndex';
+import authModule from './auth/index';
 
 const store = createStore({
   state() {
@@ -19,6 +20,7 @@ const store = createStore({
   modules: {
     tasks: taskModule,
     timer: timerModule,
+    auth: authModule,
   },
 });
 

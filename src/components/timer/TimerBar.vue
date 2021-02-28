@@ -15,12 +15,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Button from 'primevue/button';
 
 export default {
-  components: {
-    PrimeButton: Button,
-  },
   computed: {
     ...mapGetters('timer', ['getCurrentTime', 'isRunning', 'numberOfPompoms']),
     buttonText() {
