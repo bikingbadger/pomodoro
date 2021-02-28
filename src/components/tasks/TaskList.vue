@@ -28,12 +28,12 @@ export default {
   border-radius: 1rem;
   padding: 1rem;
   margin-top: 1rem;
-  box-shadow: 9px 10px 22px 0px rgba(97, 97, 97, 0.5);
+  /* box-shadow: 9px 10px 22px 0px rgba(97, 97, 97, 0.5); */
 }
 
 li {
-  /* padding: 0.5em 0.5em 0.5em 2rem; */
-  margin-bottom: 1rem;
+  padding: 0.5em 0;
+  /* padding-bottom: 1rem; */
   border-bottom: 1px solid var(--clr-accent-500);
   /* border-radius: 5px; */
   /* position: relative; */
@@ -44,6 +44,11 @@ li {
   justify-content: start;
 }
 
+/* li:hover {
+  box-shadow: 9px 10px 22px 0px rgba(97, 97, 97, 0.5);
+  border-bottom: none;
+} */
+
 .task-complete {
   content: '';
   border-color: #009933;
@@ -52,5 +57,15 @@ li {
   width: 20px;
   margin: 1rem;
   border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+}
+
+.task-complete:hover {
+  cursor: pointer;
+}
+
+.task-complete:active {
+  background-color: #009933;
+  transform: scale(1.05);
 }
 </style>
