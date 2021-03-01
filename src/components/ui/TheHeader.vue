@@ -5,20 +5,22 @@
       <!-- <img alt="logo" src="../../assets/images/logo.svg" height="40" class="p-mr-2" /> -->
     </template>
     <template #end>
+      <timer-bar></timer-bar>
       <!-- <InputText placeholder="Search" type="text" /> -->
-      <Button
-        v-if="isLoggedIn"
-        label="Logout"
-        icon="pi pi-lock-open"
-        @click="logout"
-        class="p-mr-2"
-      />
-      <router-link to="login" v-if="!isLoggedIn">
-        <Button label="Login" icon="pi pi-lock" class="p-mr-2"></Button>
-      </router-link>
-      <router-link to="register" v-if="!isLoggedIn">
-        <Button label="Register" icon="pi pi-pencil" @click="register"
-      /></router-link>
+      <div>
+        <Button
+          v-if="isLoggedIn"
+          icon="pi pi-lock-open"
+          @click="logout"
+          class="p-mr-2 p-button-rounded"
+        />
+        <router-link to="login" v-if="!isLoggedIn">
+          <Button icon="pi pi-lock" class="p-mr-2 p-button-rounded"></Button>
+        </router-link>
+        <router-link to="register" v-if="!isLoggedIn">
+          <Button icon="pi pi-pencil" class="p-mr-2 p-button-rounded" @click="register"
+        /></router-link>
+      </div>
     </template>
   </Menubar>
 </template>
@@ -26,10 +28,11 @@
 <script>
 import firebase from '@/utilities/firebase';
 import { mapActions } from 'vuex';
+import TimerBar from '@/components/timer/TimerBar.vue';
 import Menubar from 'primevue/menubar';
 
 export default {
-  components: { Menubar },
+  components: { TimerBar, Menubar },
   emits: ['showLogin', 'showRegister'],
   data() {
     return {
@@ -58,3 +61,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.p-menubar {
+  position: sticky;
+  top: 0;
+}
+
+.p-menubar-end {
+  display: flex;
+}
+
+</style>
