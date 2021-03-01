@@ -1,7 +1,6 @@
 <template>
   <Menubar :model="items">
     <template #start>
-      <h1>Pompom</h1>
       <!-- <img alt="logo" src="../../assets/images/logo.svg" height="40" class="p-mr-2" /> -->
     </template>
     <template #end>
@@ -66,10 +65,11 @@ export default {
 .p-menubar {
   position: sticky;
   top: 0;
+  background-color: #3f51b5;
+  color: white;
 }
 
 .p-menubar-end {
   display: flex;
 }
-
 </style>
