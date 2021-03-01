@@ -1,5 +1,5 @@
 <template>
-  <the-header />
+  <the-header/>
   <Panel class="m-auto ">
     <router-view />
   </Panel>

@@ -1,8 +1,7 @@
 <template>
   <div class="timer">
-    <div class="timer-display">{{ getCurrentTime }}</div>
-    <div class="pompoms">
-      <ul>
+    <div class="pompom-area">
+      <ul class="pompoms">
         <li v-for="pompom in numberOfPompoms" v-bind:key="pompom.id">🍅</li>
       </ul>
     </div>
@@ -10,6 +9,8 @@
       <Button @click="toggleTimer">{{ buttonText }}</Button>
       <Button @click="resetTimer">Reset</Button>
     </div>
+
+    <div class="timer-display">{{ getCurrentTime }}</div>
   </div>
 </template>
 
@@ -41,20 +42,27 @@ export default {
 
 <style scoped>
 .timer {
-  border: 1px solid blue;
-  border-radius: 10px;
-  padding: 1rem;
-  width: 50%;
-  margin: 0 auto;
+  /* border: 1px solid blue; */
+  /* border-radius: 10px; */
+  /* padding: 1rem; */
+  /* width: 50%; */
+  /* margin: 0 auto; */
+  display: flex;
+  align-items: center;
 }
 
 .timer-display {
-  text-align: center;
   font-size: 2rem;
+  margin: 0 1rem;
+}
+
+.pompom-area {
+  margin: 0 1rem;
 }
 
 .pompoms {
-  text-align: center;
+  display: flex;
+  font-size: 1.5rem;
 }
 
 .button-area {

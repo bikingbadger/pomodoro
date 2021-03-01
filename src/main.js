@@ -10,6 +10,7 @@ import Password from 'primevue/password';
 import Panel from 'primevue/panel';
 
 import 'primevue/resources/themes/md-light-indigo/theme.css';
+// import 'primevue/resources/themes/md-dark-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
