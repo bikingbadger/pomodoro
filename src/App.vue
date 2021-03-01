@@ -1,8 +1,6 @@
 <template>
-  <the-header/>
-  <Panel class="m-auto ">
-    <router-view />
-  </Panel>
+  <the-header />
+  <router-view />
 </template>
 
 <script>

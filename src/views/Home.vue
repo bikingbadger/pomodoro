@@ -1,7 +1,8 @@
 <template>
-  <div class="home">
+  <Panel class="home">
+    <h1 class="p-text-center p-text-uppercase">Pompom</h1>
     <task-list></task-list>
-  </div>
+  </Panel>
 </template>
 
 <script>
@@ -17,5 +18,10 @@ export default {
 .home {
   width: 66vw;
   margin: 0 auto;
+}
+
+h1 {
+  color: #3f51b5;
+  font-size: 3rem;
 }
 </style>
