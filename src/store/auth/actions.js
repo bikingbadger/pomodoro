@@ -49,14 +49,12 @@ export default {
           });
       });
   },
-  logout() {
+  logout({ commit }) {
     firebase
       .auth()
       .signOut()
       .then(() => {
-        this.isLoggedIn = false;
-        this.currentUser = '';
-        this.$router.push('login');
+        commit('logout');
       });
   },
   async getUser(context) {

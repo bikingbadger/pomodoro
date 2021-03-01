@@ -6,11 +6,17 @@
     </template>
     <template #end>
       <!-- <InputText placeholder="Search" type="text" /> -->
-      <Button label="Logout" icon="pi pi-lock-open" @click="logout" class="p-mr-2" />
-      <router-link to="login">
+      <Button
+        v-if="isLoggedIn"
+        label="Logout"
+        icon="pi pi-lock-open"
+        @click="logout"
+        class="p-mr-2"
+      />
+      <router-link to="login" v-if="!isLoggedIn">
         <Button label="Login" icon="pi pi-lock" class="p-mr-2"></Button>
       </router-link>
-      <router-link to="register">
+      <router-link to="register" v-if="!isLoggedIn">
         <Button label="Register" icon="pi pi-pencil" @click="register"
       /></router-link>
     </template>
@@ -18,6 +24,8 @@
 </template>
 
 <script>
+import firebase from '@/utilities/firebase';
+import { mapActions } from 'vuex';
 import Menubar from 'primevue/menubar';
 
 export default {
@@ -25,13 +33,22 @@ export default {
   emits: ['showLogin', 'showRegister'],
   data() {
     return {
-      items: [],
+      items: [
+        {
+          label: 'Home',
+          icon: 'pi pi-fw pi-home',
+          to: '/home',
+        },
+      ],
     };
   },
-  methods: {
-    logout() {
-      this.$emit('logout');
+  computed: {
+    isLoggedIn() {
+      return firebase.auth().currentUser;
     },
+  },
+  methods: {
+    ...mapActions('auth', ['logout']),
     login() {
       this.$emit('login');
     },

@@ -16,6 +16,12 @@ export default {
     state.errorMsg = error.message;
   },
 
+  logout(state) {
+    state.isLoggedIn = false;
+    state.currentUser = '';
+    router.push({ path: 'login' });
+  },
+
   getUser(state, userData) {
     state.username = userData.username;
     state.name = userData.name;
