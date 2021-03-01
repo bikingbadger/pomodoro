@@ -7,8 +7,8 @@
       </ul>
     </div>
     <div class="button-area">
-      <button class="btn btn-go" @click="toggleTimer">{{ buttonText }}</button>
-      <button class="btn btn-reset" @click="resetTimer">Reset</button>
+      <Button @click="toggleTimer">{{ buttonText }}</Button>
+      <Button @click="resetTimer">Reset</Button>
     </div>
   </div>
 </template>

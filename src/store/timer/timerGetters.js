@@ -18,7 +18,7 @@ export default {
   },
   numberOfPompoms: (state) => {
     const pomodoroArray = [];
-    console.log(state.pompoms, pomodoroArray);
+    // console.log(state.pompoms, pomodoroArray);
     for (let i = 0; i < state.pompoms; i += 1) {
       pomodoroArray.push({ id: i, pompodoro: i });
     }
