@@ -29,7 +29,7 @@ export default {
   stopTimer: (state) => {
     state.isRunning = false;
     state.currentPomodoro = state.currentTime;
-    console.log('stop', state.currentPomodoro, state.currentTime);
+    // console.log('stop', state.currentPomodoro, state.currentTime);
   },
   resetTimer: (state) => {
     state.isRunning = false;
@@ -67,7 +67,7 @@ export default {
       state.currentTime = state.pomodoroTime;
       state.workTime = true;
     }
-    console.log('next', state.currentPomodoro, state.currentTime);
+    // console.log('next', state.currentPomodoro, state.currentTime);
   },
   playAlarm: (state) => {
     state.sound.play();

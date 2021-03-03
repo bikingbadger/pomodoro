@@ -4,7 +4,7 @@
       <!-- <img alt="logo" src="../../assets/images/logo.svg" height="40" class="p-mr-2" /> -->
     </template>
     <template #end>
-      <timer-bar></timer-bar>
+      <timer-bar v-if="isLoggedIn"></timer-bar>
       <!-- <InputText placeholder="Search" type="text" /> -->
       <div>
         <Button
@@ -14,10 +14,14 @@
           class="p-mr-2 p-button-rounded"
         />
         <router-link to="login" v-if="!isLoggedIn">
-          <Button icon="pi pi-lock" class="p-mr-2 p-button-rounded"></Button>
+          <Button icon="pi pi-lock" class="p-mr-2 p-button-rounded" title="login"></Button>
         </router-link>
         <router-link to="register" v-if="!isLoggedIn">
-          <Button icon="pi pi-pencil" class="p-mr-2 p-button-rounded" @click="register"
+          <Button
+            icon="pi pi-pencil"
+            class="p-mr-2 p-button-rounded"
+            @click="register"
+            title="register"
         /></router-link>
       </div>
     </template>
