@@ -6,7 +6,7 @@ export default {
     state.email = userData.email;
     state.registrationError = false;
     state.errorMsg = '';
-    router.push({ path: 'home' });
+    router.replace({ path: 'home' });
   },
 
   authFail(state, payload) {
@@ -19,7 +19,7 @@ export default {
   logout(state) {
     state.isLoggedIn = false;
     state.currentUser = '';
-    router.push({ path: 'login' });
+    router.replace({ path: 'login' });
   },
 
   getUser(state, userData) {
