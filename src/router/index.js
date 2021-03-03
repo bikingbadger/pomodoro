@@ -55,7 +55,8 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
+  console.log('beforeEach', to.meta, firebase.auth().currentUser);
   if (to.meta.requiresAuth && !firebase.auth().currentUser) {
     next('login');
   } else if (to.meta.requiresNoAuth && firebase.auth().currentUser) {

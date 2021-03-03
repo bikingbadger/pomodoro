@@ -3,6 +3,7 @@ import router from '@/router';
 export default {
   authSuccess(state, payload) {
     const userData = payload;
+    state.isLoggedIn = true;
     state.email = userData.email;
     state.registrationError = false;
     state.errorMsg = '';
@@ -11,7 +12,7 @@ export default {
 
   authFail(state, payload) {
     const error = payload;
-
+    state.isLoggedIn = false;
     state.registrationError = true;
     state.errorMsg = error.message;
   },

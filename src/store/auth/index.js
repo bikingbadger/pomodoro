@@ -10,6 +10,7 @@ export default {
       name: '',
       username: '',
       email: '',
+      isLoggedIn: true,
     };
   },
   mutations: authMutations,

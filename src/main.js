@@ -16,13 +16,19 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 import App from './App.vue';
-import router from './router';
 import store from './store/index';
+import router from './router';
 import firebase from './utilities/firebase';
 
 let app;
 
 firebase.auth().onAuthStateChanged(() => {
+  // Check if user is logged in on firebase
+  // logout if not
+  if (!firebase.auth().currentUser) {
+    store.dispatch('auth/logout');
+  }
+
   if (!app) {
     app = createApp(App);
 

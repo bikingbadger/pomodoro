@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import { createStore, createLogger } from 'vuex';
 import rootMutations from './mutations';
 import rootActions from './actions';
 import rootGetters from './getters';
@@ -10,9 +10,7 @@ import authModule from './auth/index';
 
 const store = createStore({
   state() {
-    return {
-      isLoggedIn: false,
-    };
+    return {};
   },
   mutations: rootMutations,
   actions: rootActions,
@@ -22,6 +20,7 @@ const store = createStore({
     timer: timerModule,
     auth: authModule,
   },
+  plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
 });
 
 export default store;

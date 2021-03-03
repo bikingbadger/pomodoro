@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import firebase from '@/utilities/firebase';
-import { mapActions } from 'vuex';
+// import firebase from '@/utilities/firebase';
+import { mapGetters, mapActions } from 'vuex';
 import TimerBar from '@/components/timer/TimerBar.vue';
 import Menubar from 'primevue/menubar';
 
 export default {
   components: { TimerBar, Menubar },
-  emits: ['showLogin', 'showRegister'],
+  emits: ['login', 'register'],
   data() {
     return {
       items: [
@@ -49,9 +49,10 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() {
-      return firebase.auth().currentUser;
-    },
+    // isLoggedIn() {
+    //   return firebase.auth().currentUser;
+    // },
+    ...mapGetters('auth', ['isLoggedIn']),
   },
   methods: {
     ...mapActions('auth', ['logout']),
