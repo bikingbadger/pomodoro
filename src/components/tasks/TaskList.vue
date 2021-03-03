@@ -3,7 +3,7 @@
     <ul>
       <li v-for="task in allTasks" :key="task.id">
         <div class="task-complete" @click="completeTask(task)"></div>
-        <div>{{ task.description }}</div>
+        <div v-html="formattedDescription(task.description)"></div>
       </li>
     </ul>
   </div>
@@ -11,6 +11,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import MarkdownIt from 'markdown-it';
 
 export default {
   computed: {
@@ -18,6 +19,10 @@ export default {
   },
   methods: {
     ...mapActions('tasks', ['completeTask']),
+    formattedDescription(description) {
+      const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
+      return md.render(description);
+    },
   },
 };
 </script>

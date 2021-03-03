@@ -1,17 +1,16 @@
 <template>
-  <div class="home">
-    <timer-bar></timer-bar>
+  <Panel class="home">
+    <h1 class="p-text-center p-text-uppercase">Pompom</h1>
     <task-list></task-list>
-  </div>
+  </Panel>
 </template>
 
 <script>
 import TaskList from '@/components/tasks/TaskList.vue';
-import TimerBar from '@/components/timer/TimerBar.vue';
 
 export default {
   name: 'Home',
-  components: { TimerBar, TaskList },
+  components: { TaskList },
 };
 </script>
 
@@ -19,5 +18,10 @@ export default {
 .home {
   width: 66vw;
   margin: 0 auto;
+}
+
+h1 {
+  color: #3f51b5;
+  font-size: 3rem;
 }
 </style>
