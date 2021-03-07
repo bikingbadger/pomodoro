@@ -48,6 +48,10 @@ const routes = [
       requiresNoAuth: true,
     },
   },
+  {
+    path: '*',
+    redirect: 'home',
+  },
 ];
 
 const router = createRouter({
