@@ -16,7 +16,6 @@
   >
     <template #item="{ element }">
       <li>
-        <!-- <i icon="pi pi-bars" class="p-mr-2" /> -->
         <i class="pi pi-bars handle"></i>
         <div class="list-bullet" @click="completeTask(element)"></div>
         <span aria-hidden="true" v-html="formattedDescription(element.description)"></span>
