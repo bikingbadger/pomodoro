@@ -32,4 +32,7 @@ export default {
     const taskId = state.tasks.findIndex((task) => task.id === taskToRemove.id);
     state.tasks.splice(taskId, 1);
   },
+  organiseTaskList(state, taskList) {
+    state.tasks = [...taskList];
+  },
 };

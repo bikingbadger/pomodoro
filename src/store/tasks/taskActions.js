@@ -29,4 +29,7 @@ export default {
 
     console.log(response);
   },
+  organiseTaskList({ commit }, taskList) {
+    commit('organiseTaskList', taskList);
+  },
 };
