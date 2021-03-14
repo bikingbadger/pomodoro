@@ -11,8 +11,6 @@ const compare = (a, b) => {
 export default {
   allTasks: (state) => {
     const sortedArray = Object.values(state.tasks).sort(compare);
-    // console.log(sortedArray);
-
-    return { ...sortedArray };
+    return sortedArray;
   },
 };

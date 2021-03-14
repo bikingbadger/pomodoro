@@ -1,21 +1,60 @@
 <template>
-  <div class="task-list">
-    <ul>
-      <li v-for="task in allTasks" :key="task.id">
-        <div class="task-complete" @click="completeTask(task)"></div>
-        <div v-html="formattedDescription(task.description)"></div>
+  <vue-draggable
+    class="task-list"
+    tag="transition-group"
+    :component-data="{
+      tag: 'ul',
+      type: 'transition-group',
+      name: !drag ? 'flip-list' : null,
+    }"
+    v-model="tasks"
+    v-bind="dragOptions"
+    @start="drag = true"
+    @end="drag = false"
+    item-key="order"
+  >
+    <template #item="{ element }">
+      <li>
+        <div class="list-bullet" @click="completeTask(element)"></div>
+        <span aria-hidden="true" v-html="formattedDescription(element.description)"></span>
       </li>
-    </ul>
-  </div>
+    </template>
+  </vue-draggable>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import MarkdownIt from 'markdown-it';
+import VueDraggable from 'vuedraggable';
 
 export default {
+  order: 7,
+  components: {
+    VueDraggable,
+  },
+  data() {
+    return {
+      drag: false,
+    };
+  },
   computed: {
     ...mapGetters('tasks', ['allTasks']),
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost',
+      };
+    },
+    tasks: {
+      get() {
+        return this.allTasks;
+      },
+      set(listItem) {
+        console.log(listItem);
+      },
+    },
   },
   methods: {
     ...mapActions('tasks', ['completeTask']),
@@ -29,34 +68,27 @@ export default {
 
 <style scoped>
 .task-list {
-  /* border: 1px solid blue; */
   border-radius: 1rem;
   padding: 1rem;
   margin-top: 1rem;
-  /* box-shadow: 9px 10px 22px 0px rgba(97, 97, 97, 0.5); */
+  list-style-type: none;
 }
 
 li {
   padding: 0.5em 0;
-  /* padding-bottom: 1rem; */
-  border-bottom: 1px solid var(--clr-accent-500);
-  /* border-radius: 5px; */
-  /* position: relative; */
+  padding-bottom: 1rem;
+  border-bottom: 1px solid blue;
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: 1fr, 5fr;
   align-items: center;
   justify-content: start;
+  cursor: pointer;
 }
 
-/* li:hover {
-  box-shadow: 9px 10px 22px 0px rgba(97, 97, 97, 0.5);
-  border-bottom: none;
-} */
-
-.task-complete {
+.list-bullet {
   content: '';
-  border-color: #009933;
+  border-color: blue;
   border-style: solid;
   height: 20px;
   width: 20px;
@@ -69,8 +101,9 @@ li {
   cursor: pointer;
 }
 
-.task-complete:active {
-  background-color: #009933;
+li:active {
+  background-color: blue;
+  color: white;
   transform: scale(1.05);
 }
 </style>
