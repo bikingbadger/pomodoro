@@ -1,13 +1,13 @@
 export default {
   addTasks(state, tasks) {
     tasks.forEach((task) => {
-      // console.log(task.content);
-      const taskInList = state.tasks.find(
-        (element) => parseInt(element.sourceId, 10) === parseInt(task.id, 10),
-      );
+      console.log(state);
+      const taskInList = state.tasks
+        ? state.tasks.find((element) => parseInt(element.sourceId, 10) === parseInt(task.id, 10))
+        : undefined;
 
-      if (taskInList === undefined) {
-        // console.log(task);
+      if (!taskInList) {
+        console.log(task);
         state.tasks.push({
           id: state.tasks.length,
           description: task.content,
@@ -33,6 +33,7 @@ export default {
     state.tasks.splice(taskId, 1);
   },
   organiseTaskList(state, taskList) {
+    console.log(taskList);
     state.tasks = [...taskList];
   },
 };
