@@ -11,7 +11,7 @@ export default {
         state.tasks.push({
           id: state.tasks.length,
           description: task.content,
-          order: task.order,
+          order: state.tasks.length,
           priority: task.priority,
           time: 0,
           isCurrent: false,
@@ -31,5 +31,8 @@ export default {
     // console.log(state.tasks, taskToRemove);
     const taskId = state.tasks.findIndex((task) => task.id === taskToRemove.id);
     state.tasks.splice(taskId, 1);
+  },
+  organiseTaskList(state, taskList) {
+    state.tasks = [...taskList];
   },
 };
