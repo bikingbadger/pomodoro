@@ -10,7 +10,7 @@
       <Button @click="resetTimer">Reset</Button>
     </div>
 
-    <div class="timer-display">{{ getCurrentTime }}</div>
+    <time :datetime='getDurationString' class="timer-display">{{ getCurrentTime }}</time>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters('timer', ['getCurrentTime', 'isRunning', 'numberOfPompoms']),
+    ...mapGetters('timer', ['getCurrentTime', 'isRunning', 'numberOfPompoms', 'getDurationString']),
     buttonText() {
       return this.isRunning ? 'Pause' : 'Start';
     },
