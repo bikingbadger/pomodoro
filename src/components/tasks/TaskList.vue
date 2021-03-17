@@ -22,22 +22,42 @@
       </li>
     </template>
   </vue-draggable>
+  <pre>{{ todoistTasks }}</pre>
 </template>
 
 <script>
+import { ref } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
+import Todoist from '@/utilities/todoist';
+import axios from 'axios';
+import useSWRV from 'swrv';
+
+function fetcher(url) {
+  return axios
+    .get(url, { data: {}, headers: { Authorization: `Bearer ${Todoist.todoistKey}` } })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
 export default {
-  order: 5,
+  // order: 5,
   components: {
     VueDraggable,
   },
-  data() {
+  setup() {
+    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
+    const drag = ref(false);
+    const list = ref([]);
+
     return {
-      drag: false,
-      list: [],
+      todoistTasks,
+      taskError,
+      drag,
+      list,
     };
   },
   computed: {
@@ -63,7 +83,17 @@ export default {
     ...mapActions('tasks', ['completeTask', 'organiseTaskList']),
     formattedDescription(description) {
       const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
-      return md.render(description);
+      let renderedHTML = md.render(description);
+
+      // This will take the links and open them in a new tab
+      // so that the application will still continue running
+      // and not replace it with the link
+      const hasLinks = renderedHTML.indexOf('href');
+      if (hasLinks > 0) {
+        renderedHTML = renderedHTML.replace('href', 'target="_blank" href');
+      }
+
+      return renderedHTML;
     },
   },
 };
