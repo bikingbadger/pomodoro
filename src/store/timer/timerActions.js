@@ -2,7 +2,6 @@ export default {
   createTimer({ commit, state, dispatch }) {
     // create the timer once
     const timerId = window.setInterval(() => {
-      // console.log(state);
       // Make sure the timer is running and not paused
       if (state.isRunning) {
         // Check if the timer has ended stop timer and set next value

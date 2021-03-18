@@ -16,20 +16,16 @@ export default {
   startTimer: (state) => {
     state.isRunning = true;
     state.sound.stop();
-    // console.log('start', state.currentPomodoro, state.currentTime);
     state.startTime = new Date().getTime();
-    // state.currentTime = state.currentPomodoro - state.currentTime;
   },
   decreaseTime: (state) => {
     const currentMillisecondsPassed =
       (new Date().getTime() - state.startTime) / state.secondsConversion;
-    // console.log('decrease', state.startTime, state.currentPomodoro, currentMillisecondsPassed);
     state.currentTime = state.currentPomodoro - currentMillisecondsPassed;
   },
   stopTimer: (state) => {
     state.isRunning = false;
     state.currentPomodoro = state.currentTime;
-    // console.log('stop', state.currentPomodoro, state.currentTime);
   },
   resetTimer: (state) => {
     state.isRunning = false;
@@ -67,7 +63,6 @@ export default {
       state.currentTime = state.pomodoroTime;
       state.workTime = true;
     }
-    // console.log('next', state.currentPomodoro, state.currentTime);
   },
   playAlarm: (state) => {
     state.sound.play();
