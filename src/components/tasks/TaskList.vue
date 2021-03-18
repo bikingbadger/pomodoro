@@ -22,26 +22,67 @@
       </li>
     </template>
   </vue-draggable>
+  <!-- <pre>TODOIST: {{ todoistTasks }}</pre> -->
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
+import Todoist from '@/utilities/todoist';
+import axios from 'axios';
+import useSWRV from 'swrv';
+
+function fetcher(url) {
+  return axios
+    .get(url, { data: {}, headers: { Authorization: `Bearer ${Todoist.todoistKey}` } })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
 export default {
-  order: 5,
+  // order: 5,
   components: {
     VueDraggable,
   },
-  data() {
+  setup() {
+    const store = useStore();
+
+    // Vue dragable setup
+    const drag = ref(false);
+    const list = ref([]);
+
+    // Task data from store
+    const completeTask = (task) => store.dispatch('completeTask', task);
+    const tasks = computed({
+      get: () => store.getters.allTasks,
+      set: (listItem) => {
+        store.dispatch('organiseTaskList', listItem);
+      },
+    });
+    const addTasks = (newTasks) => store.dispatch('addTasks', { source: 'Todoist', tasks: newTasks });
+
+    // Get todoist data
+    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
+
+    watch(todoistTasks, () => {
+      addTasks(todoistTasks.value);
+    });
+
     return {
-      drag: false,
-      list: [],
+      taskError,
+      drag,
+      list,
+      // Computed
+      tasks,
+      // Methods
+      completeTask,
     };
   },
   computed: {
-    ...mapGetters('tasks', ['allTasks']),
     dragOptions() {
       return {
         animation: 200,
@@ -50,20 +91,21 @@ export default {
         ghostClass: 'ghost',
       };
     },
-    tasks: {
-      get() {
-        return this.allTasks;
-      },
-      set(listItem) {
-        this.organiseTaskList(listItem);
-      },
-    },
   },
   methods: {
-    ...mapActions('tasks', ['completeTask', 'organiseTaskList']),
     formattedDescription(description) {
       const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
-      return md.render(description);
+      let renderedHTML = md.render(description);
+
+      // This will take the links and open them in a new tab
+      // so that the application will still continue running
+      // and not replace it with the link
+      const hasLinks = renderedHTML.indexOf('href');
+      if (hasLinks > 0) {
+        renderedHTML = renderedHTML.replace('href', 'target="_blank" href');
+      }
+
+      return renderedHTML;
     },
   },
 };

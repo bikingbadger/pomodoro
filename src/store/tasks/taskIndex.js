@@ -3,7 +3,7 @@ import taskActions from './taskActions';
 import taskGetters from './taskGetters';
 
 export default {
-  namespaced: true,
+  // namespaced: true,
   state() {
     return { tasks: [] };
   },
