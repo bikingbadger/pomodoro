@@ -22,12 +22,12 @@
       </li>
     </template>
   </vue-draggable>
-  <pre>{{ todoistTasks }}</pre>
+  <!-- <pre>TODOIST: {{ todoistTasks }}</pre> -->
 </template>
 
 <script>
-import { ref } from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { ref, computed, watch } from 'vue';
+import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
 import Todoist from '@/utilities/todoist';
@@ -49,19 +49,40 @@ export default {
     VueDraggable,
   },
   setup() {
-    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
+    const store = useStore();
+
+    // Vue dragable setup
     const drag = ref(false);
     const list = ref([]);
 
+    // Task data from store
+    const completeTask = (task) => store.dispatch('completeTask', task);
+    const tasks = computed({
+      get: () => store.getters.allTasks,
+      set: (listItem) => {
+        store.dispatch('organiseTaskList', listItem);
+      },
+    });
+    const addTasks = (newTasks) => store.dispatch('addTasks', { source: 'Todoist', tasks: newTasks });
+
+    // Get todoist data
+    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
+
+    watch(todoistTasks, () => {
+      addTasks(todoistTasks.value);
+    });
+
     return {
-      todoistTasks,
       taskError,
       drag,
       list,
+      // Computed
+      tasks,
+      // Methods
+      completeTask,
     };
   },
   computed: {
-    ...mapGetters('tasks', ['allTasks']),
     dragOptions() {
       return {
         animation: 200,
@@ -70,17 +91,8 @@ export default {
         ghostClass: 'ghost',
       };
     },
-    tasks: {
-      get() {
-        return this.allTasks;
-      },
-      set(listItem) {
-        this.organiseTaskList(listItem);
-      },
-    },
   },
   methods: {
-    ...mapActions('tasks', ['completeTask', 'organiseTaskList']),
     formattedDescription(description) {
       const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
       let renderedHTML = md.render(description);
