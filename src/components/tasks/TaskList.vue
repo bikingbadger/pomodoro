@@ -26,22 +26,11 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
 import Todoist from '@/utilities/todoist';
-import axios from 'axios';
-import useSWRV from 'swrv';
-
-function fetcher(url) {
-  return axios
-    .get(url, { data: {}, headers: { Authorization: `Bearer ${Todoist.todoistKey}` } })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error(error);
-    });
-}
 
 export default {
   // order: 5,
@@ -63,17 +52,10 @@ export default {
         store.dispatch('organiseTaskList', listItem);
       },
     });
-    const addTasks = (newTasks) => store.dispatch('addTasks', { source: 'Todoist', tasks: newTasks });
 
-    // Get todoist data
-    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
-
-    watch(todoistTasks, () => {
-      addTasks(todoistTasks.value);
-    });
+    console.log(Todoist.todoistProjects);
 
     return {
-      taskError,
       drag,
       list,
       // Computed
