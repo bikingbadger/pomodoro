@@ -11,7 +11,7 @@
     v-bind="dragOptions"
     @start="drag = true"
     @end="drag = false"
-    item-key="order"
+    item-key="id"
     handle=".handle"
   >
     <template #item="{ element }">
@@ -19,34 +19,25 @@
         <i class="pi pi-bars handle"></i>
         <div class="list-bullet" @click="completeTask(element)"></div>
         <span aria-hidden="true" v-html="formattedDescription(element.description)"></span>
+        <div class="task-project">{{ projectName(element.projectId) }}</div>
       </li>
     </template>
   </vue-draggable>
-  <!-- <pre>TODOIST: {{ todoistTasks }}</pre> -->
+  <todoist-tasks />
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
-import Todoist from '@/utilities/todoist';
-import axios from 'axios';
-import useSWRV from 'swrv';
-
-function fetcher(url) {
-  return axios
-    .get(url, { data: {}, headers: { Authorization: `Bearer ${Todoist.todoistKey}` } })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error(error);
-    });
-}
+import TodoistTasks from '@/components/tasks/TodoistTasks.vue';
 
 export default {
   // order: 5,
   components: {
     VueDraggable,
+    TodoistTasks,
   },
   setup() {
     const store = useStore();
@@ -63,21 +54,16 @@ export default {
         store.dispatch('organiseTaskList', listItem);
       },
     });
-    const addTasks = (newTasks) => store.dispatch('addTasks', { source: 'Todoist', tasks: newTasks });
 
-    // Get todoist data
-    const { data: todoistTasks, error: taskError } = useSWRV(Todoist.allTaskURL, fetcher);
-
-    watch(todoistTasks, () => {
-      addTasks(todoistTasks.value);
-    });
+    // Project Info
+    const projectName = (sourceId) => store.getters.getProjectById(sourceId);
 
     return {
-      taskError,
       drag,
       list,
       // Computed
       tasks,
+      projectName,
       // Methods
       completeTask,
     };
@@ -129,6 +115,7 @@ li {
   align-items: center;
   justify-content: start;
   cursor: pointer;
+  position: relative;
 }
 
 .handle {
@@ -150,5 +137,13 @@ li {
 
 .task-complete:hover {
   cursor: pointer;
+}
+
+.task-project {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: x-small;
+  padding-bottom: 0.5rem;
 }
 </style>
