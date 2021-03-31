@@ -23,6 +23,8 @@ export default {
     const addTasks = (newTasks) =>
       store.dispatch('addTasks', { source: 'Todoist', tasks: newTasks });
 
+    const addProjects = (newProjects) => store.dispatch('addProjects', newProjects);
+
     // Get todoist data
     const { data: todoistTasks, error: taskError } = useSWRV(allTaskURL, fetcher);
     // Get todoist projects
@@ -30,6 +32,10 @@ export default {
 
     watch(todoistTasks, () => {
       addTasks(todoistTasks.value);
+    });
+
+    watch(todoistProjects, () => {
+      addProjects(todoistProjects.value);
     });
 
     return {

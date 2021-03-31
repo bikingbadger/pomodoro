@@ -19,6 +19,7 @@
         <i class="pi pi-bars handle"></i>
         <div class="list-bullet" @click="completeTask(element)"></div>
         <span aria-hidden="true" v-html="formattedDescription(element.description)"></span>
+        <div class="task-project">{{ projectName(element.projectId) }}</div>
       </li>
     </template>
   </vue-draggable>
@@ -54,11 +55,15 @@ export default {
       },
     });
 
+    // Project Info
+    const projectName = (sourceId) => store.getters.getProjectById(sourceId);
+
     return {
       drag,
       list,
       // Computed
       tasks,
+      projectName,
       // Methods
       completeTask,
     };
@@ -110,6 +115,7 @@ li {
   align-items: center;
   justify-content: start;
   cursor: pointer;
+  position: relative;
 }
 
 .handle {
@@ -131,5 +137,13 @@ li {
 
 .task-complete:hover {
   cursor: pointer;
+}
+
+.task-project {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: x-small;
+  padding-bottom: 0.5rem;
 }
 </style>
