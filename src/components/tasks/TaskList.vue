@@ -11,7 +11,7 @@
     v-bind="dragOptions"
     @start="drag = true"
     @end="drag = false"
-    item-key="order"
+    item-key="id"
     handle=".handle"
   >
     <template #item="{ element }">
@@ -22,7 +22,7 @@
       </li>
     </template>
   </vue-draggable>
-  <!-- <pre>TODOIST: {{ todoistTasks }}</pre> -->
+  <todoist-tasks />
 </template>
 
 <script>
@@ -30,12 +30,13 @@ import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
 import VueDraggable from 'vuedraggable';
-import Todoist from '@/utilities/todoist';
+import TodoistTasks from '@/components/tasks/TodoistTasks.vue';
 
 export default {
   // order: 5,
   components: {
     VueDraggable,
+    TodoistTasks,
   },
   setup() {
     const store = useStore();
@@ -52,8 +53,6 @@ export default {
         store.dispatch('organiseTaskList', listItem);
       },
     });
-
-    console.log(Todoist.todoistProjects);
 
     return {
       drag,
