@@ -8,11 +8,12 @@ import rootGetters from './getters';
 import taskModule from './tasks/taskIndex';
 import timerModule from './timer/timerIndex';
 import authModule from './auth/index';
+import projectsModule from './projects/projectIndex';
 
 const vuexLocal = new VuexPersistence({
   // supportCircular: true,
   storage: window.localStorage,
-  modules: ['auth', 'tasks'],
+  modules: ['auth', 'tasks', 'projects'],
 });
 
 const store = createStore({
@@ -26,6 +27,7 @@ const store = createStore({
     tasks: taskModule,
     timer: timerModule,
     auth: authModule,
+    projects: projectsModule,
   },
   plugins:
     process.env.NODE_ENV !== 'production' ? [createLogger(), vuexLocal.plugin] : [vuexLocal.plugin],
