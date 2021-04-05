@@ -1,3 +1,7 @@
+<template>
+  <div></div>
+</template>
+
 <script>
 import { watch } from 'vue';
 import { useStore } from 'vuex';

@@ -16,7 +16,13 @@ export default {
 
     commit('completeTask', task);
   },
+  moveTask({ commit }, taskToMove) {
+    commit('moveTask', taskToMove);
+  },
   organiseTaskList({ commit }, taskList) {
     commit('organiseTaskList', taskList);
+  },
+  setOpacity({ commit }, taskSelected) {
+    commit('setOpacity', taskSelected);
   },
 };
