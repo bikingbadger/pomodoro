@@ -25,6 +25,7 @@ export default {
           scheduled: false,
           currentTime: task.currentTime ? task.currentTime : 0,
           projectId: task.project_id,
+          list: 1,
         });
       } else if (task.completed !== taskInList.completed) {
         taskInList.completed = task.completed;
