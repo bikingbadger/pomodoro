@@ -5,7 +5,7 @@
       :key="task.id"
       draggable="true"
       @dragstart="startDrag($event, task)"
-      @dragend="endDrag($event, task)"
+      @dragend="endDrag(task)"
       @dragover.prevent
       @dragenter.prevent
       @drop="onDrop($event, 1)"
@@ -50,7 +50,7 @@ export default {
       startPosition = listItem.getAttribute('data-position');
     };
 
-    const endDrag = (event, task) => {
+    const endDrag = (task) => {
       store.dispatch('setOpacity', { task, value: 1 });
       startPosition = null;
     };
