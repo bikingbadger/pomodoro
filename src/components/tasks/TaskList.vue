@@ -1,50 +1,29 @@
 <template>
-  <vue-draggable
-    class="task-list"
-    tag="transition-group"
-    :component-data="{
-      tag: 'ul',
-      type: 'transition-group',
-      name: !drag ? 'flip-list' : null,
-    }"
-    v-model="tasks"
-    v-bind="dragOptions"
-    @start="drag = true"
-    @end="drag = false"
-    item-key="id"
-    handle=".handle"
-  >
-    <template #item="{ element }">
-      <li>
-        <i class="pi pi-bars handle"></i>
-        <div class="list-bullet" @click="completeTask(element)"></div>
-        <span aria-hidden="true" v-html="formattedDescription(element.description)"></span>
-        <div class="task-project">{{ projectName(element.projectId) }}</div>
-      </li>
-    </template>
-  </vue-draggable>
+  <ul v-for="task in tasks" :key="task.id">
+    <li>
+      <i class="pi pi-bars handle"></i>
+      <div class="list-bullet" @click="completeTask(task)"></div>
+      <span aria-hidden="true" v-html="formattedDescription(task.description)"></span>
+      <div class="task-project">{{ projectName(task.projectId) }}</div>
+    </li>
+  </ul>
+
   <todoist-tasks />
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import MarkdownIt from 'markdown-it';
-import VueDraggable from 'vuedraggable';
 import TodoistTasks from '@/components/tasks/TodoistTasks.vue';
 
 export default {
   // order: 5,
   components: {
-    VueDraggable,
     TodoistTasks,
   },
   setup() {
     const store = useStore();
-
-    // Vue dragable setup
-    const drag = ref(false);
-    const list = ref([]);
 
     // Task data from store
     const completeTask = (task) => store.dispatch('completeTask', task);
@@ -59,8 +38,6 @@ export default {
     const projectName = (sourceId) => store.getters.getProjectById(sourceId);
 
     return {
-      drag,
-      list,
       // Computed
       tasks,
       projectName,
