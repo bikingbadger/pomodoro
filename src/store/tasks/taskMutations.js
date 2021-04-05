@@ -25,6 +25,8 @@ export default {
           scheduled: false,
           currentTime: task.currentTime ? task.currentTime : 0,
           projectId: task.project_id,
+          list: 1,
+          storeStyle: { opacity: 1 },
         });
       } else if (task.completed !== taskInList.completed) {
         taskInList.completed = task.completed;
@@ -51,7 +53,16 @@ export default {
     const taskId = state.tasks.findIndex((task) => task.id === taskToRemove.id);
     state.tasks.splice(taskId, 1);
   },
+  moveTask(state, taskToMove) {
+    const task = state.tasks[taskToMove.startPosition];
+    state.tasks.splice(taskToMove.startPosition, 1);
+    state.tasks.splice(taskToMove.newPosition, 0, task);
+  },
   organiseTaskList(state, taskList) {
     state.tasks = [...taskList];
+  },
+  setOpacity(state, taskSelected) {
+    const taskId = state.tasks.findIndex((task) => task.id === taskSelected.task.id);
+    state.tasks[taskId].storeStyle.opacity = taskSelected.value;
   },
 };

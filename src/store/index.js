@@ -1,4 +1,4 @@
-import { createStore, createLogger } from 'vuex';
+import { createStore } from 'vuex'; // , createLogger
 import VuexPersistence from 'vuex-persist';
 import rootMutations from './mutations';
 import rootActions from './actions';
@@ -30,7 +30,9 @@ const store = createStore({
     projects: projectsModule,
   },
   plugins:
-    process.env.NODE_ENV !== 'production' ? [createLogger(), vuexLocal.plugin] : [vuexLocal.plugin],
+    process.env.NODE_ENV !== 'production'
+      ? [vuexLocal.plugin] // createLogger(),
+      : [vuexLocal.plugin],
 });
 
 export default store;

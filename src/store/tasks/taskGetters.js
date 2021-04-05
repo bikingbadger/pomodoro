@@ -8,6 +8,13 @@
 //   return 0;
 // };
 
+// export default {
+//   allTasks: (state) => {
+//     const sortedArray = Object.values(state.tasks).sort(compare);
+//     console.log({ ...sortedArray });
+//     return { ...sortedArray };
+//   },
+// };
 export default {
   allTasks: (state) => state.tasks,
 };
