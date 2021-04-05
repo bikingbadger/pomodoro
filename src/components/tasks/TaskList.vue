@@ -1,13 +1,35 @@
 <template>
-  <ul v-for="task in tasks" :key="task.id">
-    <li>
+  <ul>
+    <li
+      v-for="(task, index) in tasks"
+      :key="task.id"
+      draggable="true"
+      @dragstart="startDrag($event, task)"
+      @dragend="endDrag($event, task)"
+      @dragover.prevent
+      @dragenter.prevent
+      @drop="onDrop($event, 1)"
+      :style="task.storeStyle"
+      :data-position="index"
+    >
       <i class="pi pi-bars handle"></i>
-      <div class="list-bullet" @click="completeTask(task)"></div>
-      <span aria-hidden="true" v-html="formattedDescription(task.description)"></span>
+      <div
+        draggable="true"
+        @dragstart.prevent.stop
+        @dragend.prevent.stop
+        class="list-bullet"
+        @click="completeTask(task)"
+      ></div>
+      <span
+        draggable="true"
+        @dragstart.prevent.stop
+        @dragend.prevent.stop
+        aria-hidden="true"
+        v-html="formattedDescription(task.description)"
+      ></span>
       <div class="task-project">{{ projectName(task.projectId) }}</div>
     </li>
   </ul>
-
   <todoist-tasks />
 </template>
 
@@ -37,12 +59,42 @@ export default {
     // Project Info
     const projectName = (sourceId) => store.getters.getProjectById(sourceId);
 
+    // Drag and drop functionality
+    let startPosition = null;
+
+    const findLiElement = (element) =>
+      element.nodeName === 'LI' ? element : findLiElement(element.parentElement);
+
+    const startDrag = (event, task) => {
+      store.dispatch('setOpacity', { task, value: 0.4 });
+      const listItem = findLiElement(event.target);
+      startPosition = listItem.getAttribute('data-position');
+    };
+
+    const endDrag = (event, task) => {
+      store.dispatch('setOpacity', { task, value: 1 });
+      startPosition = null;
+    };
+
+    const onDrop = (event, list) => {
+      const liEnd = findLiElement(event.toElement);
+      const newPosition = liEnd.getAttribute('data-position');
+      store.dispatch('moveTask', {
+        list,
+        startPosition,
+        newPosition,
+      });
+    };
+
     return {
       // Computed
       tasks,
       projectName,
       // Methods
       completeTask,
+      startDrag,
+      endDrag,
+      onDrop,
     };
   },
   computed: {
@@ -57,6 +109,7 @@ export default {
   },
   methods: {
     formattedDescription(description) {
+      if (!description) return null;
       const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
       let renderedHTML = md.render(description);
 
