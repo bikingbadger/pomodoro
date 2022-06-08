@@ -3,7 +3,13 @@
     <label for="email">Email</label>
     <InputText id="email" type="email" v-model="email" class="p-mb-2  p-d-block" />
     <label for="password">Password</label>
-    <Password id="password" v-model="password" :feedback="false" class="p-d-block" />
+    <Password
+      id="password"
+      v-model="password"
+      v-on:keydown.enter="loginUser"
+      :feedback="false"
+      class="p-d-block"
+    />
     <Button label="Login" autofocus @click="loginUser" />
     <Button label="Register" @click="registerUser" class="p-button-text" />
   </Panel>
