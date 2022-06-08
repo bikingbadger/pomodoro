@@ -25,7 +25,7 @@ export default {
           scheduled: false,
           currentTime: task.currentTime ? task.currentTime : 0,
           projectId: task.project_id,
-          list: 1,
+          list: 'main',
           storeStyle: { opacity: 1 },
         });
       } else if (task.completed !== taskInList.completed) {
@@ -54,7 +54,11 @@ export default {
     state.tasks.splice(taskId, 1);
   },
   moveTask(state, taskToMove) {
+    console.table(taskToMove);
     const task = state.tasks[taskToMove.startPosition];
+    console.table(state.tasks);
+    task.list = taskToMove.targetList;
+    console.log(task);
     state.tasks.splice(taskToMove.startPosition, 1);
     state.tasks.splice(taskToMove.newPosition, 0, task);
   },

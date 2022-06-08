@@ -1,87 +1,86 @@
 <template>
+  <button @click="pasteTasks()">Paste Tasks</button>
   <ul>
-    <task-list-item
-      v-for="(task, index) in tasks"
-      :key="task.id"
-      draggable="true"
-      @dragstart="startDrag($event, task)"
-      @dragend="endDrag(task)"
-      @dragover.prevent
-      @dragenter.prevent
-      @drop="onDrop($event, 1)"
-      :data-position="index"
-      :task="task"
-    ></task-list-item>
+    <li v-for="(task, index) in tasks" v-bind:key="index" :class="{ completed: task.completed }">
+      <input
+        @click="toggleCompleted(index)"
+        v-model="task.completed"
+        v-bind:id="index"
+        type="checkbox"
+      />
+      <span @click="moveUp(index)" v-if="index !== 0">⬆</span>
+      <span @click="moveDown(index)" v-if="index !== tasks.length - 1">⬇</span>
+      <span v-html="formattedDescription(task.title)" />
+    </li>
   </ul>
-  <todoist-tasks />
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-import TodoistTasks from '@/components/tasks/TodoistTasks.vue';
-import TaskListItem from '@/components/tasks/TaskListItem.vue';
+import MarkdownIt from 'markdown-it';
 
 export default {
-  // order: 5,
-  components: {
-    TodoistTasks,
-    TaskListItem,
-  },
-  setup() {
-    const store = useStore();
-
-    const tasks = computed({
-      get: () => store.getters.allTasks,
-      set: (listItem) => {
-        store.dispatch('organiseTaskList', listItem);
-      },
-    });
-
-    // Drag and drop functionality
-    let startPosition = null;
-
-    const findLiElement = (element) =>
-      element.nodeName === 'LI' ? element : findLiElement(element.parentElement);
-
-    const startDrag = (event, task) => {
-      store.dispatch('setOpacity', { task, value: 0.4 });
-      const listItem = findLiElement(event.target);
-      startPosition = listItem.getAttribute('data-position');
-    };
-
-    const endDrag = (task) => {
-      store.dispatch('setOpacity', { task, value: 1 });
-      startPosition = null;
-    };
-
-    const onDrop = (event, list) => {
-      const liEnd = findLiElement(event.toElement);
-      const newPosition = liEnd.getAttribute('data-position');
-      store.dispatch('moveTask', {
-        list,
-        startPosition,
-        newPosition,
-      });
-    };
-
+  name: 'task-list',
+  data() {
     return {
-      // Computed
-      tasks,
-      // Methods
-      startDrag,
-      endDrag,
-      onDrop,
+      tasks: [],
     };
+  },
+  methods: {
+    formattedDescription(description) {
+      if (!description) return null;
+      const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
+      let renderedHTML = md.render(description);
+
+      // This will take the links and open them in a new tab
+      // so that the application will still continue running
+      // and not replace it with the link
+      const hasLinks = renderedHTML.indexOf('href');
+      if (hasLinks > 0) {
+        renderedHTML = renderedHTML.replace('href', 'target="_blank" href');
+      }
+
+      return renderedHTML.replace('<p>', '').replace('</p>', '');
+    },
+    moveUp(index) {
+      console.log(index);
+      if (index === 0) return;
+      const taskToMove = this.tasks[index];
+      this.tasks.splice(index, 1);
+      this.tasks.splice(index - 1, 0, taskToMove);
+    },
+    moveDown(index) {
+      console.log(index);
+      if (index === this.tasks.length - 1) return;
+      const taskToMove = this.tasks[index];
+      this.tasks.splice(index, 1);
+      this.tasks.splice(index + 1, 0, taskToMove);
+    },
+    pasteTasks() {
+      navigator.clipboard.readText().then(
+        (cliptext) => {
+          console.log(JSON.parse(cliptext));
+          this.tasks.splice(0, this.tasks.length);
+          this.tasks = [...JSON.parse(cliptext)];
+        },
+        (err) => console.log(err),
+      );
+    },
+    toggleCompleted(index) {
+      if (!this.tasks[index].completed) this.tasks[index].completed = false;
+      this.tasks[index].completed = !this.tasks[index].completed;
+    },
   },
 };
 </script>
 
 <style scoped>
-.task-list {
-  border-radius: 1rem;
-  padding: 1rem;
-  margin-top: 1rem;
-  list-style-type: none;
+ul {
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
+}
+
+.completed {
+  text-decoration: line-through;
 }
 </style>
