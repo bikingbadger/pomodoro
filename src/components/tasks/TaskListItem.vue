@@ -61,7 +61,6 @@ export default {
 
 <style>
 li {
-  padding: 0.5em 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid blue;
   display: grid;
@@ -69,7 +68,6 @@ li {
   grid-template-columns: 1fr, 5fr;
   align-items: center;
   justify-content: start;
-  cursor: pointer;
   position: relative;
 }
 
@@ -77,6 +75,7 @@ li {
   float: left;
   padding-top: 8px;
   padding-bottom: 8px;
+  cursor: pointer;
 }
 
 .list-bullet {
@@ -90,14 +89,14 @@ li {
   transition: all 0.2s ease-in-out;
 }
 
-.task-complete:hover {
+.list-bullet:hover {
   cursor: pointer;
 }
 
 .task-project {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0.2rem;
+  right: 0.2rem;
   font-size: x-small;
   padding-bottom: 0.5rem;
 }
